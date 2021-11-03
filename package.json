@@ -1,0 +1,33 @@
+{
+  "name": "miner-info",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "packageManager": "yarn@3.1.0",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "nodemon",
+    "generate": "yarn generate:defs && yarn generate:meta",
+    "generate:defs": "ts-node --skip-project node_modules/.bin/polkadot-types-from-defs --package . --input ./src/interfaces",
+    "generate:meta": "ts-node --skip-project node_modules/.bin/polkadot-types-from-chain --package . --endpoint wss://khala-api.phala.network/ws --output ./src/interfaces"
+  },
+  "devDependencies": {
+    "@polkadot/typegen": "^6.6.1",
+    "@types/big.js": "^6.1.2",
+    "@types/lodash-es": "^4.17.5",
+    "@types/node": "14.17.32",
+    "nodemon": "^2.0.14",
+    "pino-pretty": "^7.1.0",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.4.4"
+  },
+  "dependencies": {
+    "@phala/typedefs": "^0.2.29",
+    "@polkadot/api": "patch:@polkadot/api@6.5.2#.yarn/patches/@polkadot-api-npm-6.5.2-8c1ea464a7",
+    "@polkadot/types": "^6.6.1",
+    "big.js": "^6.1.1",
+    "fastify": "^3.22.1",
+    "fastify-autoload": "^3.9.0",
+    "lodash-es": "^4.17.21"
+  }
+}

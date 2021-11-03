@@ -1,0 +1,9 @@
+{
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "exec": "node --loader ts-node/esm --experimental-specifier-resolution=node src/index.ts",
+  "ext": "ts,json",
+  "ignore": ["src/**/*.spec.ts"],
+  "watch": ["src"]
+}

@@ -1,0 +1,4 @@
+{
+  "cSpell.ignoreWords": ["fastify", "polkadot", "phala", "tokenomic"],
+  "typescript.tsdk": "./node_modules/typescript/lib"
+}
