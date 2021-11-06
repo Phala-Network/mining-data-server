@@ -11,7 +11,7 @@ const __dirname = dirname(__filename)
 const app = fastify({
   querystringParser: (str) =>
     humps.camelizeKeys(querystring.parse(str)) as Record<string, string>,
-  logger: process.env.NODE_ENV === 'development' && {
+  logger: {
     prettyPrint: true,
   },
 })

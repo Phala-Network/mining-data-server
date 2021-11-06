@@ -2,28 +2,46 @@
 
 A node.js server for indexing mining data.
 
-## Get Started
+## Getting Started
+
+develop
 
 ```sh
 yarn
 yarn dev
 ```
 
+production
+
+```sh
+yarn
+yarn build
+yarn start
+```
+
 ## API
 
-`GET /header`
+### Chain
 
-Return current block number and hash.
+- `GET /header`
+- `GET /block-hash?block_number={number}`
+- `GET /timestamp?hash={hash}`
 
-`GET /block-hash?block_number={number}`
+### Stake Pools
 
-Return block hash of given block number.
+- `GET /stake-pools?hash={hash}`
+- `GET /pool-stakers?hash={hash}`
 
-`GET /workers?hash={hash}`
+### Mining
 
-Return all workers data with binding, miner and stake attached.
+- `GET /miners?hash={hash}`
+- `GET /stakes?hash={hash}`
+- `GET /worker-bindings?hash={hash}`
 
-## TODO
+### Tokenomic Parameters
 
-- stake pool
-- global data
+- `GET /tokenomic-parameters?hash={hash}`
+
+### Workers
+
+- `GET /workers?hash={hash}`
