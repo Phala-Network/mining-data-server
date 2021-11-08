@@ -21,27 +21,34 @@ yarn start
 
 ## API
 
+### Query Parameters
+
+- hash
+- number
+
+Note: When both parameters are provided, hash will have priority. When neither was provided, the latest finalized block will be returned.
+
 ### Chain
 
 - `GET /header`
-- `GET /block-hash?block_number={number}`
-- `GET /timestamp?hash={hash}`
+- `GET /block-hash?number={number}`
+- `GET /timestamp`
 
 ### Stake Pools
 
-- `GET /stake-pools?hash={hash}`
-- `GET /pool-stakers?hash={hash}`
+- `GET /stake-pools`
+- `GET /pool-stakers`
 
 ### Mining
 
-- `GET /miners?hash={hash}`
-- `GET /stakes?hash={hash}`
-- `GET /worker-bindings?hash={hash}`
+- `GET /miners`
+- `GET /stakes`
+- `GET /worker-bindings`
 
 ### Tokenomic Parameters
 
-- `GET /tokenomic-parameters?hash={hash}`
+- `GET /tokenomic-parameters`
 
 ### Workers
 
-- `GET /workers?hash={hash}`
+- `GET /workers`

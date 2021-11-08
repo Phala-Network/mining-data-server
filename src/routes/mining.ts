@@ -1,10 +1,7 @@
 import type {FastifyPluginAsync} from 'fastify'
-import {getApi} from '../helper/polkadot'
-import type {HashQuery} from '../types'
 
 const mining: FastifyPluginAsync = async (app) => {
-  app.get<HashQuery>('/miners', async (request) => {
-    const api = await getApi(request.query.hash)
+  app.get('/miners', async ({api}) => {
     const miners = await api.query.phalaMining.miners.entries()
     const minersEntry: Record<string, any> = miners.reduce(
       (acc, [key, miner]) => {
@@ -17,8 +14,7 @@ const mining: FastifyPluginAsync = async (app) => {
     return minersEntry
   })
 
-  app.get<HashQuery>('/stakes', async (request) => {
-    const api = await getApi(request.query.hash)
+  app.get('/stakes', async ({api}) => {
     const stakes = await api.query.phalaMining.stakes.entries()
     const stakesEntry: Record<string, string> = stakes.reduce(
       (acc, [key, stake]) => {
@@ -31,8 +27,7 @@ const mining: FastifyPluginAsync = async (app) => {
     return stakesEntry
   })
 
-  app.get<HashQuery>('/worker-bindings', async (request) => {
-    const api = await getApi(request.query.hash)
+  app.get('/worker-bindings', async ({api}) => {
     const workerBindings = await api.query.phalaMining.workerBindings.entries()
     const workerBindingsEntry: Record<string, string> = workerBindings.reduce(
       (acc, [key, workerBinding]) => {

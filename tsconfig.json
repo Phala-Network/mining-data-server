@@ -10,7 +10,8 @@
     "outDir": "dist",
     "skipLibCheck": true,
     "strict": true,
-    "target": "ES2020"
+    "target": "ES2020",
+    "incremental": true
   },
   "include": ["src"],
   "paths": {
