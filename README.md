@@ -56,6 +56,6 @@ Note: When both parameters are provided, hash will have priority. When neither w
 
 - `GET /workers`
 
-### Extrinsics
+### Events
 
-- `GET /extrinsics`
+- `GET /events`
