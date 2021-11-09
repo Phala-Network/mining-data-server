@@ -19,6 +19,10 @@ yarn build
 yarn start
 ```
 
+## Environment Variables
+
+- ENDPOINT
+
 ## API
 
 ### Query Parameters
