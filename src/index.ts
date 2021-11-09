@@ -23,6 +23,7 @@ app.addHook<{Querystring: {hash?: string; number?: string}}>(
   'onRequest',
   async (request) => {
     let api = await getApi()
+    request.rawApi = api
     const finalizedHash = await api.rpc.chain.getFinalizedHead()
     const finalizedHeader = await api.rpc.chain.getHeader(finalizedHash)
     const finalizedNumber = finalizedHeader.number.toNumber()

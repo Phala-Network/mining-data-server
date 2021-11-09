@@ -13,6 +13,7 @@ declare global {
 
 declare module 'fastify' {
   interface FastifyRequest {
+    rawApi: ApiPromise
     api: ApiPromise | ApiDecoration<'promise'>
     blockNumber: number
     blockHash: string

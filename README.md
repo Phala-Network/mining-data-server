@@ -35,7 +35,6 @@ Note: When both parameters are provided, hash will have priority. When neither w
 ### Chain
 
 - `GET /header`
-- `GET /block-hash?number={number}`
 - `GET /timestamp`
 
 ### Stake Pools
@@ -56,3 +55,7 @@ Note: When both parameters are provided, hash will have priority. When neither w
 ### Workers
 
 - `GET /workers`
+
+### Extrinsics
+
+- `GET /extrinsics`
