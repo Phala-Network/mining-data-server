@@ -56,7 +56,8 @@ app.addHook<{Querystring: {hash?: string; number?: string}}>(
 
 app.addHook('preSerialization', async (request, reply, payload) => {
   const {blockHash, blockNumber} = request
-  return {blockHash, blockNumber, result: payload}
+  const timestamp = (await request.api.query.timestamp.now()).toNumber()
+  return {blockHash, blockNumber, timestamp, result: payload}
 })
 
 app.register(autoLoad, {
