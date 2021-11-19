@@ -1,13 +1,9 @@
 import fastify from 'fastify'
 import autoLoad from 'fastify-autoload'
-import {fileURLToPath} from 'url'
-import {dirname, join} from 'path'
 import humps from 'humps'
+import path from 'path'
 import querystring from 'querystring'
 import {getApi} from './helper/polkadot'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
 
 const app = fastify({
   querystringParser: (str) =>
@@ -61,7 +57,7 @@ app.addHook('preSerialization', async (request, reply, payload) => {
 })
 
 app.register(autoLoad, {
-  dir: join(__dirname, 'routes'),
+  dir: path.join(__dirname, 'routes'),
   forceESM: true,
 })
 

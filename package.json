@@ -3,35 +3,36 @@
   "version": "1.0.0",
   "main": "dist/index.js",
   "packageManager": "yarn@3.1.0",
-  "type": "module",
   "scripts": {
-    "build": "tsc",
-    "dev": "nodemon",
-    "start": "node --experimental-specifier-resolution=node dist/index.js",
+    "build": "rm -rf dist && tsc",
+    "dev": "ts-node-dev src/index.ts",
+    "start": "NODE_ENV=production node dist/index.js",
     "generate": "yarn generate:defs && yarn generate:meta",
     "generate:defs": "ts-node --skip-project node_modules/.bin/polkadot-types-from-defs --package . --input ./src/interfaces",
     "generate:meta": "ts-node --skip-project node_modules/.bin/polkadot-types-from-chain --package . --endpoint wss://khala-api.phala.network/ws --output ./src/interfaces"
   },
   "devDependencies": {
-    "@polkadot/typegen": "^6.6.1",
+    "@polkadot/typegen": "^6.8.1",
+    "@tsconfig/node16": "^1.0.2",
     "@types/big.js": "^6.1.2",
     "@types/humps": "^2.0.1",
-    "@types/lodash-es": "^4.17.5",
+    "@types/lodash": "^4.14.177",
     "@types/node": "14.17.32",
-    "nodemon": "^2.0.14",
     "pino-pretty": "^7.2.0",
-    "typescript": "^4.4.4"
+    "ts-node": "^10.4.0",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.5.2"
   },
   "dependencies": {
     "@phala/typedefs": "^0.2.29",
-    "@polkadot/api": "^6.6.1",
-    "@polkadot/types": "^6.6.1",
-    "fastify": "^3.23.1",
+    "@polkadot/api": "^6.8.1",
+    "@polkadot/types": "^6.8.1",
+    "fastify": "^3.24.0",
     "fastify-autoload": "^3.9.0",
     "humps": "^2.0.1",
-    "lodash-es": "^4.17.21"
+    "lodash": "^4.17.21"
   },
   "resolutions": {
-    "@polkadot/api": "patch:@polkadot/api@npm:6.6.1#.yarn/patches/@polkadot-api-npm-6.6.1-3962f13f1d"
+    "@polkadot/api": "patch:@polkadot/api@npm:6.8.1#.yarn/patches/@polkadot-api-npm-6.6.1-3962f13f1d"
   }
 }

@@ -1,19 +1,10 @@
 {
+  "extends": "@tsconfig/node16/tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "src",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "lib": ["ES2020"],
-    "module": "ES2020",
-    "moduleResolution": "node",
-    "noImplicitAny": false,
-    "outDir": "dist",
-    "skipLibCheck": true,
-    "strict": true,
-    "target": "ES2020",
-    "incremental": true
+    "rootDir": "src",
+    "outDir": "dist"
   },
-  "include": ["src"],
+  "ts-node": {"files": true},
   "paths": {
     "@polkadot/api/augment": ["interfaces/augment-api.ts"],
     "@polkadot/types/augment": ["interfaces/augment-types.ts"]
