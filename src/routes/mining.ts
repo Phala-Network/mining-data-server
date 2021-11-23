@@ -27,7 +27,7 @@ const mining: FastifyPluginAsync = async (app) => {
     return stakesEntry
   })
 
-  app.get('/worker-bindings', async ({api}) => {
+  app.get('/worker_bindings', async ({api}) => {
     const workerBindings = await api.query.phalaMining.workerBindings.entries()
     const workerBindingsEntry = workerBindings.reduce<Record<string, string>>(
       (acc, [key, workerBinding]) => {
