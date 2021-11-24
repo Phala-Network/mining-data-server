@@ -62,4 +62,4 @@ app.register(autoLoad, {
   forceESM: true,
 })
 
-app.listen(3001, '0.0.0.0')
+app.listen(process.env.PORT || 3001, process.env.BIND || '0.0.0.0')
