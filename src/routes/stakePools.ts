@@ -13,6 +13,19 @@ const stakePools: FastifyPluginAsync = async (app) => {
       poolStaker.toJSON(),
     ])
   })
+
+  app.get('/worker_assignments', async ({api}) => {
+    const workerAssignments = await api.query.phalaStakePool.workerAssignments.entries()
+    const workerAssignmentsEntry = workerAssignments.reduce<Record<string, unknown>>(
+      (acc, [pid, key]) => {
+        acc[pid.args[0].toString()] = key
+        return acc
+      },
+      {}
+    )
+
+    return workerAssignmentsEntry
+  })
 }
 
 export default stakePools
