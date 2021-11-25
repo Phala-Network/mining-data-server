@@ -59,7 +59,6 @@ app.addHook('preSerialization', async (request, reply, payload) => {
 
 app.register(autoLoad, {
   dir: path.join(__dirname, 'routes'),
-  forceESM: true,
 })
 
 app.listen(process.env.PORT || 3001, process.env.BIND || '0.0.0.0')
