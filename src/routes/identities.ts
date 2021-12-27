@@ -1,7 +1,7 @@
 import type {FastifyPluginAsync} from 'fastify'
 
-const identity: FastifyPluginAsync = async (app) => {
-  app.get('/identity', async ({api}) => {
+const identities: FastifyPluginAsync = async (app) => {
+  app.get('/identities', async ({api}) => {
     const identity = await api.query.identity.identityOf.entries()
     return identity.map(([key, value]) => [
       key.args[0].toJSON(),
@@ -10,4 +10,4 @@ const identity: FastifyPluginAsync = async (app) => {
   })
 }
 
-export default identity
+export default identities
