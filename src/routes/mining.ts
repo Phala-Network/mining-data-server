@@ -39,6 +39,19 @@ const mining: FastifyPluginAsync = async (app) => {
 
     return workerBindingsEntry
   })
+
+  app.get('/miner_bindings', async ({api}) => {
+    const minerBindings = await api.query.phalaMining.minerBindings.entries()
+    const minerBindingsEntry = minerBindings.reduce<Record<string, string>>(
+      (acc, [key, minerBinding]) => {
+        acc[key.args[0].toString()] = minerBinding.toString()
+        return acc
+      },
+      {}
+    )
+
+    return minerBindingsEntry
+  })
 }
 
 export default mining
