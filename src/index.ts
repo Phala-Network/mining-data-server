@@ -2,6 +2,7 @@ import fastify from 'fastify'
 import autoLoad from 'fastify-autoload'
 import humps from 'humps'
 import path from 'path'
+import {exit} from 'process'
 import querystring from 'querystring'
 import {getApi} from './helper/polkadot'
 
@@ -55,6 +56,10 @@ app.addHook('preSerialization', async (request, reply, payload) => {
   const timestamp = (await request.api.query.timestamp.now()).toNumber()
   const statusCode = 200
   return {statusCode, blockHash, blockNumber, timestamp, result: payload}
+})
+
+app.addHook('onError', () => {
+  exit()
 })
 
 app.register(autoLoad, {
