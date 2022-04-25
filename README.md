@@ -37,20 +37,26 @@ Note: When both parameters are provided, hash will have priority. When neither w
 - `GET /header`
 - `GET /timestamp`
 
+### Account
+- `GET /accounts`
+- `GET /identities`
+
 ### Stake Pools
 
-- `GET /stake-pools`
-- `GET /pool-stakers`
+- `GET /stake_pools`
+- `GET /pool_stakers`
+- `GET /worker_assignments`
 
 ### Mining
 
 - `GET /miners`
 - `GET /stakes`
-- `GET /worker-bindings`
+- `GET /worker_bindings`
+- `GET /miner_bindings`
 
 ### Tokenomic Parameters
 
-- `GET /tokenomic-parameters`
+- `GET /tokenomic_parameters`
 
 ### Workers
 
