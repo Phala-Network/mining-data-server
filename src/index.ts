@@ -58,9 +58,9 @@ app.addHook('preSerialization', async (request, reply, payload) => {
   return {statusCode, blockHash, blockNumber, timestamp, result: payload}
 })
 
-app.addHook('onError', () => {
-  exit()
-})
+// app.addHook('onError', () => {
+//   exit()
+// })
 
 app.register(autoLoad, {
   dir: path.join(__dirname, 'routes'),
