@@ -26,6 +26,19 @@ const stakePools: FastifyPluginAsync = async (app) => {
 
     return workerAssignmentsEntry
   })
+
+  app.get('/sub_account_preimages', async ({api}) => {
+    const subAccountPreimages = await api.query.phalaStakePool.subAccountPreimages.entries()
+    const subAccountPreimagesEntry = subAccountPreimages.reduce<Record<string, unknown>>(
+      (acc, [miner, pid_and_worker]) => {
+        acc[miner.args[0].toString()] = pid_and_worker.toJSON()
+        return acc
+      },
+      {}
+    )
+
+    return subAccountPreimagesEntry
+  })
 }
 
 export default stakePools
