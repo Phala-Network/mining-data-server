@@ -28,6 +28,10 @@ const stakePools: FastifyPluginAsync = async (app) => {
   })
 
   app.get('/sub_account_preimages', async ({api}) => {
+    if (api.query.phalaStakePool.subAccountPreimages === undefined) {
+      return {};
+    }
+    
     const subAccountPreimages = await api.query.phalaStakePool.subAccountPreimages.entries()
     const subAccountPreimagesEntry = subAccountPreimages.reduce<Record<string, unknown>>(
       (acc, [miner, pid_and_worker]) => {
