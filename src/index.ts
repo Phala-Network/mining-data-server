@@ -58,9 +58,13 @@ app.addHook('preSerialization', async (request, reply, payload) => {
   return {statusCode, blockHash, blockNumber, timestamp, result: payload}
 })
 
-// app.addHook('onError', () => {
-//   exit()
-// })
+app.addHook('onError', (_req, _reply, error) => {
+  console.error(error)
+  
+  if (error.message.startsWith("Unable to decode storage system.events")) {
+    exit()
+  }
+})
 
 app.register(autoLoad, {
   dir: path.join(__dirname, 'routes'),
