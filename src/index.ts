@@ -61,7 +61,7 @@ app.addHook('preSerialization', async (request, reply, payload) => {
 app.addHook('onError', (_req, _reply, error) => {
   console.error(error)
   
-  if (error.message.startsWith("Unable to decode storage system.events")) {
+  if (error.message.startsWith("Unable to decode storage")) {
     exit()
   }
 })
