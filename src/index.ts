@@ -58,12 +58,14 @@ app.addHook('preSerialization', async (request, reply, payload) => {
   return {statusCode, blockHash, blockNumber, timestamp, result: payload}
 })
 
-app.addHook('onError', (_req, _reply, error) => {
+app.addHook('onError', (_req, _reply, error, done) => {
   console.error(error)
   
   if (error.message.startsWith("Unable to decode storage")) {
-    exit()
+    exit(1)
   }
+
+  done()
 })
 
 app.register(autoLoad, {
