@@ -38,6 +38,7 @@ Note: When both parameters are provided, hash will have priority. When neither w
 - `GET /timestamp`
 
 ### Account
+
 - `GET /accounts`
 - `GET /identities`
 
@@ -65,3 +66,7 @@ Note: When both parameters are provided, hash will have priority. When neither w
 ### Events
 
 - `GET /events`
+
+### Account Transform
+
+- `GET /account_transform`
