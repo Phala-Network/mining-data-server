@@ -43,6 +43,23 @@ const stakePools: FastifyPluginAsync = async (app) => {
 
     return subAccountPreimagesEntry
   })
+
+  app.get('/pool_contribution_whitelists', async ({api}) => {
+    if (api.query.phalaStakePool.subAccountPreimages === undefined) {
+      return {};
+    }
+    
+    const poolContributionWhitelists = await api.query.phalaStakePool.poolContributionWhitelists.entries()
+    const poolContributionWhitelistsEntry = poolContributionWhitelists.reduce<Record<string, unknown>>(
+      (acc, [pid, address]) => {
+        acc[pid.args[0].toString()] = address
+        return acc
+      },
+      {}
+    )
+
+    return poolContributionWhitelistsEntry
+  })
 }
 
 export default stakePools
