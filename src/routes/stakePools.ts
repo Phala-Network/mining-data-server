@@ -45,7 +45,7 @@ const stakePools: FastifyPluginAsync = async (app) => {
   })
 
   app.get('/pool_contribution_whitelists', async ({api}) => {
-    if (api.query.phalaStakePool.subAccountPreimages === undefined) {
+    if (api.query.phalaStakePool.poolContributionWhitelists === undefined) {
       return {};
     }
     
