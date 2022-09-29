@@ -1,5 +1,4 @@
 import type {FastifyPluginAsync} from 'fastify'
-import type {ApiPromise} from '@polkadot/api'
 
 const chain: FastifyPluginAsync = async (app) => {
   app.get('/header', async ({rawApi}) => {

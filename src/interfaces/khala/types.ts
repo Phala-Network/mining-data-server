@@ -1,8 +1,9 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
 /* eslint-disable */
 
-import type { Bytes, Enum, Option, Struct, U256, U8aFixed, Vec, u128, u32, u64, u8 } from '@polkadot/types';
+import type { Bytes, Enum, Option, Struct, U256, U8aFixed, Vec, u128, u32, u64, u8 } from '@polkadot/types-codec';
 import type { AccountId, Balance, BlockNumber, H256, MultiAddress, Permill } from '@polkadot/types/interfaces/runtime';
+import type { DispatchErrorModuleU8 } from '@polkadot/types/interfaces/system';
 
 /** @name Address */
 export interface Address extends MultiAddress {}
@@ -17,6 +18,7 @@ export interface AssetInfo extends Struct {
 export interface Attestation extends Enum {
   readonly isSgxIas: boolean;
   readonly asSgxIas: AttestationSgxIas;
+  readonly type: 'SgxIas';
 }
 
 /** @name AttestationSgxIas */
@@ -46,6 +48,7 @@ export interface BridgeEvent extends Enum {
   readonly asNonFungibleTransfer: NonFungibleTransfer;
   readonly isGenericTransfer: boolean;
   readonly asGenericTransfer: GenericTransfer;
+  readonly type: 'FungibleTransfer' | 'NonFungibleTransfer' | 'GenericTransfer';
 }
 
 /** @name ChainId */
@@ -56,6 +59,9 @@ export interface ContractPublicKey extends Sr25519PublicKey {}
 
 /** @name DepositNonce */
 export interface DepositNonce extends u64 {}
+
+/** @name DispatchErrorModule */
+export interface DispatchErrorModule extends DispatchErrorModuleU8 {}
 
 /** @name DispatchMasterKeyEvent */
 export interface DispatchMasterKeyEvent extends Struct {
@@ -81,6 +87,7 @@ export interface FungibleTransfer extends Struct {
 export interface GatekeeperChange extends Enum {
   readonly isGatekeeperRegistered: boolean;
   readonly asGatekeeperRegistered: NewGatekeeperEvent;
+  readonly type: 'GatekeeperRegistered';
 }
 
 /** @name GatekeeperEvent */
@@ -89,6 +96,7 @@ export interface GatekeeperEvent extends Enum {
   readonly asNewRandomNumber: RandomNumberEvent;
   readonly isTokenomicParametersChanged: boolean;
   readonly asTokenomicParametersChanged: TokenomicParameters;
+  readonly type: 'NewRandomNumber' | 'TokenomicParametersChanged';
 }
 
 /** @name GatekeeperLaunch */
@@ -96,6 +104,7 @@ export interface GatekeeperLaunch extends Enum {
   readonly isFirstGatekeeper: boolean;
   readonly asFirstGatekeeper: NewGatekeeperEvent;
   readonly isMasterPubkeyOnChain: boolean;
+  readonly type: 'FirstGatekeeper' | 'MasterPubkeyOnChain';
 }
 
 /** @name GenericTransfer */
@@ -116,6 +125,7 @@ export interface HeartbeatChallenge extends Struct {
 export interface KeyDistribution extends Enum {
   readonly isMasterKeyDistribution: boolean;
   readonly asMasterKeyDistribution: DispatchMasterKeyEvent;
+  readonly type: 'MasterKeyDistribution';
 }
 
 /** @name Keys */
@@ -147,6 +157,7 @@ export interface MessageOrigin extends Enum {
   readonly isMultiLocation: boolean;
   readonly asMultiLocation: Bytes;
   readonly isGatekeeper: boolean;
+  readonly type: 'Pallet' | 'Contract' | 'Worker' | 'AccountId' | 'MultiLocation' | 'Gatekeeper';
 }
 
 /** @name MinerInfo */
@@ -167,6 +178,7 @@ export interface MinerState extends Enum {
   readonly isMiningActive: boolean;
   readonly isMiningUnresponsive: boolean;
   readonly isMiningCoolingDown: boolean;
+  readonly type: 'Ready' | 'MiningIdle' | 'MiningActive' | 'MiningUnresponsive' | 'MiningCoolingDown';
 }
 
 /** @name MinerStats */
@@ -214,6 +226,7 @@ export interface ProposalStatus extends Enum {
   readonly isInitiated: boolean;
   readonly isApproved: boolean;
   readonly isRejected: boolean;
+  readonly type: 'Initiated' | 'Approved' | 'Rejected';
 }
 
 /** @name ProposalVotes */
@@ -232,6 +245,7 @@ export interface ProxyType extends Enum {
   readonly isGovernance: boolean;
   readonly isCollator: boolean;
   readonly isStakePoolManager: boolean;
+  readonly type: 'Any' | 'NonTransfer' | 'CancelProxy' | 'Governance' | 'Collator' | 'StakePoolManager';
 }
 
 /** @name RandomNumberEvent */

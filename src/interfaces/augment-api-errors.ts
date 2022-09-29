@@ -1,10 +1,97 @@
 // Auto-generated via `yarn polkadot-types-from-chain`, do not edit
 /* eslint-disable */
 
-import type { ApiTypes } from '@polkadot/api/types';
+// import type lookup before we augment - in some environments
+// this is required to allow for ambient/previous definitions
+import '@polkadot/api-base/types/errors';
 
-declare module '@polkadot/api/types/errors' {
-  export interface AugmentedErrors<ApiType> {
+import type { ApiTypes, AugmentedError } from '@polkadot/api-base/types';
+
+export type __AugmentedError<ApiType extends ApiTypes> = AugmentedError<ApiType>;
+
+declare module '@polkadot/api-base/types/errors' {
+  interface AugmentedErrors<ApiType extends ApiTypes> {
+    assets: {
+      /**
+       * The asset-account already exists.
+       **/
+      AlreadyExists: AugmentedError<ApiType>;
+      /**
+       * Invalid metadata given.
+       **/
+      BadMetadata: AugmentedError<ApiType>;
+      /**
+       * Invalid witness data given.
+       **/
+      BadWitness: AugmentedError<ApiType>;
+      /**
+       * Account balance must be greater than or equal to the transfer amount.
+       **/
+      BalanceLow: AugmentedError<ApiType>;
+      /**
+       * The origin account is frozen.
+       **/
+      Frozen: AugmentedError<ApiType>;
+      /**
+       * The asset ID is already taken.
+       **/
+      InUse: AugmentedError<ApiType>;
+      /**
+       * Minimum balance should be non-zero.
+       **/
+      MinBalanceZero: AugmentedError<ApiType>;
+      /**
+       * The account to alter does not exist.
+       **/
+      NoAccount: AugmentedError<ApiType>;
+      /**
+       * The asset-account doesn't have an associated deposit.
+       **/
+      NoDeposit: AugmentedError<ApiType>;
+      /**
+       * The signing account has no permission to do the operation.
+       **/
+      NoPermission: AugmentedError<ApiType>;
+      /**
+       * Unable to increment the consumer reference counters on the account. Either no provider
+       * reference exists to allow a non-zero balance of a non-self-sufficient asset, or the
+       * maximum number of consumers has been reached.
+       **/
+      NoProvider: AugmentedError<ApiType>;
+      /**
+       * No approval exists that would allow the transfer.
+       **/
+      Unapproved: AugmentedError<ApiType>;
+      /**
+       * The given asset ID is unknown.
+       **/
+      Unknown: AugmentedError<ApiType>;
+      /**
+       * The operation would result in funds being burned.
+       **/
+      WouldBurn: AugmentedError<ApiType>;
+      /**
+       * The source account would not survive the transfer and it needs to stay alive.
+       **/
+      WouldDie: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
+    assetsRegistry: {
+      AssetAlreadyExist: AugmentedError<ApiType>;
+      AssetNotRegistered: AugmentedError<ApiType>;
+      BridgeAlreadyDisabled: AugmentedError<ApiType>;
+      BridgeAlreadyEnabled: AugmentedError<ApiType>;
+      DuplictedLocation: AugmentedError<ApiType>;
+      FailedToTransactAsset: AugmentedError<ApiType>;
+      LocationTooLong: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
     authorship: {
       /**
        * The uncle is genesis.
@@ -79,6 +166,10 @@ declare module '@polkadot/api/types/errors' {
     };
     bounties: {
       /**
+       * The bounty cannot be closed because it has active child bounties.
+       **/
+      HasActiveChildBounty: AugmentedError<ApiType>;
+      /**
        * Proposer's balance is too low.
        **/
       InsufficientProposersBalance: AugmentedError<ApiType>;
@@ -112,6 +203,10 @@ declare module '@polkadot/api/types/errors' {
        **/
       RequireCurator: AugmentedError<ApiType>;
       /**
+       * Too many approvals are already queued.
+       **/
+      TooManyQueued: AugmentedError<ApiType>;
+      /**
        * The bounty status is unexpected.
        **/
       UnexpectedStatus: AugmentedError<ApiType>;
@@ -120,23 +215,39 @@ declare module '@polkadot/api/types/errors' {
        **/
       [key: string]: AugmentedError<ApiType>;
     };
-    bridgeTransfer: {
-      AccountNotExist: AugmentedError<ApiType>;
-      AssetNotRegistered: AugmentedError<ApiType>;
-      BalanceOverflow: AugmentedError<ApiType>;
-      FeeOptionsMissing: AugmentedError<ApiType>;
-      InsufficientBalance: AugmentedError<ApiType>;
-      InvalidCommand: AugmentedError<ApiType>;
-      InvalidFeeOption: AugmentedError<ApiType>;
-      InvalidPayload: AugmentedError<ApiType>;
-      InvalidTransfer: AugmentedError<ApiType>;
-      ResourceIdInUse: AugmentedError<ApiType>;
-      /**
-       * Generic error
-       **/
-      [key: string]: AugmentedError<ApiType>;
-    };
     chainBridge: {
+      /**
+       * Resource ID provided isn't mapped to anything
+       **/
+      _ResourceDoesNotExist: AugmentedError<ApiType>;
+      /**
+       * Relayer threshold not set
+       **/
+      _ThresholdNotSet: AugmentedError<ApiType>;
+      /**
+       * Convertion failed from resource id
+       **/
+      AssetConversionFailed: AugmentedError<ApiType>;
+      /**
+       * Assets not registered through pallet-assets or pallet-uniques
+       **/
+      AssetNotRegistered: AugmentedError<ApiType>;
+      /**
+       * Trying to push bridge event count more than `BridgeEventLimit`
+       **/
+      BridgeEventOverflow: AugmentedError<ApiType>;
+      /**
+       * Can not transfer assets to dest due to some reasons
+       **/
+      CannotDepositAsset: AugmentedError<ApiType>;
+      /**
+       * Can not extract asset reserve location
+       **/
+      CannotDetermineReservedLocation: AugmentedError<ApiType>;
+      /**
+       * Asset can not pay as fee
+       **/
+      CannotPayAsFee: AugmentedError<ApiType>;
       /**
        * Chain has already been enabled
        **/
@@ -146,9 +257,33 @@ declare module '@polkadot/api/types/errors' {
        **/
       ChainNotWhitelisted: AugmentedError<ApiType>;
       /**
+       * Can not extract dest location
+       **/
+      DestUnrecognized: AugmentedError<ApiType>;
+      /**
+       * Unkonwn asset
+       **/
+      ExtractAssetFailed: AugmentedError<ApiType>;
+      /**
+       * Unknown destnation
+       **/
+      ExtractDestFailed: AugmentedError<ApiType>;
+      /**
+       * Too expensive fee for withdrawn asset
+       **/
+      FeeTooExpensive: AugmentedError<ApiType>;
+      /**
+       * Infusficient balance to withdraw
+       **/
+      InsufficientBalance: AugmentedError<ApiType>;
+      /**
        * Provided chain Id is not valid
        **/
       InvalidChainId: AugmentedError<ApiType>;
+      /**
+       * Got wrong paremeter when update fee
+       **/
+      InvalidFeeOption: AugmentedError<ApiType>;
       /**
        * Relayer threshold cannot be 0
        **/
@@ -190,13 +325,31 @@ declare module '@polkadot/api/types/errors' {
        **/
       RelayerInvalid: AugmentedError<ApiType>;
       /**
-       * Resource ID provided isn't mapped to anything
+       * Transfer failed
        **/
-      ResourceDoesNotExist: AugmentedError<ApiType>;
+      TransactFailed: AugmentedError<ApiType>;
       /**
-       * Relayer threshold not set
+       * Function unimplemented
        **/
-      ThresholdNotSet: AugmentedError<ApiType>;
+      Unimplemented: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
+    childBounties: {
+      /**
+       * The bounty balance is not enough to add new child-bounty.
+       **/
+      InsufficientBountyBalance: AugmentedError<ApiType>;
+      /**
+       * The parent bounty is not in active state.
+       **/
+      ParentBountyNotActive: AugmentedError<ApiType>;
+      /**
+       * Number of child bounties exceeds limit `MaxActiveChildBountyCount`.
+       **/
+      TooManyChildBounties: AugmentedError<ApiType>;
       /**
        * Generic error
        **/
@@ -231,6 +384,10 @@ declare module '@polkadot/api/types/errors' {
        * Too many candidates
        **/
       TooManyCandidates: AugmentedError<ApiType>;
+      /**
+       * Too many invulnerables
+       **/
+      TooManyInvulnerables: AugmentedError<ApiType>;
       /**
        * Unknown error
        **/
@@ -285,6 +442,12 @@ declare module '@polkadot/api/types/errors' {
        * The given weight bound for the proposal was too low.
        **/
       WrongProposalWeight: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
+    cumulusXcm: {
       /**
        * Generic error
        **/
@@ -401,9 +564,27 @@ declare module '@polkadot/api/types/errors' {
        **/
       VotesExist: AugmentedError<ApiType>;
       /**
+       * Voting period too low
+       **/
+      VotingPeriodLow: AugmentedError<ApiType>;
+      /**
        * Invalid upper bound.
        **/
       WrongUpperBound: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
+    dmpQueue: {
+      /**
+       * The amount of weight given is possibly not enough for executing the message.
+       **/
+      OverLimit: AugmentedError<ApiType>;
+      /**
+       * The message index given is unknown.
+       **/
+      Unknown: AugmentedError<ApiType>;
       /**
        * Generic error
        **/
@@ -615,26 +796,77 @@ declare module '@polkadot/api/types/errors' {
       [key: string]: AugmentedError<ApiType>;
     };
     phalaMining: {
+      /**
+       * Deprecated
+       **/
+      _GatekeeperNotRegistered: AugmentedError<ApiType>;
+      /**
+       * Deprecated.
+       **/
+      _InvalidMessage: AugmentedError<ApiType>;
+      /**
+       * The transaction is sent by an unauthorized sender
+       **/
       BadSender: AugmentedError<ApiType>;
+      /**
+       * There's no benchmark result on the blockchain.
+       **/
       BenchmarkMissing: AugmentedError<ApiType>;
       /**
        * Indicating the initial benchmark score is too low to start mining.
        **/
       BenchmarkTooLow: AugmentedError<ApiType>;
+      /**
+       * Cannot reclaim the worker because it's still in cooldown period.
+       **/
       CoolDownNotReady: AugmentedError<ApiType>;
+      /**
+       * Not permitted because the miner is already bound with another worker.
+       **/
       DuplicateBoundMiner: AugmentedError<ApiType>;
+      /**
+       * Not permitted because the worker is already bound with another miner account.
+       **/
       DuplicateBoundWorker: AugmentedError<ApiType>;
-      GatekeeperNotRegistered: AugmentedError<ApiType>;
+      /**
+       * Cannot start mining because there's too little stake.
+       **/
       InsufficientStake: AugmentedError<ApiType>;
+      /**
+       * Internal error. The tokenomic parameter is not set.
+       **/
       InternalErrorBadTokenomicParameters: AugmentedError<ApiType>;
+      /**
+       * Internal error. A miner should never start with existing stake in the storage.
+       **/
       InternalErrorCannotStartWithExistingStake: AugmentedError<ApiType>;
-      InvalidMessage: AugmentedError<ApiType>;
+      /**
+       * Not permitted because the miner is not bound with a worker.
+       **/
       MinerNotBound: AugmentedError<ApiType>;
+      /**
+       * Miner not found.
+       **/
       MinerNotFound: AugmentedError<ApiType>;
+      /**
+       * Miner is not in `Mining` state to stop mining.
+       **/
       MinerNotMining: AugmentedError<ApiType>;
+      /**
+       * Miner is not in `Ready` state to proceed.
+       **/
       MinerNotReady: AugmentedError<ApiType>;
+      /**
+       * Cannot start mining because there's too much stake (exceeds Vmax).
+       **/
       TooMuchStake: AugmentedError<ApiType>;
+      /**
+       * Not permitted because the worker is not bound with a miner account.
+       **/
       WorkerNotBound: AugmentedError<ApiType>;
+      /**
+       * The worker is not registered in the registry.
+       **/
       WorkerNotRegistered: AugmentedError<ApiType>;
       /**
        * Generic error
@@ -653,10 +885,12 @@ declare module '@polkadot/api/types/errors' {
     phalaRegistry: {
       BadIASReport: AugmentedError<ApiType>;
       CannotHandleUnknownMessage: AugmentedError<ApiType>;
+      CannotRemoveLastGatekeeper: AugmentedError<ApiType>;
       GenesisBlockHashAlreadyExists: AugmentedError<ApiType>;
       GenesisBlockHashNotFound: AugmentedError<ApiType>;
       GenesisBlockHashRejected: AugmentedError<ApiType>;
       InvalidBenchReport: AugmentedError<ApiType>;
+      InvalidEndpointSigningTime: AugmentedError<ApiType>;
       InvalidGatekeeper: AugmentedError<ApiType>;
       InvalidIASSigningCert: AugmentedError<ApiType>;
       InvalidInput: AugmentedError<ApiType>;
@@ -664,18 +898,22 @@ declare module '@polkadot/api/types/errors' {
       InvalidPubKey: AugmentedError<ApiType>;
       InvalidQuoteStatus: AugmentedError<ApiType>;
       InvalidReport: AugmentedError<ApiType>;
+      InvalidRotatedMasterPubkey: AugmentedError<ApiType>;
       InvalidRuntimeInfo: AugmentedError<ApiType>;
       InvalidRuntimeInfoHash: AugmentedError<ApiType>;
       InvalidSender: AugmentedError<ApiType>;
       InvalidSignature: AugmentedError<ApiType>;
       InvalidSignatureLength: AugmentedError<ApiType>;
       MalformedSignature: AugmentedError<ApiType>;
+      MasterKeyInRotation: AugmentedError<ApiType>;
       MasterKeyMismatch: AugmentedError<ApiType>;
       MasterKeyUninitialized: AugmentedError<ApiType>;
+      NotImplemented: AugmentedError<ApiType>;
       OutdatedIASReport: AugmentedError<ApiType>;
       PRuntimeAlreadyExists: AugmentedError<ApiType>;
       PRuntimeNotFound: AugmentedError<ApiType>;
       PRuntimeRejected: AugmentedError<ApiType>;
+      UnknownCluster: AugmentedError<ApiType>;
       UnknownContract: AugmentedError<ApiType>;
       UnknownQuoteBodyFormat: AugmentedError<ApiType>;
       WorkerNotFound: AugmentedError<ApiType>;
@@ -686,25 +924,74 @@ declare module '@polkadot/api/types/errors' {
     };
     phalaStakePool: {
       _PoolIsBusy: AugmentedError<ApiType>;
+      /**
+       * Can not add the staker to whitelist because the staker is already in whitelist.
+       **/
+      AlreadyInContributeWhitelist: AugmentedError<ApiType>;
+      /**
+       * The worker doesn't have a valid benchmark when adding to the pool
+       **/
       BenchmarkMissing: AugmentedError<ApiType>;
+      /**
+       * Restarted with a less stake is not allowed in the tokenomic.
+       **/
+      CannotRestartWithLessStake: AugmentedError<ApiType>;
+      /**
+       * Too long for pool description length
+       **/
+      ExceedMaxDescriptionLen: AugmentedError<ApiType>;
+      /**
+       * Too many stakers in contribution whitelist that exceed the limit
+       **/
+      ExceedWhitelistMaxLen: AugmentedError<ApiType>;
+      /**
+       * Couldn't bind worker and the pool mining subaccount
+       **/
       FailedToBindMinerAndWorker: AugmentedError<ApiType>;
       /**
        * The StakePool is not enabled yet.
        **/
       FeatureNotEnabled: AugmentedError<ApiType>;
       /**
-       * The stake capacity is set too low for the existing stake
+       * The stake capacity is set too low to cover the existing stake
        **/
       InadequateCapacity: AugmentedError<ApiType>;
+      /**
+       * Trying to contribute more than the available balance
+       **/
       InsufficientBalance: AugmentedError<ApiType>;
+      /**
+       * The contributed stake is smaller than the minimum threshold
+       **/
       InsufficientContribution: AugmentedError<ApiType>;
+      /**
+       * Cannot start mining because there's no enough free stake
+       **/
       InsufficientFreeStake: AugmentedError<ApiType>;
       /**
        * Internal error: Cannot withdraw from the subsidy pool. This should never happen.
        **/
       InternalSubsidyPoolCannotWithdraw: AugmentedError<ApiType>;
+      /**
+       * Invalid amount of balance input when force reward.
+       **/
+      InvalidForceRewardAmount: AugmentedError<ApiType>;
+      /**
+       * The withdrawal amount is too small (considered as dust)
+       **/
       InvalidWithdrawalAmount: AugmentedError<ApiType>;
+      /**
+       * There's no pending reward to claim
+       **/
       NoRewardToClaim: AugmentedError<ApiType>;
+      /**
+       * Invalid staker to contribute because origin isn't in Pool's contribution whitelist.
+       **/
+      NotInContributeWhitelist: AugmentedError<ApiType>;
+      /**
+       * The pool hasn't have a whitelist created
+       **/
+      NoWhitelistCreated: AugmentedError<ApiType>;
       /**
        * The pool has already got all the stake completely slashed.
        * 
@@ -712,14 +999,43 @@ declare module '@polkadot/api/types/errors' {
        * has been resolved.
        **/
       PoolBankrupt: AugmentedError<ApiType>;
+      /**
+       * The specified pool doesn't exist
+       **/
       PoolDoesNotExist: AugmentedError<ApiType>;
+      /**
+       * The user doesn't have stake in a pool
+       **/
       PoolStakeNotFound: AugmentedError<ApiType>;
+      /**
+       * The stake added to a pool exceeds its capacity
+       **/
       StakeExceedsCapacity: AugmentedError<ApiType>;
+      /**
+       * The owner of the pool doesn't have the access to the worker
+       * 
+       * The access to a worker is granted by it's `operator` parameter set by `register_worker`
+       **/
       UnauthorizedOperator: AugmentedError<ApiType>;
+      /**
+       * The caller is not the owner of the pool
+       **/
       UnauthorizedPoolOwner: AugmentedError<ApiType>;
-      WorerInAnotherPool: AugmentedError<ApiType>;
+      /**
+       * The target worker is not in the pool
+       **/
       WorkerDoesNotExist: AugmentedError<ApiType>;
+      /**
+       * The worker is already added to the pool
+       **/
       WorkerExists: AugmentedError<ApiType>;
+      /**
+       * The worker is already added to another pool
+       **/
+      WorkerInAnotherPool: AugmentedError<ApiType>;
+      /**
+       * The worker is not registered in the registry when adding to the pool
+       **/
       WorkerNotRegistered: AugmentedError<ApiType>;
       /**
        * Failed to add a worker because the number of the workers exceeds the upper limit.
@@ -780,13 +1096,13 @@ declare module '@polkadot/api/types/errors' {
        **/
       NoVotes: AugmentedError<ApiType>;
       /**
-       * Cannot report self.
-       **/
-      ReportSelf: AugmentedError<ApiType>;
-      /**
        * Runner cannot re-submit candidacy.
        **/
       RunnerUpSubmit: AugmentedError<ApiType>;
+      /**
+       * Too many candidates have been created.
+       **/
+      TooManyCandidates: AugmentedError<ApiType>;
       /**
        * Cannot vote more than candidates.
        **/
@@ -799,6 +1115,97 @@ declare module '@polkadot/api/types/errors' {
        * Cannot vote when no candidates or members exist.
        **/
       UnableToVote: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
+    polkadotXcm: {
+      /**
+       * The location is invalid since it already has a subscription from us.
+       **/
+      AlreadySubscribed: AugmentedError<ApiType>;
+      /**
+       * The given location could not be used (e.g. because it cannot be expressed in the
+       * desired version of XCM).
+       **/
+      BadLocation: AugmentedError<ApiType>;
+      /**
+       * The version of the `Versioned` value used is not able to be interpreted.
+       **/
+      BadVersion: AugmentedError<ApiType>;
+      /**
+       * Could not re-anchor the assets to declare the fees for the destination chain.
+       **/
+      CannotReanchor: AugmentedError<ApiType>;
+      /**
+       * The destination `MultiLocation` provided cannot be inverted.
+       **/
+      DestinationNotInvertible: AugmentedError<ApiType>;
+      /**
+       * The assets to be sent are empty.
+       **/
+      Empty: AugmentedError<ApiType>;
+      /**
+       * The message execution fails the filter.
+       **/
+      Filtered: AugmentedError<ApiType>;
+      /**
+       * Origin is invalid for sending.
+       **/
+      InvalidOrigin: AugmentedError<ApiType>;
+      /**
+       * The referenced subscription could not be found.
+       **/
+      NoSubscription: AugmentedError<ApiType>;
+      /**
+       * There was some other issue (i.e. not to do with routing) in sending the message. Perhaps
+       * a lack of space for buffering the message.
+       **/
+      SendFailure: AugmentedError<ApiType>;
+      /**
+       * Too many assets have been attempted for transfer.
+       **/
+      TooManyAssets: AugmentedError<ApiType>;
+      /**
+       * The desired destination was unreachable, generally because there is a no way of routing
+       * to it.
+       **/
+      Unreachable: AugmentedError<ApiType>;
+      /**
+       * The message's weight could not be determined.
+       **/
+      UnweighableMessage: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
+    preimage: {
+      /**
+       * Preimage has already been noted on-chain.
+       **/
+      AlreadyNoted: AugmentedError<ApiType>;
+      /**
+       * The user is not authorized to perform this action.
+       **/
+      NotAuthorized: AugmentedError<ApiType>;
+      /**
+       * The preimage cannot be removed since it has not yet been noted.
+       **/
+      NotNoted: AugmentedError<ApiType>;
+      /**
+       * The preimage request cannot be removed since no outstanding requests exist.
+       **/
+      NotRequested: AugmentedError<ApiType>;
+      /**
+       * A preimage may not be removed when there are outstanding requests.
+       **/
+      Requested: AugmentedError<ApiType>;
+      /**
+       * Preimage is too large to store on-chain.
+       **/
+      TooLarge: AugmentedError<ApiType>;
       /**
        * Generic error
        **/
@@ -837,6 +1244,218 @@ declare module '@polkadot/api/types/errors' {
        * A call which is incompatible with the proxy type's filter was attempted.
        **/
       Unproxyable: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
+    pwIncubation: {
+      _Deprecated_MaxFoodFedLimitReached: AugmentedError<ApiType>;
+      _Deprecated_NoFoodAvailable: AugmentedError<ApiType>;
+      _Deprecated_NoHatchTimeDetected: AugmentedError<ApiType>;
+      AlreadySentFoodTwice: AugmentedError<ApiType>;
+      CannotHatchOriginOfShell: AugmentedError<ApiType>;
+      CannotSendFoodToOriginOfShell: AugmentedError<ApiType>;
+      CannotSetOriginOfShellChosenParts: AugmentedError<ApiType>;
+      CareerNotDetected: AugmentedError<ApiType>;
+      ChosenPartsNotDetected: AugmentedError<ApiType>;
+      FoodInfoUpdateError: AugmentedError<ApiType>;
+      GenerationNotDetected: AugmentedError<ApiType>;
+      HatchingInProgress: AugmentedError<ApiType>;
+      MissingShellPartMetadata: AugmentedError<ApiType>;
+      NoPermission: AugmentedError<ApiType>;
+      NotOwner: AugmentedError<ApiType>;
+      RaceNotDetected: AugmentedError<ApiType>;
+      RarityTypeNotDetected: AugmentedError<ApiType>;
+      ShellCollectionIdAlreadySet: AugmentedError<ApiType>;
+      ShellCollectionIdNotSet: AugmentedError<ApiType>;
+      ShellPartsCollectionIdAlreadySet: AugmentedError<ApiType>;
+      ShellPartsCollectionIdNotSet: AugmentedError<ApiType>;
+      StartIncubationNotAvailable: AugmentedError<ApiType>;
+      WrongCollectionId: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
+    pwNftSale: {
+      BelowMinimumBalanceThreshold: AugmentedError<ApiType>;
+      InvalidMetadata: AugmentedError<ApiType>;
+      InvalidPurchase: AugmentedError<ApiType>;
+      InvalidSpiritClaim: AugmentedError<ApiType>;
+      InvalidStatusType: AugmentedError<ApiType>;
+      KeyTooLong: AugmentedError<ApiType>;
+      MustOwnSpiritToPurchase: AugmentedError<ApiType>;
+      NoAvailableNftId: AugmentedError<ApiType>;
+      NoAvailablePreorderId: AugmentedError<ApiType>;
+      NoAvailableRaceGivewayLeft: AugmentedError<ApiType>;
+      NoAvailableRaceReservedLeft: AugmentedError<ApiType>;
+      NoAvailableResourceId: AugmentedError<ApiType>;
+      NotPreorderOwner: AugmentedError<ApiType>;
+      OriginOfShellAlreadyPurchased: AugmentedError<ApiType>;
+      OriginOfShellCollectionIdAlreadySet: AugmentedError<ApiType>;
+      OriginOfShellCollectionNotSet: AugmentedError<ApiType>;
+      OriginOfShellInventoryAlreadySet: AugmentedError<ApiType>;
+      OriginOfShellInventoryCorrupted: AugmentedError<ApiType>;
+      OriginOfShellsMetadataNotSet: AugmentedError<ApiType>;
+      OverlordNotSet: AugmentedError<ApiType>;
+      PreorderClaimNotAvailable: AugmentedError<ApiType>;
+      PreorderClaimNotDetected: AugmentedError<ApiType>;
+      PreorderIsPending: AugmentedError<ApiType>;
+      PreorderOriginOfShellNotAvailable: AugmentedError<ApiType>;
+      PreordersCorrupted: AugmentedError<ApiType>;
+      PrimeOriginOfShellPurchaseNotAvailable: AugmentedError<ApiType>;
+      RaceMintMaxReached: AugmentedError<ApiType>;
+      RareOriginOfShellPurchaseNotAvailable: AugmentedError<ApiType>;
+      RefundClaimNotDetected: AugmentedError<ApiType>;
+      RequireOverlordAccount: AugmentedError<ApiType>;
+      SpiritAlreadyClaimed: AugmentedError<ApiType>;
+      SpiritClaimNotAvailable: AugmentedError<ApiType>;
+      SpiritCollectionIdAlreadySet: AugmentedError<ApiType>;
+      SpiritCollectionNotSet: AugmentedError<ApiType>;
+      SpiritsMetadataNotSet: AugmentedError<ApiType>;
+      ValueNotDetected: AugmentedError<ApiType>;
+      WhitelistVerificationFailed: AugmentedError<ApiType>;
+      WorldClockAlreadySet: AugmentedError<ApiType>;
+      WrongNftSaleType: AugmentedError<ApiType>;
+      WrongRarityType: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
+    rmrkCore: {
+      CannotAcceptNonOwnedNft: AugmentedError<ApiType>;
+      CannotRejectNonOwnedNft: AugmentedError<ApiType>;
+      CannotRejectNonPendingNft: AugmentedError<ApiType>;
+      CannotSendEquippedItem: AugmentedError<ApiType>;
+      CannotSendToDescendentOrSelf: AugmentedError<ApiType>;
+      CollectionFullOrLocked: AugmentedError<ApiType>;
+      CollectionNotEmpty: AugmentedError<ApiType>;
+      CollectionUnknown: AugmentedError<ApiType>;
+      EmptyResource: AugmentedError<ApiType>;
+      MetadataNotSet: AugmentedError<ApiType>;
+      NftAlreadyExists: AugmentedError<ApiType>;
+      NftIsLocked: AugmentedError<ApiType>;
+      NoAvailableCollectionId: AugmentedError<ApiType>;
+      NoAvailableNftId: AugmentedError<ApiType>;
+      NoAvailableResourceId: AugmentedError<ApiType>;
+      /**
+       * Error names should be descriptive.
+       **/
+      NoneValue: AugmentedError<ApiType>;
+      NonTransferable: AugmentedError<ApiType>;
+      NoPermission: AugmentedError<ApiType>;
+      NotInRange: AugmentedError<ApiType>;
+      NoWitness: AugmentedError<ApiType>;
+      RecipientNotSet: AugmentedError<ApiType>;
+      ResourceAlreadyExists: AugmentedError<ApiType>;
+      ResourceDoesntExist: AugmentedError<ApiType>;
+      /**
+       * Accepting a resource that is not pending should fail
+       **/
+      ResourceNotPending: AugmentedError<ApiType>;
+      RoyaltyNotSet: AugmentedError<ApiType>;
+      /**
+       * Errors should have helpful documentation associated with them.
+       **/
+      StorageOverflow: AugmentedError<ApiType>;
+      TooLong: AugmentedError<ApiType>;
+      TooManyRecursions: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
+    rmrkEquip: {
+      BaseDoesntExist: AugmentedError<ApiType>;
+      CantEquipFixedPart: AugmentedError<ApiType>;
+      CollectionNotEquippable: AugmentedError<ApiType>;
+      EquipperDoesntExist: AugmentedError<ApiType>;
+      ExceedsMaxPartsPerBase: AugmentedError<ApiType>;
+      ItemAlreadyEquipped: AugmentedError<ApiType>;
+      ItemDoesntExist: AugmentedError<ApiType>;
+      ItemHasNoResourceToEquipThere: AugmentedError<ApiType>;
+      ItemNotEquipped: AugmentedError<ApiType>;
+      MustBeDirectParent: AugmentedError<ApiType>;
+      NeedsDefaultThemeFirst: AugmentedError<ApiType>;
+      NoAvailableBaseId: AugmentedError<ApiType>;
+      NoAvailablePartId: AugmentedError<ApiType>;
+      NoEquippableOnFixedPart: AugmentedError<ApiType>;
+      NoResourceForThisBaseFoundOnNft: AugmentedError<ApiType>;
+      PartDoesntExist: AugmentedError<ApiType>;
+      PermissionError: AugmentedError<ApiType>;
+      SlotAlreadyEquipped: AugmentedError<ApiType>;
+      SlotNotEquipped: AugmentedError<ApiType>;
+      TooManyProperties: AugmentedError<ApiType>;
+      UnequipperMustOwnEitherItemOrEquipper: AugmentedError<ApiType>;
+      UnknownError: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
+    rmrkMarket: {
+      /**
+       * Account cannot offer on a NFT again with an active offer
+       **/
+      AlreadyOffered: AugmentedError<ApiType>;
+      /**
+       * Cannot buy NFT that is already owned
+       **/
+      CannotBuyOwnToken: AugmentedError<ApiType>;
+      /**
+       * Cannot list NFT owned by a NFT
+       **/
+      CannotListNftOwnedByNft: AugmentedError<ApiType>;
+      /**
+       * Cannot make offer on NFT on own NFT
+       **/
+      CannotOfferOnOwnToken: AugmentedError<ApiType>;
+      /**
+       * Cannot unlist NFT as it has already been unlisted or sold
+       **/
+      CannotUnlistToken: AugmentedError<ApiType>;
+      /**
+       * Offer already accepted and cannot withdraw
+       **/
+      CannotWithdrawOffer: AugmentedError<ApiType>;
+      /**
+       * Listing has expired and cannot be bought
+       **/
+      ListingHasExpired: AugmentedError<ApiType>;
+      /**
+       * Not possible to list non-transferable NFT
+       **/
+      NonTransferable: AugmentedError<ApiType>;
+      /**
+       * No permissions for account to interact with NFT
+       **/
+      NoPermission: AugmentedError<ApiType>;
+      /**
+       * Accepted offer has expired and cannot be accepted
+       **/
+      OfferHasExpired: AugmentedError<ApiType>;
+      /**
+       * Offer is below the OfferMinimumAmount threshold
+       **/
+      OfferTooLow: AugmentedError<ApiType>;
+      /**
+       * Price differs from when `buy` was executed
+       **/
+      PriceDiffersFromExpected: AugmentedError<ApiType>;
+      /**
+       * Cannot list a non-existing NFT
+       **/
+      TokenDoesNotExist: AugmentedError<ApiType>;
+      /**
+       * Token cannot be bought
+       **/
+      TokenNotForSale: AugmentedError<ApiType>;
+      /**
+       * Offer is unknown
+       **/
+      UnknownOffer: AugmentedError<ApiType>;
       /**
        * Generic error
        **/
@@ -891,6 +1510,10 @@ declare module '@polkadot/api/types/errors' {
       [key: string]: AugmentedError<ApiType>;
     };
     system: {
+      /**
+       * The origin filter prevent the call to be dispatched.
+       **/
+      CallFiltered: AugmentedError<ApiType>;
       /**
        * Failed to extract the runtime version from the new runtime.
        * 
@@ -976,6 +1599,10 @@ declare module '@polkadot/api/types/errors' {
        **/
       NotMember: AugmentedError<ApiType>;
       /**
+       * Too many members.
+       **/
+      TooManyMembers: AugmentedError<ApiType>;
+      /**
        * Generic error
        **/
       [key: string]: AugmentedError<ApiType>;
@@ -1012,6 +1639,11 @@ declare module '@polkadot/api/types/errors' {
     };
     treasury: {
       /**
+       * The spend origin is valid but the amount it is allowed to spend is lower than the
+       * amount to be spent.
+       **/
+      InsufficientPermission: AugmentedError<ApiType>;
+      /**
        * Proposer's balance is too low.
        **/
       InsufficientProposersBalance: AugmentedError<ApiType>;
@@ -1020,9 +1652,91 @@ declare module '@polkadot/api/types/errors' {
        **/
       InvalidIndex: AugmentedError<ApiType>;
       /**
+       * Proposal has not been approved.
+       **/
+      ProposalNotApproved: AugmentedError<ApiType>;
+      /**
        * Too many approvals in the queue.
        **/
       TooManyApprovals: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
+    uniques: {
+      /**
+       * The item ID has already been used for an item.
+       **/
+      AlreadyExists: AugmentedError<ApiType>;
+      /**
+       * Invalid witness data given.
+       **/
+      BadWitness: AugmentedError<ApiType>;
+      /**
+       * The provided bid is too low.
+       **/
+      BidTooLow: AugmentedError<ApiType>;
+      /**
+       * The item or collection is frozen.
+       **/
+      Frozen: AugmentedError<ApiType>;
+      /**
+       * The item ID is already taken.
+       **/
+      InUse: AugmentedError<ApiType>;
+      /**
+       * The item is locked.
+       **/
+      Locked: AugmentedError<ApiType>;
+      /**
+       * The max supply has already been set.
+       **/
+      MaxSupplyAlreadySet: AugmentedError<ApiType>;
+      /**
+       * All items have been minted.
+       **/
+      MaxSupplyReached: AugmentedError<ApiType>;
+      /**
+       * The provided max supply is less to the amount of items a collection already has.
+       **/
+      MaxSupplyTooSmall: AugmentedError<ApiType>;
+      /**
+       * There is no delegate approved.
+       **/
+      NoDelegate: AugmentedError<ApiType>;
+      /**
+       * The signing account has no permission to do the operation.
+       **/
+      NoPermission: AugmentedError<ApiType>;
+      /**
+       * Item is not for sale.
+       **/
+      NotForSale: AugmentedError<ApiType>;
+      /**
+       * The named owner has not signed ownership of the collection is acceptable.
+       **/
+      Unaccepted: AugmentedError<ApiType>;
+      /**
+       * No approval exists that would allow the transfer.
+       **/
+      Unapproved: AugmentedError<ApiType>;
+      /**
+       * The given item ID is unknown.
+       **/
+      UnknownCollection: AugmentedError<ApiType>;
+      /**
+       * The given item ID is unknown.
+       **/
+      UnknownItem: AugmentedError<ApiType>;
+      /**
+       * The delegate turned out to be different to what was expected.
+       **/
+      WrongDelegate: AugmentedError<ApiType>;
+      /**
+       * The owner turned out to be different to what was expected.
+       **/
+      WrongOwner: AugmentedError<ApiType>;
       /**
        * Generic error
        **/
@@ -1044,21 +1758,104 @@ declare module '@polkadot/api/types/errors' {
        **/
       AmountLow: AugmentedError<ApiType>;
       /**
-       * An existing vesting schedule already exists for this account that cannot be clobbered.
+       * The account already has `MaxVestingSchedules` count of schedules and thus
+       * cannot add another one. Consider merging existing schedules in order to add another.
        **/
-      ExistingVestingSchedule: AugmentedError<ApiType>;
+      AtMaxVestingSchedules: AugmentedError<ApiType>;
+      /**
+       * Failed to create a new schedule because some parameter was invalid.
+       **/
+      InvalidScheduleParams: AugmentedError<ApiType>;
       /**
        * The account given is not vesting.
        **/
       NotVesting: AugmentedError<ApiType>;
       /**
+       * An index was out of bounds of the vesting schedules.
+       **/
+      ScheduleIndexOutOfBounds: AugmentedError<ApiType>;
+      /**
        * Generic error
        **/
       [key: string]: AugmentedError<ApiType>;
     };
-  }
-
-  export interface DecoratedErrors<ApiType extends ApiTypes> extends AugmentedErrors<ApiType> {
-    [key: string]: ModuleErrors<ApiType>;
-  }
-}
+    xcmBridge: {
+      _FeePaymentEmpty: AugmentedError<ApiType>;
+      _LocationInvertFailed: AugmentedError<ApiType>;
+      _UnknownError: AugmentedError<ApiType>;
+      _UnknownTransfer: AugmentedError<ApiType>;
+      /**
+       * Asset not been registered or not been supported
+       **/
+      AssetNotFound: AugmentedError<ApiType>;
+      /**
+       * Can not transfer asset to dest
+       **/
+      CannotDepositAsset: AugmentedError<ApiType>;
+      /**
+       * Can not reanchor asset location according dest
+       **/
+      CannotReanchor: AugmentedError<ApiType>;
+      /**
+       * XCM message executeion failed due to some reasons
+       **/
+      ExecutionFailed: AugmentedError<ApiType>;
+      /**
+       * Extract dest location failed
+       **/
+      IllegalDestination: AugmentedError<ApiType>;
+      /**
+       * Unimplemented function
+       **/
+      Unimplemented: AugmentedError<ApiType>;
+      /**
+       * Transfer type not valid
+       **/
+      UnknownTransferType: AugmentedError<ApiType>;
+      /**
+       * Failed to measure weight of a XCM message
+       **/
+      UnweighableMessage: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
+    xcmpQueue: {
+      /**
+       * Bad overweight index.
+       **/
+      BadOverweightIndex: AugmentedError<ApiType>;
+      /**
+       * Bad XCM data.
+       **/
+      BadXcm: AugmentedError<ApiType>;
+      /**
+       * Bad XCM origin.
+       **/
+      BadXcmOrigin: AugmentedError<ApiType>;
+      /**
+       * Failed to send XCM message.
+       **/
+      FailedToSend: AugmentedError<ApiType>;
+      /**
+       * Provided weight is possibly not enough to execute the message.
+       **/
+      WeightOverLimit: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
+    xTransfer: {
+      _TransactFailed: AugmentedError<ApiType>;
+      UnhandledTransfer: AugmentedError<ApiType>;
+      UnknownAsset: AugmentedError<ApiType>;
+      UnsupportedDest: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
+  } // AugmentedErrors
+} // declare module

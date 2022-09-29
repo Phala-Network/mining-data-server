@@ -1,17 +1,29 @@
 import fastify from 'fastify'
-import autoLoad from 'fastify-autoload'
+import autoLoad from '@fastify/autoload'
 import humps from 'humps'
 import path from 'path'
 import {exit} from 'process'
 import querystring from 'querystring'
 import {getApi} from './helper/polkadot'
 
+const envToLogger = {
+  development: {
+    transport: {
+      target: 'pino-pretty',
+      options: {
+        translateTime: 'HH:MM:ss Z',
+        ignore: 'pid,hostname',
+      },
+    },
+  },
+  production: true,
+  test: false,
+}
+
 const app = fastify({
   querystringParser: (str) =>
     humps.camelizeKeys(querystring.parse(str)) as Record<string, string>,
-  logger: {
-    prettyPrint: true,
-  },
+  logger: process.env.NODE_ENV ? envToLogger[process.env.NODE_ENV] : true,
 })
 
 app.get('/check-health', async () => 'Ok')
@@ -60,8 +72,8 @@ app.addHook('preSerialization', async (request, reply, payload) => {
 
 app.addHook('onError', (_req, _reply, error, done) => {
   console.error(error)
-  
-  if (error.message.startsWith("Unable to decode storage")) {
+
+  if (error.message.startsWith('Unable to decode storage')) {
     exit(1)
   }
 
@@ -72,4 +84,7 @@ app.register(autoLoad, {
   dir: path.join(__dirname, 'routes'),
 })
 
-app.listen(process.env.PORT || 3001, process.env.BIND || '0.0.0.0')
+app.listen({
+  port: Number(process.env.PORT) || 3001,
+  host: process.env.BIND || '0.0.0.0',
+})
