@@ -5,31 +5,32 @@
   "packageManager": "yarn@3.2.3",
   "scripts": {
     "build": "rm -rf dist && tsc",
-    "dev": "ts-node src/index.ts",
+    "dev": "NODE_ENV=development ts-node src/index.ts",
     "start": "NODE_ENV=production node dist/index.js",
+    "updateMetadata": "ts-node src/updateMetadata.ts",
     "generate": "yarn generate:defs && yarn generate:meta",
-    "generate:defs": "ts-node --skip-project node_modules/.bin/polkadot-types-from-defs --package . --input ./src/interfaces",
-    "generate:meta": "ts-node --skip-project node_modules/.bin/polkadot-types-from-chain --package . --endpoint wss://khala-api.phala.network/ws --output ./src/interfaces"
+    "generate:defs": "ts-node --skip-project node_modules/.bin/polkadot-types-from-defs --package .  --endpoint src/metadata.json --input ./src/interfaces",
+    "generate:meta": "ts-node --skip-project node_modules/.bin/polkadot-types-from-chain --package . --endpoint src/metadata.json --output ./src/interfaces --strict"
   },
   "devDependencies": {
-    "@polkadot/typegen": "^9.4.2",
+    "@polkadot/typegen": "^9.8.1",
     "@tsconfig/node16": "^1.0.3",
     "@types/humps": "^2.0.2",
-    "@types/lodash": "^4.14.186",
-    "@types/node": "^16.11.62",
-    "pino-pretty": "^9.1.0",
+    "@types/lodash": "^4.14.188",
+    "@types/node": "^16.18.3",
+    "pino-pretty": "^9.1.1",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0",
     "typescript": "^4.8.4"
   },
   "dependencies": {
-    "@fastify/autoload": "^5.4.0",
-    "@phala/typedefs": "^0.2.31",
-    "@polkadot/api": "^9.4.2",
-    "@polkadot/types": "^9.4.2",
-    "@polkadot/util": "^10.1.9",
-    "@polkadot/util-crypto": "^10.1.9",
-    "fastify": "^4.6.0",
+    "@fastify/autoload": "^5.4.1",
+    "@phala/typedefs": "^0.2.32",
+    "@polkadot/api": "^9.8.1",
+    "@polkadot/types": "^9.8.1",
+    "@polkadot/util": "^10.1.12",
+    "@polkadot/util-crypto": "^10.1.12",
+    "fastify": "^4.9.2",
     "humps": "^2.0.1",
     "lodash": "^4.17.21"
   }

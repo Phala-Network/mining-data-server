@@ -6,8 +6,10 @@
   },
   "ts-node": {"files": true},
   "paths": {
+    "mining-data-server/*": ["src/*"],
     "@polkadot/api/augment": ["interfaces/augment-api.ts"],
     "@polkadot/types/augment": ["interfaces/augment-types.ts"]
+    // "@polkadot/types/lookup": ["src/interfaces/types-lookup.ts"]
   },
   "include": ["**/*.ts"]
 }
