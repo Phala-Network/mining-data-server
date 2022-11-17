@@ -7,7 +7,7 @@ import '@polkadot/api-base/types/consts';
 
 import type { ApiTypes, AugmentedConst } from '@polkadot/api-base/types';
 import type { Option, U8aFixed, bool, u128, u16, u32, u64, u8 } from '@polkadot/types-codec';
-import type { Percent, Permill, Weight } from '@polkadot/types/interfaces/runtime';
+import type { AccountId32, Percent, Permill, Weight } from '@polkadot/types/interfaces/runtime';
 import type { FrameSupportPalletId, FrameSystemLimitsBlockLength, FrameSystemLimitsBlockWeights, SpVersionRuntimeVersion, SpWeightsRuntimeDbWeight } from '@polkadot/types/lookup';
 
 export type __AugmentedConst<ApiType extends ApiTypes> = AugmentedConst<ApiType>;
@@ -264,7 +264,21 @@ declare module '@polkadot/api-base/types/consts' {
        **/
       maxSignatories: u16 & AugmentedConst<ApiType>;
     };
+    phalaPawnshop: {
+      /**
+       * Pha's global fund pool
+       **/
+      pawnShopAccountId: AccountId32 & AugmentedConst<ApiType>;
+      /**
+       * P-PHA's asset id
+       **/
+      pPhaAssetId: u32 & AugmentedConst<ApiType>;
+    };
     phalaRegistry: {
+      /**
+       * Enable None Attestation, SHOULD BE SET TO FALSE ON PRODUCTION !!!
+       **/
+      noneAttestationEnabled: bool & AugmentedConst<ApiType>;
       /**
        * Verify attestation
        * 
@@ -278,7 +292,11 @@ declare module '@polkadot/api-base/types/consts' {
        **/
       verifyRelaychainGenesisBlockHash: bool & AugmentedConst<ApiType>;
     };
-    phalaStakePool: {
+    phalaStakePoolv2: {
+      /**
+       * If computing is enabled by default.
+       **/
+      computingEnabledByDefault: bool & AugmentedConst<ApiType>;
       /**
        * The grace period for force withdraw request, in seconds.
        **/
@@ -288,10 +306,6 @@ declare module '@polkadot/api-base/types/consts' {
        **/
       maxPoolWorkers: u32 & AugmentedConst<ApiType>;
       minContribution: u128 & AugmentedConst<ApiType>;
-      /**
-       * If mining is enabled by default.
-       **/
-      miningEnabledByDefault: bool & AugmentedConst<ApiType>;
     };
     phragmenElection: {
       /**

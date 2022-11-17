@@ -10,7 +10,7 @@ import type { Data } from '@polkadot/types';
 import type { Bytes, Compact, Option, U8aFixed, Vec, WrapperKeepOpaque, bool, u128, u16, u32, u64, u8 } from '@polkadot/types-codec';
 import type { AnyNumber, IMethod, ITuple } from '@polkadot/types-codec/types';
 import type { AccountId32, Call, H256, MultiAddress, Perbill, Permill, Weight } from '@polkadot/types/interfaces/runtime';
-import type { AssetsRegistryAssetProperties, CumulusPrimitivesParachainInherentParachainInherentData, FrameSupportScheduleMaybeHashed, KhalaParachainRuntimeOpaqueSessionKeys, KhalaParachainRuntimeOriginCaller, KhalaParachainRuntimeProxyType, PalletAssetsDestroyWitness, PalletDemocracyConviction, PalletDemocracyVoteAccountVote, PalletElectionsPhragmenRenouncing, PalletIdentityBitFlags, PalletIdentityIdentityInfo, PalletIdentityJudgement, PalletMultisigTimepoint, PalletPhalaWorldCareerType, PalletPhalaWorldNftSaleType, PalletPhalaWorldRaceType, PalletPhalaWorldRarityType, PalletPhalaWorldShellParts, PalletPhalaWorldStatusType, PalletUniquesDestroyWitness, PalletVestingVestingInfo, PhalaMqSignedMessage, PhalaPalletsUtilsAttestation, PhalaTypesMessagingRetireCondition, PhalaTypesMessagingTokenomicParameters, PhalaTypesWorkerEndpointPayload, PhalaTypesWorkerRegistrationInfo, RmrkTraitsNftAccountIdOrCollectionNftTuple, RmrkTraitsPartEquippableList, RmrkTraitsPartPartType, RmrkTraitsResourceBasicResource, RmrkTraitsResourceComposableResource, RmrkTraitsResourceResourceInfoMin, RmrkTraitsResourceSlotResource, RmrkTraitsTheme, SpCoreSr25519Public, SpCoreSr25519Signature, SpRuntimeHeader, XcmV1MultiAsset, XcmV1MultiLocation, XcmV2WeightLimit, XcmVersionedMultiAssets, XcmVersionedMultiLocation, XcmVersionedXcm } from '@polkadot/types/lookup';
+import type { AssetsRegistryAssetProperties, CumulusPrimitivesParachainInherentParachainInherentData, FrameSupportScheduleMaybeHashed, PalletAssetsDestroyWitness, PalletDemocracyConviction, PalletDemocracyVoteAccountVote, PalletElectionsPhragmenRenouncing, PalletIdentityBitFlags, PalletIdentityIdentityInfo, PalletIdentityJudgement, PalletMultisigTimepoint, PalletPhalaWorldCareerType, PalletPhalaWorldNftSaleType, PalletPhalaWorldRaceType, PalletPhalaWorldRarityType, PalletPhalaWorldShellParts, PalletPhalaWorldStatusType, PalletUniquesDestroyWitness, PalletVestingVestingInfo, PhalaMqSignedMessage, PhalaPalletsUtilsAttestationLegacyAttestation, PhalaTypesAttestationReport, PhalaTypesContractClusterPermission, PhalaTypesContractCodeIndex, PhalaTypesContractMessagingResourceType, PhalaTypesMessagingRetireCondition, PhalaTypesMessagingTokenomicParameters, PhalaTypesWorkerEndpointPayload, PhalaTypesWorkerRegistrationInfo, RmrkTraitsNftAccountIdOrCollectionNftTuple, RmrkTraitsPartEquippableList, RmrkTraitsPartPartType, RmrkTraitsResourceBasicResource, RmrkTraitsResourceComposableResource, RmrkTraitsResourceResourceInfoMin, RmrkTraitsResourceSlotResource, RmrkTraitsTheme, SpCoreSr25519Public, SpCoreSr25519Signature, SpRuntimeHeader, ThalaParachainRuntimeOpaqueSessionKeys, ThalaParachainRuntimeOriginCaller, ThalaParachainRuntimeProxyType, XcmV1MultiAsset, XcmV1MultiLocation, XcmV2WeightLimit, XcmVersionedMultiAssets, XcmVersionedMultiLocation, XcmVersionedXcm } from '@polkadot/types/lookup';
 
 export type __AugmentedSubmittable = AugmentedSubmittable<() => unknown>;
 export type __SubmittableExtrinsic<ApiType extends ApiTypes> = SubmittableExtrinsic<ApiType>;
@@ -1922,7 +1922,7 @@ declare module '@polkadot/api-base/types/submittable' {
       setValidationData: AugmentedSubmittable<(data: CumulusPrimitivesParachainInherentParachainInherentData | { validationData?: any; relayChainState?: any; downwardMessages?: any; horizontalMessages?: any } | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [CumulusPrimitivesParachainInherentParachainInherentData]>;
       sudoSendUpwardMessage: AugmentedSubmittable<(message: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [Bytes]>;
     };
-    phalaMining: {
+    phalaComputation: {
       /**
        * Triggers a force heartbeat request to all workers by sending a MAX pow target
        * 
@@ -1930,17 +1930,22 @@ declare module '@polkadot/api-base/types/submittable' {
        **/
       forceHeartbeat: AugmentedSubmittable<() => SubmittableExtrinsic<ApiType>, []>;
       /**
-       * Start mining
+       * Start computing
        * 
        * Only for integration test.
        **/
-      forceStartMining: AugmentedSubmittable<(miner: AccountId32 | string | Uint8Array, stake: u128 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [AccountId32, u128]>;
+      forceStartComputing: AugmentedSubmittable<(session: AccountId32 | string | Uint8Array, stake: u128 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [AccountId32, u128]>;
       /**
-       * Stop mining
+       * Stop computing
        * 
        * Only for integration test.
        **/
-      forceStopMining: AugmentedSubmittable<(miner: AccountId32 | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [AccountId32]>;
+      forceStopComputing: AugmentedSubmittable<(session: AccountId32 | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [AccountId32]>;
+      migrateMinerBindings: AugmentedSubmittable<(maxIterations: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32]>;
+      migrateMiners: AugmentedSubmittable<(maxIterations: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32]>;
+      migrateStakes: AugmentedSubmittable<(maxIterations: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32]>;
+      migrateStorageValues: AugmentedSubmittable<() => SubmittableExtrinsic<ApiType>, []>;
+      migrateWorkerBindings: AugmentedSubmittable<(maxIterations: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32]>;
       /**
        * Sets the cool down expiration time in seconds.
        * 
@@ -1948,18 +1953,42 @@ declare module '@polkadot/api-base/types/submittable' {
        **/
       setCoolDownExpiration: AugmentedSubmittable<(period: u64 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u64]>;
       /**
-       * Unbinds a worker from the given miner (or pool sub-account).
+       * Unbinds a worker from the given session (or pool sub-account).
        * 
-       * It will trigger a force stop of mining if the miner is still in mining state. Anyone
+       * It will trigger a force stop of computing if the worker is still in computing state. Anyone
        * can call it.
        **/
-      unbind: AugmentedSubmittable<(miner: AccountId32 | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [AccountId32]>;
+      unbind: AugmentedSubmittable<(session: AccountId32 | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [AccountId32]>;
       /**
        * Updates the tokenomic parameters at the end of this block.
        * 
        * Can only be called by the tokenomic admin.
        **/
       updateTokenomic: AugmentedSubmittable<(newParams: PhalaTypesMessagingTokenomicParameters | { phaRate?: any; rho?: any; budgetPerBlock?: any; vMax?: any; costK?: any; costB?: any; slashRate?: any; treasuryRatio?: any; heartbeatWindow?: any; rigK?: any; rigB?: any; re?: any; k?: any; kappa?: any } | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [PhalaTypesMessagingTokenomicParameters]>;
+    };
+    phalaFatContracts: {
+      addCluster: AugmentedSubmittable<(owner: AccountId32 | string | Uint8Array, permission: PhalaTypesContractClusterPermission | { Public: any } | { OnlyOwner: any } | string | Uint8Array, deployWorkers: Vec<SpCoreSr25519Public> | (SpCoreSr25519Public | string | Uint8Array)[]) => SubmittableExtrinsic<ApiType>, [AccountId32, PhalaTypesContractClusterPermission, Vec<SpCoreSr25519Public>]>;
+      clusterDestroy: AugmentedSubmittable<(cluster: H256 | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [H256]>;
+      clusterUploadResource: AugmentedSubmittable<(clusterId: H256 | string | Uint8Array, resourceType: PhalaTypesContractMessagingResourceType | 'InkCode' | 'SidevmCode' | number | Uint8Array, resourceData: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [H256, PhalaTypesContractMessagingResourceType, Bytes]>;
+      instantiateContract: AugmentedSubmittable<(codeIndex: PhalaTypesContractCodeIndex | { WasmCode: any } | string | Uint8Array, data: Bytes | string | Uint8Array, salt: Bytes | string | Uint8Array, clusterId: H256 | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [PhalaTypesContractCodeIndex, Bytes, Bytes, H256]>;
+      setPinkSystemCode: AugmentedSubmittable<(code: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [Bytes]>;
+    };
+    phalaFatTokenomic: {
+      /**
+       * Adjust stake to given contract.
+       * 
+       * Fat contracts accept depoits from accounts. The deposit info would be sent the cluster's
+       * system contract. Then the system contract would invoke the driver contract (if installed)
+       * to process the deposit info. A public good cluster usually would set the contracts' scheduling
+       * weights according to the total depoit on contracts. More weights means it would get more
+       * compute resource to run the contract. The weights are applied on contract query and Sidevm
+       * CPU round scheduling.
+       * 
+       * If users stake on a contract doesn't deployed yet. The deposit would send to the cluster
+       * even if the contract is deployed later. User can re-stake with or without changing the amount
+       * to sync the depoit the the cluster after the contract is actually deployed.
+       **/
+      adjustStake: AugmentedSubmittable<(contract: H256 | string | Uint8Array, amount: u128 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [H256, u128]>;
     };
     phalaMq: {
       forcePushPalletMessage: AugmentedSubmittable<(destination: Bytes | string | Uint8Array, payload: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [Bytes, Bytes]>;
@@ -1968,6 +1997,39 @@ declare module '@polkadot/api-base/types/submittable' {
        * Syncs an unverified offchain message to the message queue
        **/
       syncOffchainMessage: AugmentedSubmittable<(signedMessage: PhalaMqSignedMessage | { message?: any; sequence?: any; signature?: any } | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [PhalaMqSignedMessage]>;
+    };
+    phalaPawnshop: {
+      /**
+       * Pawns some pha and gain equal amount of P-PHA
+       * 
+       * The pawned pha is stored in `PawnShopAccountId`'s wallet and can not be taken away
+       **/
+      pawn: AugmentedSubmittable<(amount: u128 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u128]>;
+      /**
+       * Redeems some pha by burning equal amount of P-PHA
+       * 
+       * The redeemed pha is transfered from `PawnShopAccountId` to the user's wallet
+       **/
+      redeem: AugmentedSubmittable<(amount: u128 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u128]>;
+      /**
+       * Burns the amount of all free P-PHA and redeems equal amount of pha
+       * 
+       * The redeemed pha is transfered from `PawnShopAccountId` to the user's wallet
+       **/
+      redeemAll: AugmentedSubmittable<() => SubmittableExtrinsic<ApiType>, []>;
+      /**
+       * Tries to unlock P-PHAs used in vote after the vote finished or canceled
+       * 
+       * Must assign the max iterations to avoid computing complexity overwhelm
+       **/
+      unlock: AugmentedSubmittable<(voteId: u32 | AnyNumber | Uint8Array, maxIterations: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, u32]>;
+      /**
+       * Uses some P-PHA to approve or oppose a vote
+       * 
+       * Can both approve and oppose a vote at the same time
+       * The P-PHA used in vote will be locked until the vote is finished or canceled
+       **/
+      vote: AugmentedSubmittable<(ayeAmount: u128 | AnyNumber | Uint8Array, nayAmount: u128 | AnyNumber | Uint8Array, voteId: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u128, u128, u32]>;
     };
     phalaRegistry: {
       /**
@@ -2008,11 +2070,20 @@ declare module '@polkadot/api-base/types/submittable' {
       registerGatekeeper: AugmentedSubmittable<(gatekeeper: SpCoreSr25519Public | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [SpCoreSr25519Public]>;
       /**
        * Registers a worker on the blockchain
+       * This is the legacy version that support EPID attestation type only.
        * 
        * Usually called by a bridging relayer program (`pherry` and `prb`). Can be called by
        * anyone on behalf of a worker.
        **/
-      registerWorker: AugmentedSubmittable<(pruntimeInfo: PhalaTypesWorkerRegistrationInfo | { version?: any; machineId?: any; pubkey?: any; ecdhPubkey?: any; genesisBlockHash?: any; features?: any; operator?: any } | string | Uint8Array, attestation: PhalaPalletsUtilsAttestation | { SgxIas: any } | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [PhalaTypesWorkerRegistrationInfo, PhalaPalletsUtilsAttestation]>;
+      registerWorker: AugmentedSubmittable<(pruntimeInfo: PhalaTypesWorkerRegistrationInfo | { version?: any; machineId?: any; pubkey?: any; ecdhPubkey?: any; genesisBlockHash?: any; features?: any; operator?: any } | string | Uint8Array, attestation: PhalaPalletsUtilsAttestationLegacyAttestation | { SgxIas: any } | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [PhalaTypesWorkerRegistrationInfo, PhalaPalletsUtilsAttestationLegacyAttestation]>;
+      /**
+       * Registers a worker on the blockchain.
+       * This is the version 2 that both support DCAP attestation type.
+       * 
+       * Usually called by a bridging relayer program (`pherry` and `prb`). Can be called by
+       * anyone on behalf of a worker.
+       **/
+      registerWorkerV2: AugmentedSubmittable<(pruntimeInfo: PhalaTypesWorkerRegistrationInfo | { version?: any; machineId?: any; pubkey?: any; ecdhPubkey?: any; genesisBlockHash?: any; features?: any; operator?: any } | string | Uint8Array, attestation: Option<PhalaTypesAttestationReport> | null | Uint8Array | PhalaTypesAttestationReport | { SgxIas: any } | string) => SubmittableExtrinsic<ApiType>, [PhalaTypesWorkerRegistrationInfo, Option<PhalaTypesAttestationReport>]>;
       /**
        * Removes a pruntime binary from [`PRuntimeAllowList`]
        * 
@@ -2050,28 +2121,26 @@ declare module '@polkadot/api-base/types/submittable' {
       unregisterGatekeeper: AugmentedSubmittable<(gatekeeper: SpCoreSr25519Public | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [SpCoreSr25519Public]>;
       updateWorkerEndpoint: AugmentedSubmittable<(endpointPayload: PhalaTypesWorkerEndpointPayload | { pubkey?: any; versionedEndpoints?: any; signingTime?: any } | string | Uint8Array, signature: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [PhalaTypesWorkerEndpointPayload, Bytes]>;
     };
-    phalaStakePool: {
-      /**
-       * Add a staker accountid to contribution whitelist.
-       * 
-       * Calling this method will forbide stakers contribute who isn't in the whitelist.
-       * The caller must be the owner of the pool.
-       * If a pool hasn't registed in the wihtelist map, any staker could contribute as what they use to do.
-       * The whitelist has a lmit len of 100 stakers.
-       **/
-      addStakerToWhitelist: AugmentedSubmittable<(pid: u64 | AnyNumber | Uint8Array, staker: AccountId32 | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [u64, AccountId32]>;
+    phalaStakePoolv2: {
       /**
        * Adds a worker to a pool
        * 
        * This will bind a worker to the corresponding pool sub-account. The binding will not be
        * released until the worker is removed gracefully by `remove_worker()`, or a force unbind
-       * by the worker operator via `Mining::unbind()`.
+       * by the worker operator via `Computation::unbind()`.
        * 
        * Requires:
        * 1. The worker is registered and benchmarked
        * 2. The worker is not bound a pool
        **/
       addWorker: AugmentedSubmittable<(pid: u64 | AnyNumber | Uint8Array, pubkey: SpCoreSr25519Public | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [u64, SpCoreSr25519Public]>;
+      /**
+       * Let any user to launch a stakepool withdraw. Then check if the pool need to be forced shutdown.
+       * 
+       * If the shutdown condition is met, all workers in the pool will be forced shutdown.
+       * Note: This function doesn't guarantee no-op when there's error.
+       **/
+      checkAndMaybeForceWithdraw: AugmentedSubmittable<(pid: u64 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u64]>;
       /**
        * Claims pool-owner's pending rewards of the sender and send to the `target`
        * 
@@ -2082,25 +2151,106 @@ declare module '@polkadot/api-base/types/submittable' {
        **/
       claimOwnerRewards: AugmentedSubmittable<(pid: u64 | AnyNumber | Uint8Array, target: AccountId32 | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [u64, AccountId32]>;
       /**
-       * Claims all the pending rewards of the sender and send to the `target`
+       * Contributes some stake to a stakepool
        * 
        * Requires:
-       * 
-       * 1. The sender is a pool owner or staker
+       * 1. The pool exists
+       * 2. After the deposit, the pool doesn't reach the cap
        **/
-      claimRewards: AugmentedSubmittable<(pid: u64 | AnyNumber | Uint8Array, target: AccountId32 | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [u64, AccountId32]>;
+      contribute: AugmentedSubmittable<(pid: u64 | AnyNumber | Uint8Array, amount: u128 | AnyNumber | Uint8Array, asVault: Option<u64> | null | Uint8Array | u64 | AnyNumber) => SubmittableExtrinsic<ApiType>, [u64, u128, Option<u64>]>;
       /**
-       * Claims staker's pending rewards of the sender and send to the `target`
-       * 
-       * The rewards associate to sender's "owner role" will not be claimed
+       * Creates a new stake pool
+       **/
+      create: AugmentedSubmittable<() => SubmittableExtrinsic<ApiType>, []>;
+      drainStakepoolStorages: AugmentedSubmittable<(maxIterations: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32]>;
+      migrateComputation: AugmentedSubmittable<(maxIterations: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32]>;
+      migrateContributionWhitelist: AugmentedSubmittable<(maxIterations: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32]>;
+      migratePoolDescription: AugmentedSubmittable<(maxIterations: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32]>;
+      migratePoolStakers: AugmentedSubmittable<(maxIterations: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32]>;
+      migrateStakeLedger: AugmentedSubmittable<(maxIterations: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32]>;
+      migrateStakepools: AugmentedSubmittable<(maxIterations: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32]>;
+      migrateSubaccountPreimage: AugmentedSubmittable<(maxIterations: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32]>;
+      migrateWorkerAssignments: AugmentedSubmittable<(maxIterations: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32]>;
+      /**
+       * Reclaims the releasing stake of a worker in a pool.
+       **/
+      reclaimPoolWorker: AugmentedSubmittable<(pid: u64 | AnyNumber | Uint8Array, worker: SpCoreSr25519Public | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [u64, SpCoreSr25519Public]>;
+      /**
+       * Removes a worker from a pool
        * 
        * Requires:
-       * 
-       * 1. The sender is a staker
+       * 1. The worker is registered
+       * 2. The worker is associated with a pool
+       * 3. The worker is removable (not in computing)
        **/
-      claimStakerRewards: AugmentedSubmittable<(pid: u64 | AnyNumber | Uint8Array, target: AccountId32 | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [u64, AccountId32]>;
+      removeWorker: AugmentedSubmittable<(pid: u64 | AnyNumber | Uint8Array, worker: SpCoreSr25519Public | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [u64, SpCoreSr25519Public]>;
       /**
-       * Contributes some stake to a pool
+       * Restarts the worker with a higher stake
+       **/
+      restartComputing: AugmentedSubmittable<(pid: u64 | AnyNumber | Uint8Array, worker: SpCoreSr25519Public | string | Uint8Array, stake: u128 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u64, SpCoreSr25519Public, u128]>;
+      /**
+       * Sets the hard cap of the pool
+       * 
+       * Note: a smaller cap than current total_value if not allowed.
+       * Requires:
+       * 1. The sender is the owner
+       **/
+      setCap: AugmentedSubmittable<(pid: u64 | AnyNumber | Uint8Array, cap: u128 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u64, u128]>;
+      /**
+       * Changes the pool commission rate
+       * 
+       * Requires:
+       * 1. The sender is the owner
+       **/
+      setPayoutPref: AugmentedSubmittable<(pid: u64 | AnyNumber | Uint8Array, payoutCommission: Option<Permill> | null | Uint8Array | Permill | AnyNumber) => SubmittableExtrinsic<ApiType>, [u64, Option<Permill>]>;
+      /**
+       * Enables or disables computing. Must be called with the council or root permission.
+       **/
+      setWorkingEnabled: AugmentedSubmittable<(enable: bool | boolean | Uint8Array) => SubmittableExtrinsic<ApiType>, [bool]>;
+      /**
+       * Starts a worker on behalf of the stake pool
+       * 
+       * Requires:
+       * 1. The worker is bound to the pool and is in Ready state
+       * 2. The remaining stake in the pool can cover the minimal stake required
+       **/
+      startComputing: AugmentedSubmittable<(pid: u64 | AnyNumber | Uint8Array, worker: SpCoreSr25519Public | string | Uint8Array, stake: u128 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u64, SpCoreSr25519Public, u128]>;
+      /**
+       * Stops a worker on behalf of the stake pool
+       * Note: this would let worker enter CoolingDown if everything is good
+       * 
+       * Requires:
+       * 1. There worker is bound to the pool and is in a stoppable state
+       **/
+      stopComputing: AugmentedSubmittable<(pid: u64 | AnyNumber | Uint8Array, worker: SpCoreSr25519Public | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [u64, SpCoreSr25519Public]>;
+      /**
+       * Demands the return of some stake from a pool.
+       * 
+       * Note: there are two scenarios people may meet
+       * 
+       * Once a withdraw request is proceeded successfully, The withdrawal would be queued and waiting to be dealed.
+       * Afer the withdrawal is queued, The withdraw queue will be automaticly consumed util there are not enough free stakes to fullfill withdrawals.
+       * Everytime the free stakes in the pools increases (except for rewards distributing), the withdraw queue will be consumed as it describes above.
+       **/
+      withdraw: AugmentedSubmittable<(pid: u64 | AnyNumber | Uint8Array, shares: u128 | AnyNumber | Uint8Array, asVault: Option<u64> | null | Uint8Array | u64 | AnyNumber) => SubmittableExtrinsic<ApiType>, [u64, u128, Option<u64>]>;
+    };
+    phalaVault: {
+      /**
+       * Let any user to launch a vault withdraw. Then check if the vault need to be forced withdraw all its contributions.
+       * 
+       * If the shutdown condition is met, all shares owned by the vault will be forced withdraw.
+       * Note: This function doesn't guarantee no-op when there's error.
+       **/
+      checkAndMaybeForceWithdraw: AugmentedSubmittable<(vaultPid: u64 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u64]>;
+      /**
+       * Transfers some owner shares wrapped in a nft to the assigned account
+       * 
+       * Requires:
+       * 1. The sender is the owner
+       **/
+      claimOwnerShares: AugmentedSubmittable<(vaultPid: u64 | AnyNumber | Uint8Array, target: AccountId32 | string | Uint8Array, shares: u128 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u64, AccountId32, u128]>;
+      /**
+       * Contributes some stake to a vault
        * 
        * Requires:
        * 1. The pool exists
@@ -2108,96 +2258,31 @@ declare module '@polkadot/api-base/types/submittable' {
        **/
       contribute: AugmentedSubmittable<(pid: u64 | AnyNumber | Uint8Array, amount: u128 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u64, u128]>;
       /**
-       * Creates a new stake pool
+       * Creates a new vault
        **/
       create: AugmentedSubmittable<() => SubmittableExtrinsic<ApiType>, []>;
       /**
-       * Manually assign rewards to pools by miningSwitchOrigin for fixing issue 763
+       * Tries to settle owner shares if the vault profits
        * 
-       * Requires:
-       * 1. The caller is root
-       * 2. Assigned pool must currently exist
-       * 3. Reward is positive
-       **/
-      forceAssignReward: AugmentedSubmittable<(rewardArr: Vec<ITuple<[u64, u128]>> | ([u64 | AnyNumber | Uint8Array, u128 | AnyNumber | Uint8Array])[]) => SubmittableExtrinsic<ApiType>, [Vec<ITuple<[u64, u128]>>]>;
-      /**
-       * Reclaims the releasing stake of a miner in a pool.
-       **/
-      reclaimPoolWorker: AugmentedSubmittable<(pid: u64 | AnyNumber | Uint8Array, worker: SpCoreSr25519Public | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [u64, SpCoreSr25519Public]>;
-      /**
-       * Temporary function to reconcile incorrect withdraw queue (issue 527).
-       **/
-      reconcileWithdrawQueue: AugmentedSubmittable<(pid: u64 | AnyNumber | Uint8Array, account: AccountId32 | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [u64, AccountId32]>;
-      /**
-       * Remove a staker accountid to contribution whitelist.
-       * 
-       * The caller must be the owner of the pool.
-       * If the last staker in the whitelist is removed, the pool will return back to a normal pool that allow anyone to contribute.
-       **/
-      removeStakerFromWhitelist: AugmentedSubmittable<(pid: u64 | AnyNumber | Uint8Array, staker: AccountId32 | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [u64, AccountId32]>;
-      /**
-       * Removes a worker from a pool
-       * 
-       * Requires:
-       * 1. The worker is registered
-       * 2. The worker is associated with a pool
-       * 3. The worker is removable (not in mining)
-       **/
-      removeWorker: AugmentedSubmittable<(pid: u64 | AnyNumber | Uint8Array, worker: SpCoreSr25519Public | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [u64, SpCoreSr25519Public]>;
-      /**
-       * Restart the miner with a higher stake
-       **/
-      restartMining: AugmentedSubmittable<(pid: u64 | AnyNumber | Uint8Array, worker: SpCoreSr25519Public | string | Uint8Array, stake: u128 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u64, SpCoreSr25519Public, u128]>;
-      /**
-       * Sets the hard cap of the pool
-       * 
-       * Note: a smaller cap than current total_stake if not allowed.
-       * Requires:
-       * 1. The sender is the owner
-       **/
-      setCap: AugmentedSubmittable<(pid: u64 | AnyNumber | Uint8Array, cap: u128 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u64, u128]>;
-      /**
-       * Enables or disables mining. Must be called with the council or root permission.
-       **/
-      setMiningEnable: AugmentedSubmittable<(enable: bool | boolean | Uint8Array) => SubmittableExtrinsic<ApiType>, [bool]>;
-      /**
-       * Change the pool commission rate
+       * The mechanism of issuing shares to distribute owner reward is metioned in comments of struct `Vault` in poolproxy.rs
        * 
        * Requires:
        * 1. The sender is the owner
        **/
-      setPayoutPref: AugmentedSubmittable<(pid: u64 | AnyNumber | Uint8Array, payoutCommission: Permill | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u64, Permill]>;
+      maybeGainOwnerShares: AugmentedSubmittable<(vaultPid: u64 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u64]>;
       /**
-       * Add a description to the pool
-       * 
-       * The caller must be the owner of the pool.
-       **/
-      setPoolDescription: AugmentedSubmittable<(pid: u64 | AnyNumber | Uint8Array, description: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [u64, Bytes]>;
-      /**
-       * Starts a miner on behalf of the stake pool
+       * Changes the vault commission rate
        * 
        * Requires:
-       * 1. The miner is bound to the pool and is in Ready state
-       * 2. The remaining stake in the pool can cover the minimal stake required
+       * 1. The sender is the owner
        **/
-      startMining: AugmentedSubmittable<(pid: u64 | AnyNumber | Uint8Array, worker: SpCoreSr25519Public | string | Uint8Array, stake: u128 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u64, SpCoreSr25519Public, u128]>;
-      /**
-       * Stops a miner on behalf of the stake pool
-       * Note: this would let miner enter CoolingDown if everything is good
-       * 
-       * Requires:
-       * 1. There miner is bound to the pool and is in a stoppable state
-       **/
-      stopMining: AugmentedSubmittable<(pid: u64 | AnyNumber | Uint8Array, worker: SpCoreSr25519Public | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [u64, SpCoreSr25519Public]>;
+      setPayoutPref: AugmentedSubmittable<(pid: u64 | AnyNumber | Uint8Array, payoutCommission: Option<Permill> | null | Uint8Array | Permill | AnyNumber) => SubmittableExtrinsic<ApiType>, [u64, Option<Permill>]>;
       /**
        * Demands the return of some stake from a pool.
        * 
-       * Note: there are two scenarios people may meet
-       * 
-       * - if the pool has free stake and the amount of the free stake is greater than or equal
-       * to the withdrawal amount (e.g. pool.free_stake >= amount), the withdrawal would
-       * take effect immediately.
-       * - else the withdrawal would be queued and delayed until there is enough free stake.
+       * Once a withdraw request is proceeded successfully, The withdrawal would be queued and waiting to be dealed.
+       * Afer the withdrawal is queued, The withdraw queue will be automaticly consumed util there are not enough free stakes to fullfill withdrawals.
+       * Everytime the free stakes in the pools increases, the withdraw queue will be consumed as it describes above.
        **/
       withdraw: AugmentedSubmittable<(pid: u64 | AnyNumber | Uint8Array, shares: u128 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u64, u128]>;
     };
@@ -2476,7 +2561,7 @@ declare module '@polkadot/api-base/types/submittable' {
        * - `delay`: The announcement period required of the initial proxy. Will generally be
        * zero.
        **/
-      addProxy: AugmentedSubmittable<(delegate: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, proxyType: KhalaParachainRuntimeProxyType | 'Any' | 'NonTransfer' | 'CancelProxy' | 'Governance' | 'Collator' | 'StakePoolManager' | number | Uint8Array, delay: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [MultiAddress, KhalaParachainRuntimeProxyType, u32]>;
+      addProxy: AugmentedSubmittable<(delegate: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, proxyType: ThalaParachainRuntimeProxyType | 'Any' | 'NonTransfer' | 'CancelProxy' | 'Governance' | 'Collator' | 'StakePoolManager' | number | Uint8Array, delay: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [MultiAddress, ThalaParachainRuntimeProxyType, u32]>;
       /**
        * Publish the hash of a proxy-call that will be made in the future.
        * 
@@ -2515,7 +2600,7 @@ declare module '@polkadot/api-base/types/submittable' {
        * 
        * Fails if there are insufficient funds to pay for deposit.
        **/
-      createPure: AugmentedSubmittable<(proxyType: KhalaParachainRuntimeProxyType | 'Any' | 'NonTransfer' | 'CancelProxy' | 'Governance' | 'Collator' | 'StakePoolManager' | number | Uint8Array, delay: u32 | AnyNumber | Uint8Array, index: u16 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [KhalaParachainRuntimeProxyType, u32, u16]>;
+      createPure: AugmentedSubmittable<(proxyType: ThalaParachainRuntimeProxyType | 'Any' | 'NonTransfer' | 'CancelProxy' | 'Governance' | 'Collator' | 'StakePoolManager' | number | Uint8Array, delay: u32 | AnyNumber | Uint8Array, index: u16 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [ThalaParachainRuntimeProxyType, u32, u16]>;
       /**
        * Removes a previously spawned pure proxy.
        * 
@@ -2534,7 +2619,7 @@ declare module '@polkadot/api-base/types/submittable' {
        * Fails with `NoPermission` in case the caller is not a previously created pure
        * account whose `pure` call has corresponding parameters.
        **/
-      killPure: AugmentedSubmittable<(spawner: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, proxyType: KhalaParachainRuntimeProxyType | 'Any' | 'NonTransfer' | 'CancelProxy' | 'Governance' | 'Collator' | 'StakePoolManager' | number | Uint8Array, index: u16 | AnyNumber | Uint8Array, height: Compact<u32> | AnyNumber | Uint8Array, extIndex: Compact<u32> | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [MultiAddress, KhalaParachainRuntimeProxyType, u16, Compact<u32>, Compact<u32>]>;
+      killPure: AugmentedSubmittable<(spawner: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, proxyType: ThalaParachainRuntimeProxyType | 'Any' | 'NonTransfer' | 'CancelProxy' | 'Governance' | 'Collator' | 'StakePoolManager' | number | Uint8Array, index: u16 | AnyNumber | Uint8Array, height: Compact<u32> | AnyNumber | Uint8Array, extIndex: Compact<u32> | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [MultiAddress, ThalaParachainRuntimeProxyType, u16, Compact<u32>, Compact<u32>]>;
       /**
        * Dispatch the given `call` from an account that the sender is authorised for through
        * `add_proxy`.
@@ -2548,7 +2633,7 @@ declare module '@polkadot/api-base/types/submittable' {
        * - `force_proxy_type`: Specify the exact proxy type to be used and checked for this call.
        * - `call`: The call to be made by the `real` account.
        **/
-      proxy: AugmentedSubmittable<(real: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, forceProxyType: Option<KhalaParachainRuntimeProxyType> | null | Uint8Array | KhalaParachainRuntimeProxyType | 'Any' | 'NonTransfer' | 'CancelProxy' | 'Governance' | 'Collator' | 'StakePoolManager' | number, call: Call | IMethod | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [MultiAddress, Option<KhalaParachainRuntimeProxyType>, Call]>;
+      proxy: AugmentedSubmittable<(real: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, forceProxyType: Option<ThalaParachainRuntimeProxyType> | null | Uint8Array | ThalaParachainRuntimeProxyType | 'Any' | 'NonTransfer' | 'CancelProxy' | 'Governance' | 'Collator' | 'StakePoolManager' | number, call: Call | IMethod | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [MultiAddress, Option<ThalaParachainRuntimeProxyType>, Call]>;
       /**
        * Dispatch the given `call` from an account that the sender is authorized for through
        * `add_proxy`.
@@ -2562,7 +2647,7 @@ declare module '@polkadot/api-base/types/submittable' {
        * - `force_proxy_type`: Specify the exact proxy type to be used and checked for this call.
        * - `call`: The call to be made by the `real` account.
        **/
-      proxyAnnounced: AugmentedSubmittable<(delegate: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, real: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, forceProxyType: Option<KhalaParachainRuntimeProxyType> | null | Uint8Array | KhalaParachainRuntimeProxyType | 'Any' | 'NonTransfer' | 'CancelProxy' | 'Governance' | 'Collator' | 'StakePoolManager' | number, call: Call | IMethod | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [MultiAddress, MultiAddress, Option<KhalaParachainRuntimeProxyType>, Call]>;
+      proxyAnnounced: AugmentedSubmittable<(delegate: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, real: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, forceProxyType: Option<ThalaParachainRuntimeProxyType> | null | Uint8Array | ThalaParachainRuntimeProxyType | 'Any' | 'NonTransfer' | 'CancelProxy' | 'Governance' | 'Collator' | 'StakePoolManager' | number, call: Call | IMethod | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [MultiAddress, MultiAddress, Option<ThalaParachainRuntimeProxyType>, Call]>;
       /**
        * Remove the given announcement of a delegate.
        * 
@@ -2607,7 +2692,7 @@ declare module '@polkadot/api-base/types/submittable' {
        * - `proxy`: The account that the `caller` would like to remove as a proxy.
        * - `proxy_type`: The permissions currently enabled for the removed proxy account.
        **/
-      removeProxy: AugmentedSubmittable<(delegate: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, proxyType: KhalaParachainRuntimeProxyType | 'Any' | 'NonTransfer' | 'CancelProxy' | 'Governance' | 'Collator' | 'StakePoolManager' | number | Uint8Array, delay: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [MultiAddress, KhalaParachainRuntimeProxyType, u32]>;
+      removeProxy: AugmentedSubmittable<(delegate: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, proxyType: ThalaParachainRuntimeProxyType | 'Any' | 'NonTransfer' | 'CancelProxy' | 'Governance' | 'Collator' | 'StakePoolManager' | number | Uint8Array, delay: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [MultiAddress, ThalaParachainRuntimeProxyType, u32]>;
     };
     pwIncubation: {
       /**
@@ -3197,7 +3282,62 @@ declare module '@polkadot/api-base/types/submittable' {
        * - DbWrites per key id: `KeyOwner`
        * # </weight>
        **/
-      setKeys: AugmentedSubmittable<(keys: KhalaParachainRuntimeOpaqueSessionKeys | { aura?: any } | string | Uint8Array, proof: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [KhalaParachainRuntimeOpaqueSessionKeys, Bytes]>;
+      setKeys: AugmentedSubmittable<(keys: ThalaParachainRuntimeOpaqueSessionKeys | { aura?: any } | string | Uint8Array, proof: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [ThalaParachainRuntimeOpaqueSessionKeys, Bytes]>;
+    };
+    sudo: {
+      /**
+       * Authenticates the current sudo key and sets the given AccountId (`new`) as the new sudo
+       * key.
+       * 
+       * The dispatch origin for this call must be _Signed_.
+       * 
+       * # <weight>
+       * - O(1).
+       * - Limited storage reads.
+       * - One DB change.
+       * # </weight>
+       **/
+      setKey: AugmentedSubmittable<(updated: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [MultiAddress]>;
+      /**
+       * Authenticates the sudo key and dispatches a function call with `Root` origin.
+       * 
+       * The dispatch origin for this call must be _Signed_.
+       * 
+       * # <weight>
+       * - O(1).
+       * - Limited storage reads.
+       * - One DB write (event).
+       * - Weight of derivative `call` execution + 10,000.
+       * # </weight>
+       **/
+      sudo: AugmentedSubmittable<(call: Call | IMethod | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [Call]>;
+      /**
+       * Authenticates the sudo key and dispatches a function call with `Signed` origin from
+       * a given account.
+       * 
+       * The dispatch origin for this call must be _Signed_.
+       * 
+       * # <weight>
+       * - O(1).
+       * - Limited storage reads.
+       * - One DB write (event).
+       * - Weight of derivative `call` execution + 10,000.
+       * # </weight>
+       **/
+      sudoAs: AugmentedSubmittable<(who: MultiAddress | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, call: Call | IMethod | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [MultiAddress, Call]>;
+      /**
+       * Authenticates the sudo key and dispatches a function call with `Root` origin.
+       * This function does not check the weight of the call, and instead allows the
+       * Sudo user to specify the weight of the call.
+       * 
+       * The dispatch origin for this call must be _Signed_.
+       * 
+       * # <weight>
+       * - O(1).
+       * - The weight of this call is defined by the caller.
+       * # </weight>
+       **/
+      sudoUncheckedWeight: AugmentedSubmittable<(call: Call | IMethod | string | Uint8Array, weight: Weight | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [Call, Weight]>;
     };
     system: {
       /**
@@ -4175,7 +4315,7 @@ declare module '@polkadot/api-base/types/submittable' {
        * - Weight of derivative `call` execution + T::WeightInfo::dispatch_as().
        * # </weight>
        **/
-      dispatchAs: AugmentedSubmittable<(asOrigin: KhalaParachainRuntimeOriginCaller | { system: any } | { Void: any } | { CumulusXcm: any } | { PolkadotXcm: any } | { Council: any } | { TechnicalCommittee: any } | string | Uint8Array, call: Call | IMethod | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [KhalaParachainRuntimeOriginCaller, Call]>;
+      dispatchAs: AugmentedSubmittable<(asOrigin: ThalaParachainRuntimeOriginCaller | { system: any } | { Void: any } | { CumulusXcm: any } | { PolkadotXcm: any } | { Council: any } | { TechnicalCommittee: any } | string | Uint8Array, call: Call | IMethod | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [ThalaParachainRuntimeOriginCaller, Call]>;
       /**
        * Send a batch of dispatch calls.
        * Unlike `batch`, it allows errors and won't interrupt.

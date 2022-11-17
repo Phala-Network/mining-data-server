@@ -10,7 +10,7 @@ import type { Data } from '@polkadot/types';
 import type { BTreeMap, Bytes, Null, Option, U8aFixed, Vec, WrapperKeepOpaque, bool, u128, u16, u32, u64, u8 } from '@polkadot/types-codec';
 import type { AnyNumber, IMethod, ITuple } from '@polkadot/types-codec/types';
 import type { AccountId32, Call, H256, Weight } from '@polkadot/types/interfaces/runtime';
-import type { AssetsRegistryAssetRegistryInfo, CumulusPalletDmpQueueConfigData, CumulusPalletDmpQueuePageIndexData, CumulusPalletParachainSystemRelayStateSnapshotMessagingStateSnapshot, CumulusPalletXcmpQueueInboundChannelDetails, CumulusPalletXcmpQueueOutboundChannelDetails, CumulusPalletXcmpQueueQueueConfigData, FrameSupportDispatchPerDispatchClassWeight, FrameSystemAccountInfo, FrameSystemEventRecord, FrameSystemLastRuntimeUpgradeInfo, FrameSystemPhase, KhalaParachainRuntimeOpaqueSessionKeys, PalletAssetsApproval, PalletAssetsAssetAccount, PalletAssetsAssetDetails, PalletAssetsAssetMetadata, PalletAuthorshipUncleEntryItem, PalletBalancesAccountData, PalletBalancesBalanceLock, PalletBalancesReleases, PalletBalancesReserveData, PalletBountiesBounty, PalletChildBountiesChildBounty, PalletCollatorSelectionCandidateInfo, PalletCollectiveVotes, PalletDemocracyPreimageStatus, PalletDemocracyReferendumInfo, PalletDemocracyReleases, PalletDemocracyVoteThreshold, PalletDemocracyVoteVoting, PalletElectionsPhragmenSeatHolder, PalletElectionsPhragmenVoter, PalletIdentityRegistrarInfo, PalletIdentityRegistration, PalletLotteryLotteryConfig, PalletMultisigMultisig, PalletPhalaWorldCareerType, PalletPhalaWorldFoodInfo, PalletPhalaWorldNftSaleInfo, PalletPhalaWorldPreorderInfo, PalletPhalaWorldRaceType, PalletPhalaWorldRarityType, PalletPhalaWorldShellParts, PalletPreimageRequestStatus, PalletProxyAnnouncement, PalletProxyProxyDefinition, PalletRmrkMarketListInfo, PalletRmrkMarketOffer, PalletSchedulerScheduledV3, PalletTipsOpenTip, PalletTransactionPaymentReleases, PalletTreasuryProposal, PalletUniquesCollectionDetails, PalletUniquesCollectionMetadata, PalletUniquesItemDetails, PalletUniquesItemMetadata, PalletVestingReleases, PalletVestingVestingInfo, PalletXcmQueryStatus, PalletXcmVersionMigrationStage, PhalaMqMessage, PhalaMqMessageOrigin, PhalaPalletsMiningPalletMinerInfo, PhalaPalletsRegistryPalletWorkerInfo, PhalaPalletsStakepoolPalletPoolInfo, PhalaPalletsStakepoolPalletUserStakeInfo, PhalaTypesMessagingTokenomicParameters, PhalaTypesVersionedWorkerEndpoints, PhantomType, PolkadotCorePrimitivesOutboundHrmpMessage, PolkadotPrimitivesV2AbridgedHostConfiguration, PolkadotPrimitivesV2PersistedValidationData, PolkadotPrimitivesV2UpgradeRestriction, RmrkTraitsBaseBaseInfo, RmrkTraitsCollectionCollectionInfo, RmrkTraitsNftNftChild, RmrkTraitsNftNftInfo, RmrkTraitsPartPartType, RmrkTraitsResourceResourceInfo, SpConsensusAuraSr25519AppSr25519Public, SpCoreCryptoKeyTypeId, SpCoreSr25519Public, SpRuntimeDigest, SpTrieStorageProof, SubbridgePalletsChainbridgePalletBridgeEvent, SubbridgePalletsChainbridgePalletProposalVotes, XcmV1MultiLocation, XcmVersionedMultiLocation } from '@polkadot/types/lookup';
+import type { AssetsRegistryAssetRegistryInfo, CumulusPalletDmpQueueConfigData, CumulusPalletDmpQueuePageIndexData, CumulusPalletParachainSystemRelayStateSnapshotMessagingStateSnapshot, CumulusPalletXcmpQueueInboundChannelDetails, CumulusPalletXcmpQueueOutboundChannelDetails, CumulusPalletXcmpQueueQueueConfigData, FrameSupportDispatchPerDispatchClassWeight, FrameSystemAccountInfo, FrameSystemEventRecord, FrameSystemLastRuntimeUpgradeInfo, FrameSystemPhase, PalletAssetsApproval, PalletAssetsAssetAccount, PalletAssetsAssetDetails, PalletAssetsAssetMetadata, PalletAuthorshipUncleEntryItem, PalletBalancesAccountData, PalletBalancesBalanceLock, PalletBalancesReleases, PalletBalancesReserveData, PalletBountiesBounty, PalletChildBountiesChildBounty, PalletCollatorSelectionCandidateInfo, PalletCollectiveVotes, PalletDemocracyPreimageStatus, PalletDemocracyReferendumInfo, PalletDemocracyReleases, PalletDemocracyVoteThreshold, PalletDemocracyVoteVoting, PalletElectionsPhragmenSeatHolder, PalletElectionsPhragmenVoter, PalletIdentityRegistrarInfo, PalletIdentityRegistration, PalletLotteryLotteryConfig, PalletMultisigMultisig, PalletPhalaWorldCareerType, PalletPhalaWorldFoodInfo, PalletPhalaWorldNftSaleInfo, PalletPhalaWorldPreorderInfo, PalletPhalaWorldRaceType, PalletPhalaWorldRarityType, PalletPhalaWorldShellParts, PalletPreimageRequestStatus, PalletProxyAnnouncement, PalletProxyProxyDefinition, PalletRmrkMarketListInfo, PalletRmrkMarketOffer, PalletSchedulerScheduledV3, PalletTipsOpenTip, PalletTransactionPaymentReleases, PalletTreasuryProposal, PalletUniquesCollectionDetails, PalletUniquesCollectionMetadata, PalletUniquesItemDetails, PalletUniquesItemMetadata, PalletVestingReleases, PalletVestingVestingInfo, PalletXcmQueryStatus, PalletXcmVersionMigrationStage, PhalaMqMessage, PhalaMqMessageOrigin, PhalaPalletsComputeComputationPalletSessionInfo, PhalaPalletsComputePawnShopPalletFinanceAccount, PhalaPalletsComputePoolProxy, PhalaPalletsRegistryPalletWorkerInfo, PhalaPalletsStakePoolPalletPoolInfo, PhalaPalletsStakePoolPalletUserStakeInfo, PhalaTypesContractClusterInfo, PhalaTypesContractContractInfo, PhalaTypesMessagingTokenomicParameters, PhalaTypesVersionedWorkerEndpoints, PhantomType, PolkadotCorePrimitivesOutboundHrmpMessage, PolkadotPrimitivesV2AbridgedHostConfiguration, PolkadotPrimitivesV2PersistedValidationData, PolkadotPrimitivesV2UpgradeRestriction, RmrkTraitsBaseBaseInfo, RmrkTraitsCollectionCollectionInfo, RmrkTraitsNftNftChild, RmrkTraitsNftNftInfo, RmrkTraitsPartPartType, RmrkTraitsResourceResourceInfo, SpConsensusAuraSr25519AppSr25519Public, SpCoreCryptoKeyTypeId, SpCoreSr25519Public, SpRuntimeDigest, SpTrieStorageProof, SubbridgePalletsChainbridgePalletBridgeEvent, SubbridgePalletsChainbridgePalletProposalVotes, ThalaParachainRuntimeOpaqueSessionKeys, XcmV1MultiLocation, XcmVersionedMultiLocation } from '@polkadot/types/lookup';
 import type { Observable } from '@polkadot/types/types';
 
 export type __AugmentedQuery<ApiType extends ApiTypes> = AugmentedQuery<ApiType, () => unknown>;
@@ -526,7 +526,41 @@ declare module '@polkadot/api-base/types/storage' {
        **/
       validationData: AugmentedQuery<ApiType, () => Observable<Option<PolkadotPrimitivesV2PersistedValidationData>>, []>;
     };
-    phalaMining: {
+    phalaBasePool: {
+      /**
+       * Mapping from the next self-increased nft ids to collections
+       **/
+      nextNftId: AugmentedQuery<ApiType, (arg: u32 | AnyNumber | Uint8Array) => Observable<u32>, [u32]>;
+      /**
+       * Mapping from the NftId to its internal locking status
+       **/
+      nftLocks: AugmentedQuery<ApiType, (arg: ITuple<[u32, u32]> | [u32 | AnyNumber | Uint8Array, u32 | AnyNumber | Uint8Array]) => Observable<Option<Null>>, [ITuple<[u32, u32]>]>;
+      /**
+       * Mapping for pools that specify certain stakers to contribute stakes
+       **/
+      poolContributionWhitelists: AugmentedQuery<ApiType, (arg: u64 | AnyNumber | Uint8Array) => Observable<Option<Vec<AccountId32>>>, [u64]>;
+      /**
+       * The number of total pools
+       **/
+      poolCount: AugmentedQuery<ApiType, () => Observable<u64>, []>;
+      /**
+       * Mapping for pools that store their descriptions set by owner
+       **/
+      poolDescriptions: AugmentedQuery<ApiType, (arg: u64 | AnyNumber | Uint8Array) => Observable<Option<Bytes>>, [u64]>;
+      /**
+       * Mapping from pids to pools (including stake pools and vaults)
+       **/
+      pools: AugmentedQuery<ApiType, (arg: u64 | AnyNumber | Uint8Array) => Observable<Option<PhalaPalletsComputePoolProxy>>, [u64]>;
+    };
+    phalaComputation: {
+      /**
+       * The interval of halving (75% decay) in block number.
+       **/
+      computingHalvingInterval: AugmentedQuery<ApiType, () => Observable<Option<u32>>, []>;
+      /**
+       * The block number when the computing starts. Used to calculate halving.
+       **/
+      computingStartBlock: AugmentedQuery<ApiType, () => Observable<Option<u32>>, []>;
       /**
        * The cool down period (in sec)
        **/
@@ -536,42 +570,34 @@ declare module '@polkadot/api-base/types/storage' {
        **/
       expectedHeartbeatCount: AugmentedQuery<ApiType, () => Observable<Option<u32>>, []>;
       /**
-       * The bound worker for a miner account
-       **/
-      minerBindings: AugmentedQuery<ApiType, (arg: AccountId32 | string | Uint8Array) => Observable<Option<U8aFixed>>, [AccountId32]>;
-      /**
-       * The miner state.
-       * 
-       * The miner state is created when a miner is bounded with a worker, but it will be kept even
-       * if the worker is force unbound. A re-bind of a worker will reset the mining state.
-       **/
-      miners: AugmentedQuery<ApiType, (arg: AccountId32 | string | Uint8Array) => Observable<Option<PhalaPalletsMiningPalletMinerInfo>>, [AccountId32]>;
-      /**
-       * The interval of halving (75% decay) in block number.
-       **/
-      miningHalvingInterval: AugmentedQuery<ApiType, () => Observable<Option<u32>>, []>;
-      /**
-       * The block number when the mining starts. Used to calculate halving.
-       **/
-      miningStartBlock: AugmentedQuery<ApiType, () => Observable<Option<u32>>, []>;
-      /**
-       * The next id to assign to a mining session
+       * The next id to assign to a computing session
        **/
       nextSessionId: AugmentedQuery<ApiType, () => Observable<u32>, []>;
       /**
-       * Total online miners including MiningIdle and MiningUnresponsive workers.
+       * Total online workers including WorkerIdle and WorkerUnresponsive workers.
        * 
-       * Increased when a miner is turned to MiningIdle; decreased when turned to CoolingDown.
+       * Increased when a worker is turned to WorkerIdle; decreased when turned to CoolingDown.
        **/
-      onlineMiners: AugmentedQuery<ApiType, () => Observable<u32>, []>;
+      onlineWorkers: AugmentedQuery<ApiType, () => Observable<u32>, []>;
       /**
        * The scheduled new tokenomic params to update at the end of this block.
        **/
       scheduledTokenomicUpdate: AugmentedQuery<ApiType, () => Observable<Option<PhalaTypesMessagingTokenomicParameters>>, []>;
       /**
-       * The stakes of miner accounts.
+       * The bound worker for a session account
+       **/
+      sessionBindings: AugmentedQuery<ApiType, (arg: AccountId32 | string | Uint8Array) => Observable<Option<U8aFixed>>, [AccountId32]>;
+      /**
+       * The session state.
        * 
-       * Only presents for mining and cooling down miners.
+       * The session state is created when a worker is bounded with a session, but it will be kept even
+       * if the worker is force unbound. A re-bind of a worker will reset the computing state.
+       **/
+      sessions: AugmentedQuery<ApiType, (arg: AccountId32 | string | Uint8Array) => Observable<Option<PhalaPalletsComputeComputationPalletSessionInfo>>, [AccountId32]>;
+      /**
+       * The stakes of session accounts.
+       * 
+       * Only presents for computing and cooling down sessions.
        **/
       stakes: AugmentedQuery<ApiType, (arg: AccountId32 | string | Uint8Array) => Observable<Option<u128>>, [AccountId32]>;
       /**
@@ -579,9 +605,45 @@ declare module '@polkadot/api-base/types/storage' {
        **/
       tokenomicParameters: AugmentedQuery<ApiType, () => Observable<Option<PhalaTypesMessagingTokenomicParameters>>, []>;
       /**
-       * The bound miner account for a worker
+       * The bound worker account for a worker
        **/
       workerBindings: AugmentedQuery<ApiType, (arg: SpCoreSr25519Public | string | Uint8Array) => Observable<Option<AccountId32>>, [SpCoreSr25519Public]>;
+    };
+    phalaFatContracts: {
+      clusterContracts: AugmentedQuery<ApiType, (arg: H256 | string | Uint8Array) => Observable<Vec<H256>>, [H256]>;
+      /**
+       * The contract cluster counter, it always equals to the latest cluster id.
+       **/
+      clusterCounter: AugmentedQuery<ApiType, () => Observable<u64>, []>;
+      clusters: AugmentedQuery<ApiType, (arg: H256 | string | Uint8Array) => Observable<Option<PhalaTypesContractClusterInfo>>, [H256]>;
+      clusterWorkers: AugmentedQuery<ApiType, (arg: H256 | string | Uint8Array) => Observable<Vec<SpCoreSr25519Public>>, [H256]>;
+      contracts: AugmentedQuery<ApiType, (arg: H256 | string | Uint8Array) => Observable<Option<PhalaTypesContractContractInfo>>, [H256]>;
+      /**
+       * The next pink-system contract code to be applied from the next block
+       **/
+      nextPinkSystemCode: AugmentedQuery<ApiType, () => Observable<Option<Bytes>>, []>;
+      /**
+       * The pink-system contract code used to deploy new clusters
+       **/
+      pinkSystemCode: AugmentedQuery<ApiType, () => Observable<ITuple<[u16, Bytes]>>, []>;
+      /**
+       * The blake2_256 hash of the pink-system contract code.
+       **/
+      pinkSystemCodeHash: AugmentedQuery<ApiType, () => Observable<Option<H256>>, []>;
+    };
+    phalaFatTokenomic: {
+      /**
+       * Map of contracts to their total stakes received
+       **/
+      contractTotalStakes: AugmentedQuery<ApiType, (arg: H256 | string | Uint8Array) => Observable<u128>, [H256]>;
+      /**
+       * Stake of user to contract
+       **/
+      contractUserStakes: AugmentedQuery<ApiType, (arg1: AccountId32 | string | Uint8Array, arg2: H256 | string | Uint8Array) => Observable<u128>, [AccountId32, H256]>;
+      /**
+       * Minimum allowed stake
+       **/
+      minStake: AugmentedQuery<ApiType, () => Observable<u128>, []>;
     };
     phalaMq: {
       /**
@@ -595,6 +657,20 @@ declare module '@polkadot/api-base/types/storage' {
        **/
       outboundMessages: AugmentedQuery<ApiType, () => Observable<Vec<PhalaMqMessage>>, []>;
       queuedOutboundMessage: AugmentedQuery<ApiType, () => Observable<Option<Vec<PhalaMqMessage>>>, []>;
+    };
+    phalaPawnshop: {
+      /**
+       * Mapping from the accounts and vote ids to the amounts of P-PHA used to approve or oppose to the vote
+       **/
+      accountVoteMap: AugmentedQuery<ApiType, (arg1: AccountId32 | string | Uint8Array, arg2: u32 | AnyNumber | Uint8Array) => Observable<Option<Null>>, [AccountId32, u32]>;
+      /**
+       * Mapping for users to their asset status proxys
+       **/
+      stakerAccounts: AugmentedQuery<ApiType, (arg: AccountId32 | string | Uint8Array) => Observable<Option<PhalaPalletsComputePawnShopPalletFinanceAccount>>, [AccountId32]>;
+      /**
+       * Mapping from the vote ids and accounts to the amounts of P-PHA used to approve or oppose to the vote
+       **/
+      voteAccountMap: AugmentedQuery<ApiType, (arg1: u32 | AnyNumber | Uint8Array, arg2: AccountId32 | string | Uint8Array) => Observable<Option<ITuple<[u128, u128]>>>, [u32, AccountId32]>;
     };
     phalaRegistry: {
       /**
@@ -658,10 +734,6 @@ declare module '@polkadot/api-base/types/storage' {
     };
     phalaStakePool: {
       /**
-       * Switch to enable the stake pool pallet (disabled by default)
-       **/
-      miningEnabled: AugmentedQuery<ApiType, () => Observable<bool>, []>;
-      /**
        * Mapping for pools that specify certain stakers to contribute stakes
        **/
       poolContributionWhitelists: AugmentedQuery<ApiType, (arg: u64 | AnyNumber | Uint8Array) => Observable<Option<Vec<AccountId32>>>, [u64]>;
@@ -676,7 +748,7 @@ declare module '@polkadot/api-base/types/storage' {
       /**
        * Mapping from (pid, staker) to UserStakeInfo
        **/
-      poolStakers: AugmentedQuery<ApiType, (arg: ITuple<[u64, AccountId32]> | [u64 | AnyNumber | Uint8Array, AccountId32 | string | Uint8Array]) => Observable<Option<PhalaPalletsStakepoolPalletUserStakeInfo>>, [ITuple<[u64, AccountId32]>]>;
+      poolStakers: AugmentedQuery<ApiType, (arg: ITuple<[u64, AccountId32]> | [u64 | AnyNumber | Uint8Array, AccountId32 | string | Uint8Array]) => Observable<Option<PhalaPalletsStakePoolPalletUserStakeInfo>>, [ITuple<[u64, AccountId32]>]>;
       /**
        * Mapping staker to it's the balance locked in all pools
        **/
@@ -684,7 +756,7 @@ declare module '@polkadot/api-base/types/storage' {
       /**
        * Mapping from pool id to PoolInfo
        **/
-      stakePools: AugmentedQuery<ApiType, (arg: u64 | AnyNumber | Uint8Array) => Observable<Option<PhalaPalletsStakepoolPalletPoolInfo>>, [u64]>;
+      stakePools: AugmentedQuery<ApiType, (arg: u64 | AnyNumber | Uint8Array) => Observable<Option<PhalaPalletsStakePoolPalletPoolInfo>>, [u64]>;
       /**
        * (Deprecated)
        **/
@@ -708,6 +780,33 @@ declare module '@polkadot/api-base/types/storage' {
        * The map entry lasts from `add_worker()` to `remove_worker()` or force unbinding.
        **/
       workerAssignments: AugmentedQuery<ApiType, (arg: SpCoreSr25519Public | string | Uint8Array) => Observable<Option<u64>>, [SpCoreSr25519Public]>;
+    };
+    phalaStakePoolv2: {
+      stakepoolIterateStartPos: AugmentedQuery<ApiType, () => Observable<Option<u64>>, []>;
+      /**
+       * (Deprecated)
+       **/
+      subAccountAssignments: AugmentedQuery<ApiType, (arg: AccountId32 | string | Uint8Array) => Observable<Option<u64>>, [AccountId32]>;
+      /**
+       * Helper storage to track the preimage of the computing sub-accounts. Not used in consensus.
+       **/
+      subAccountPreimages: AugmentedQuery<ApiType, (arg: AccountId32 | string | Uint8Array) => Observable<Option<ITuple<[u64, SpCoreSr25519Public]>>>, [AccountId32]>;
+      /**
+       * Mapping from workers to the pool they belong to
+       * 
+       * The map entry lasts from `add_worker()` to `remove_worker()` or force unbinding.
+       **/
+      workerAssignments: AugmentedQuery<ApiType, (arg: SpCoreSr25519Public | string | Uint8Array) => Observable<Option<u64>>, [SpCoreSr25519Public]>;
+      /**
+       * Switch to enable the stake pool pallet (disabled by default)
+       **/
+      workingEnabled: AugmentedQuery<ApiType, () => Observable<bool>, []>;
+    };
+    phalaVault: {
+      /**
+       * Mapping from the vault pid to its owner authority locking status
+       **/
+      vaultLocks: AugmentedQuery<ApiType, (arg: u64 | AnyNumber | Uint8Array) => Observable<Option<Null>>, [u64]>;
     };
     phragmenElection: {
       /**
@@ -1059,7 +1158,7 @@ declare module '@polkadot/api-base/types/storage' {
       /**
        * The next session keys for a validator.
        **/
-      nextKeys: AugmentedQuery<ApiType, (arg: AccountId32 | string | Uint8Array) => Observable<Option<KhalaParachainRuntimeOpaqueSessionKeys>>, [AccountId32]>;
+      nextKeys: AugmentedQuery<ApiType, (arg: AccountId32 | string | Uint8Array) => Observable<Option<ThalaParachainRuntimeOpaqueSessionKeys>>, [AccountId32]>;
       /**
        * True if the underlying economic identities or weighting behind the validators
        * has changed in the queued validator set.
@@ -1069,11 +1168,17 @@ declare module '@polkadot/api-base/types/storage' {
        * The queued keys for the next session. When the next session begins, these keys
        * will be used to determine the validator's session keys.
        **/
-      queuedKeys: AugmentedQuery<ApiType, () => Observable<Vec<ITuple<[AccountId32, KhalaParachainRuntimeOpaqueSessionKeys]>>>, []>;
+      queuedKeys: AugmentedQuery<ApiType, () => Observable<Vec<ITuple<[AccountId32, ThalaParachainRuntimeOpaqueSessionKeys]>>>, []>;
       /**
        * The current set of validators.
        **/
       validators: AugmentedQuery<ApiType, () => Observable<Vec<AccountId32>>, []>;
+    };
+    sudo: {
+      /**
+       * The `AccountId` of the sudo key.
+       **/
+      key: AugmentedQuery<ApiType, () => Observable<Option<AccountId32>>, []>;
     };
     system: {
       /**

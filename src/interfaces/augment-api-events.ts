@@ -9,7 +9,7 @@ import type { ApiTypes, AugmentedEvent } from '@polkadot/api-base/types';
 import type { Bytes, Null, Option, Result, U256, U8aFixed, Vec, bool, u128, u16, u32, u64, u8 } from '@polkadot/types-codec';
 import type { ITuple } from '@polkadot/types-codec/types';
 import type { AccountId32, H256, Weight } from '@polkadot/types/interfaces/runtime';
-import type { FrameSupportDispatchDispatchInfo, FrameSupportScheduleLookupError, FrameSupportTokensMiscBalanceStatus, KhalaParachainRuntimeProxyType, PalletDemocracyVoteAccountVote, PalletDemocracyVoteThreshold, PalletMultisigTimepoint, PalletPhalaWorldCareerType, PalletPhalaWorldNftSaleType, PalletPhalaWorldRaceType, PalletPhalaWorldRarityType, PalletPhalaWorldShellParts, PhalaTypesMessagingPRuntimeManagementEvent, RmrkTraitsNftAccountIdOrCollectionNftTuple, SpCoreSr25519Public, SpRuntimeDispatchError, XcmV1MultiAsset, XcmV1MultiLocation, XcmV2Response, XcmV2TraitsError, XcmV2TraitsOutcome, XcmV2Xcm, XcmVersionedMultiAssets, XcmVersionedMultiLocation } from '@polkadot/types/lookup';
+import type { FrameSupportDispatchDispatchInfo, FrameSupportScheduleLookupError, FrameSupportTokensMiscBalanceStatus, PalletDemocracyVoteAccountVote, PalletDemocracyVoteThreshold, PalletMultisigTimepoint, PalletPhalaWorldCareerType, PalletPhalaWorldNftSaleType, PalletPhalaWorldRaceType, PalletPhalaWorldRarityType, PalletPhalaWorldShellParts, PhalaTypesAttestationProvider, PhalaTypesMessagingPRuntimeManagementEvent, RmrkTraitsNftAccountIdOrCollectionNftTuple, SpCoreSr25519Public, SpRuntimeDispatchError, ThalaParachainRuntimeProxyType, XcmV1MultiAsset, XcmV1MultiLocation, XcmV2Response, XcmV2TraitsError, XcmV2TraitsOutcome, XcmV2Xcm, XcmVersionedMultiAssets, XcmVersionedMultiLocation } from '@polkadot/types/lookup';
 
 export type __AugmentedEvent<ApiType extends ApiTypes> = AugmentedEvent<ApiType>;
 
@@ -532,11 +532,52 @@ declare module '@polkadot/api-base/types/events' {
        **/
       ValidationFunctionStored: AugmentedEvent<ApiType, []>;
     };
-    phalaMining: {
+    phalaBasePool: {
+      /**
+       * A pool contribution whitelist is added
+       * 
+       * - lazy operated when the first staker is added to the whitelist
+       **/
+      PoolWhitelistCreated: AugmentedEvent<ApiType, [pid: u64], { pid: u64 }>;
+      /**
+       * The pool contribution whitelist is deleted
+       * 
+       * - lazy operated when the last staker is removed from the whitelist
+       **/
+      PoolWhitelistDeleted: AugmentedEvent<ApiType, [pid: u64], { pid: u64 }>;
+      /**
+       * A staker is added to the pool contribution whitelist
+       **/
+      PoolWhitelistStakerAdded: AugmentedEvent<ApiType, [pid: u64, staker: AccountId32], { pid: u64, staker: AccountId32 }>;
+      /**
+       * A staker is removed from the pool contribution whitelist
+       **/
+      PoolWhitelistStakerRemoved: AugmentedEvent<ApiType, [pid: u64, staker: AccountId32], { pid: u64, staker: AccountId32 }>;
+      /**
+       * Some stake was withdrawn from a pool
+       * 
+       * The lock in [`Balances`](pallet_balances::pallet::Pallet) is updated to release the
+       * locked stake.
+       * 
+       * Affected states:
+       * - the stake related fields in [`Pools`]
+       * - the user staking asset account
+       **/
+      Withdrawal: AugmentedEvent<ApiType, [pid: u64, user: AccountId32, amount: u128, shares: u128], { pid: u64, user: AccountId32, amount: u128, shares: u128 }>;
+      /**
+       * A withdrawal request is inserted to a queue
+       * 
+       * Affected states:
+       * - a new item is inserted to or an old item is being replaced by the new item in the
+       * withdraw queue in [`Pools`]
+       **/
+      WithdrawalQueued: AugmentedEvent<ApiType, [pid: u64, user: AccountId32, shares: u128], { pid: u64, user: AccountId32, shares: u128 }>;
+    };
+    phalaComputation: {
       /**
        * Benchmark Updated
        **/
-      BenchmarkUpdated: AugmentedEvent<ApiType, [miner: AccountId32, pInstant: u32], { miner: AccountId32, pInstant: u32 }>;
+      BenchmarkUpdated: AugmentedEvent<ApiType, [session: AccountId32, pInstant: u32], { session: AccountId32, pInstant: u32 }>;
       /**
        * Cool down expiration changed (in sec).
        * 
@@ -544,81 +585,45 @@ declare module '@polkadot/api-base/types/events' {
        **/
       CoolDownExpirationChanged: AugmentedEvent<ApiType, [period: u64], { period: u64 }>;
       /**
-       * Some internal error happened when settling a miner's ledger.
+       * Some internal error happened when settling a worker's ledger.
        **/
-      InternalErrorMinerSettleFailed: AugmentedEvent<ApiType, [worker: SpCoreSr25519Public], { worker: SpCoreSr25519Public }>;
+      InternalErrorWorkerSettleFailed: AugmentedEvent<ApiType, [worker: SpCoreSr25519Public], { worker: SpCoreSr25519Public }>;
       /**
        * Some internal error happened when trying to halve the subsidy
        **/
       InternalErrorWrongHalvingConfigured: AugmentedEvent<ApiType, []>;
       /**
-       * Miner & worker are bound.
+       * Worker & session are bounded.
        * 
        * Affected states:
-       * - [`MinerBindings`] for the miner account is pointed to the worker
-       * - [`WorkerBindings`] for the worker is pointed to the miner account
-       * - the miner info at [`Miners`] is updated with `Ready` state
+       * - [`SessionBindings`] for the session account is pointed to the worker
+       * - [`WorkerBindings`] for the worker is pointed to the session account
+       * - the worker info at [`Sessions`] is updated with `Ready` state
        **/
-      MinerBound: AugmentedEvent<ApiType, [miner: AccountId32, worker: SpCoreSr25519Public], { miner: AccountId32, worker: SpCoreSr25519Public }>;
+      SessionBound: AugmentedEvent<ApiType, [session: AccountId32, worker: SpCoreSr25519Public], { session: AccountId32, worker: SpCoreSr25519Public }>;
       /**
-       * Miner enters unresponsive state.
+       * Worker settled successfully.
        * 
-       * Affected states:
-       * - the miner info at [`Miners`] is updated from `MiningIdle` to `MiningUnresponsive`
-       **/
-      MinerEnterUnresponsive: AugmentedEvent<ApiType, [miner: AccountId32], { miner: AccountId32 }>;
-      /**
-       * Miner returns to responsive state.
-       * 
-       * Affected states:
-       * - the miner info at [`Miners`] is updated from `MiningUnresponsive` to `MiningIdle`
-       **/
-      MinerExitUnresponsive: AugmentedEvent<ApiType, [miner: AccountId32], { miner: AccountId32 }>;
-      /**
-       * Miner is reclaimed, with its slash settled.
-       **/
-      MinerReclaimed: AugmentedEvent<ApiType, [miner: AccountId32, originalStake: u128, slashed: u128], { miner: AccountId32, originalStake: u128, slashed: u128 }>;
-      /**
-       * Miner settled successfully.
-       * 
-       * It results in the v in [`Miners`] being updated. It also indicates the downstream
-       * stake pool has received the mining reward (payout), and the treasury has received the
+       * It results in the v in [`Sessions`] being updated. It also indicates the downstream
+       * stake pool has received the computing reward (payout), and the treasury has received the
        * tax.
        **/
-      MinerSettled: AugmentedEvent<ApiType, [miner: AccountId32, vBits: u128, payoutBits: u128], { miner: AccountId32, vBits: u128, payoutBits: u128 }>;
+      SessionSettled: AugmentedEvent<ApiType, [session: AccountId32, vBits: u128, payoutBits: u128], { session: AccountId32, vBits: u128, payoutBits: u128 }>;
       /**
-       * A miner settlement was dropped because the on-chain version is more up-to-date.
+       * A session settlement was dropped because the on-chain version is more up-to-date.
        * 
-       * This is a temporary walk-around of the mining staking design. Will be fixed by
+       * This is a temporary walk-around of the computing staking design. Will be fixed by
        * StakePool v2.
        **/
-      MinerSettlementDropped: AugmentedEvent<ApiType, [miner: AccountId32, v: u128, payout: u128], { miner: AccountId32, v: u128, payout: u128 }>;
+      SessionSettlementDropped: AugmentedEvent<ApiType, [session: AccountId32, v: u128, payout: u128], { session: AccountId32, v: u128, payout: u128 }>;
       /**
-       * A miner starts mining.
+       * Worker & worker are unbound.
        * 
        * Affected states:
-       * - the miner info at [`Miners`] is updated with `MiningIdle` state
-       * - [`NextSessionId`] for the miner is incremented
-       * - [`Stakes`] for the miner is updated
-       * - [`OnlineMiners`] is incremented
-       **/
-      MinerStarted: AugmentedEvent<ApiType, [miner: AccountId32, initV: u128, initP: u32], { miner: AccountId32, initV: u128, initP: u32 }>;
-      /**
-       * Miner stops mining.
-       * 
-       * Affected states:
-       * - the miner info at [`Miners`] is updated with `MiningCoolingDown` state
-       * - [`OnlineMiners`] is decremented
-       **/
-      MinerStopped: AugmentedEvent<ApiType, [miner: AccountId32], { miner: AccountId32 }>;
-      /**
-       * Miner & worker are unbound.
-       * 
-       * Affected states:
-       * - [`MinerBindings`] for the miner account is removed
+       * - [`SessionBindings`] for the session account is removed
        * - [`WorkerBindings`] for the worker is removed
        **/
-      MinerUnbound: AugmentedEvent<ApiType, [miner: AccountId32, worker: SpCoreSr25519Public], { miner: AccountId32, worker: SpCoreSr25519Public }>;
+      SessionUnbound: AugmentedEvent<ApiType, [session: AccountId32, worker: SpCoreSr25519Public], { session: AccountId32, worker: SpCoreSr25519Public }>;
       /**
        * Block subsidy halved by 25%.
        * 
@@ -633,6 +638,68 @@ declare module '@polkadot/api-base/types/events' {
        * - [`TokenomicParameters`] is updated.
        **/
       TokenomicParametersChanged: AugmentedEvent<ApiType, []>;
+      /**
+       * Worker enters unresponsive state.
+       * 
+       * Affected states:
+       * - the worker info at [`Sessions`] is updated from `WorkerIdle` to `WorkerUnresponsive`
+       **/
+      WorkerEnterUnresponsive: AugmentedEvent<ApiType, [session: AccountId32], { session: AccountId32 }>;
+      /**
+       * Worker returns to responsive state.
+       * 
+       * Affected states:
+       * - the worker info at [`Sessions`] is updated from `WorkerUnresponsive` to `WorkerIdle`
+       **/
+      WorkerExitUnresponsive: AugmentedEvent<ApiType, [session: AccountId32], { session: AccountId32 }>;
+      /**
+       * Worker is reclaimed, with its slash settled.
+       **/
+      WorkerReclaimed: AugmentedEvent<ApiType, [session: AccountId32, originalStake: u128, slashed: u128], { session: AccountId32, originalStake: u128, slashed: u128 }>;
+      /**
+       * A worker starts computing.
+       * 
+       * Affected states:
+       * - the worker info at [`Sessions`] is updated with `WorkerIdle` state
+       * - [`NextSessionId`] for the session is incremented
+       * - [`Stakes`] for the session is updated
+       * - [`OnlineWorkers`] is incremented
+       **/
+      WorkerStarted: AugmentedEvent<ApiType, [session: AccountId32, initV: u128, initP: u32], { session: AccountId32, initV: u128, initP: u32 }>;
+      /**
+       * Worker stops computing.
+       * 
+       * Affected states:
+       * - the worker info at [`Sessions`] is updated with `WorkerCoolingDown` state
+       * - [`OnlineWorkers`] is decremented
+       **/
+      WorkerStopped: AugmentedEvent<ApiType, [session: AccountId32], { session: AccountId32 }>;
+    };
+    phalaFatContracts: {
+      ClusterCreated: AugmentedEvent<ApiType, [cluster: H256, systemContract: H256], { cluster: H256, systemContract: H256 }>;
+      ClusterDeployed: AugmentedEvent<ApiType, [cluster: H256, pubkey: SpCoreSr25519Public, worker: SpCoreSr25519Public], { cluster: H256, pubkey: SpCoreSr25519Public, worker: SpCoreSr25519Public }>;
+      ClusterDeploymentFailed: AugmentedEvent<ApiType, [cluster: H256, worker: SpCoreSr25519Public], { cluster: H256, worker: SpCoreSr25519Public }>;
+      ClusterDestroyed: AugmentedEvent<ApiType, [cluster: H256], { cluster: H256 }>;
+      ClusterPubkeyAvailable: AugmentedEvent<ApiType, [cluster: H256, pubkey: SpCoreSr25519Public], { cluster: H256, pubkey: SpCoreSr25519Public }>;
+      ContractPubkeyAvailable: AugmentedEvent<ApiType, [contract: H256, cluster: H256, pubkey: SpCoreSr25519Public], { contract: H256, cluster: H256, pubkey: SpCoreSr25519Public }>;
+      Instantiated: AugmentedEvent<ApiType, [contract: H256, cluster: H256, deployer: H256], { contract: H256, cluster: H256, deployer: H256 }>;
+      Instantiating: AugmentedEvent<ApiType, [contract: H256, cluster: H256, deployer: AccountId32], { contract: H256, cluster: H256, deployer: AccountId32 }>;
+    };
+    phalaFatTokenomic: {
+      ContractDepositChanged: AugmentedEvent<ApiType, [contract: H256, deposit: u128], { contract: H256, deposit: u128 }>;
+      UserStakeChanged: AugmentedEvent<ApiType, [account: AccountId32, contract: H256, stake: u128], { account: AccountId32, contract: H256, stake: u128 }>;
+    };
+    phalaPawnshop: {
+      /**
+       * Some dust stake is removed
+       * 
+       * Triggered when the remaining stake of a user is too small after withdrawal or slash.
+       * 
+       * Affected states:
+       * - the balance of the locking ledger of the contributor at [`StakeLedger`] is set to 0
+       * - the user's dust stake is moved to treasury
+       **/
+      DustRemoved: AugmentedEvent<ApiType, [user: AccountId32, amount: u128], { user: AccountId32, amount: u128 }>;
     };
     phalaRegistry: {
       /**
@@ -644,45 +711,36 @@ declare module '@polkadot/api-base/types/events' {
       MasterKeyRotated: AugmentedEvent<ApiType, [rotationId: u64, masterPubkey: SpCoreSr25519Public], { rotationId: u64, masterPubkey: SpCoreSr25519Public }>;
       MasterKeyRotationFailed: AugmentedEvent<ApiType, [rotationLock: Option<u64>, gatekeeperRotationId: u64], { rotationLock: Option<u64>, gatekeeperRotationId: u64 }>;
       PRuntimeManagement: AugmentedEvent<ApiType, [PhalaTypesMessagingPRuntimeManagementEvent]>;
-      WorkerAdded: AugmentedEvent<ApiType, [pubkey: SpCoreSr25519Public, confidenceLevel: u8], { pubkey: SpCoreSr25519Public, confidenceLevel: u8 }>;
-      WorkerUpdated: AugmentedEvent<ApiType, [pubkey: SpCoreSr25519Public, confidenceLevel: u8], { pubkey: SpCoreSr25519Public, confidenceLevel: u8 }>;
+      WorkerAdded: AugmentedEvent<ApiType, [pubkey: SpCoreSr25519Public, attestationProvider: Option<PhalaTypesAttestationProvider>, confidenceLevel: u8], { pubkey: SpCoreSr25519Public, attestationProvider: Option<PhalaTypesAttestationProvider>, confidenceLevel: u8 }>;
+      WorkerUpdated: AugmentedEvent<ApiType, [pubkey: SpCoreSr25519Public, attestationProvider: Option<PhalaTypesAttestationProvider>, confidenceLevel: u8], { pubkey: SpCoreSr25519Public, attestationProvider: Option<PhalaTypesAttestationProvider>, confidenceLevel: u8 }>;
     };
     phalaStakePool: {
+    };
+    phalaStakePoolv2: {
       /**
        * Someone contributed to a pool
        * 
        * Affected states:
-       * - the stake related fields in [`StakePools`]
-       * - the user staking account at [`PoolStakers`]
-       * - the locking ledger of the contributor at [`StakeLedger`]
+       * - the stake related fields in [`Pools`]
+       * - the user P-PHA balance reduced
+       * - the user recive ad share NFT once contribution succeeded
        * - when there was any request in the withdraw queue, the action may trigger withdrawals
        * ([`Withdrawal`](#variant.Withdrawal) event)
        **/
       Contribution: AugmentedEvent<ApiType, [pid: u64, user: AccountId32, amount: u128, shares: u128], { pid: u64, user: AccountId32, amount: u128, shares: u128 }>;
       /**
-       * Some dust stake is removed
-       * 
-       * Triggered when the remaining stake of a user is too small after withdrawal or slash.
+       * Owner rewards were withdrawn by pool owner
        * 
        * Affected states:
-       * - the balance of the locking ledger of the contributor at [`StakeLedger`] is set to 0
-       * - the user's dust stake is moved to treasury
-       **/
-      DustRemoved: AugmentedEvent<ApiType, [user: AccountId32, amount: u128], { user: AccountId32, amount: u128 }>;
-      /**
-       * The amount of stakes for a worker to start mine
-       **/
-      MiningStarted: AugmentedEvent<ApiType, [pid: u64, worker: SpCoreSr25519Public, amount: u128], { pid: u64, worker: SpCoreSr25519Public, amount: u128 }>;
-      /**
-       * Similar to event `RewardsWithdrawn` but only affected states:
-       * - the stake related fields in [`StakePools`]
+       * - the stake related fields in [`Pools`]
+       * - the owner asset account
        **/
       OwnerRewardsWithdrawn: AugmentedEvent<ApiType, [pid: u64, user: AccountId32, amount: u128], { pid: u64, user: AccountId32, amount: u128 }>;
       /**
        * The stake capacity of the pool is updated
        * 
        * Affected states:
-       * - the `cap` field in [`StakePools`] is updated
+       * - the `cap` field in [`Pools`] is updated
        **/
       PoolCapacitySet: AugmentedEvent<ApiType, [pid: u64, cap: u128], { pid: u64, cap: u128 }>;
       /**
@@ -692,16 +750,16 @@ declare module '@polkadot/api-base/types/events' {
        * `commission / 1_000_000u32`.
        * 
        * Affected states:
-       * - the `payout_commission` field in [`StakePools`] is updated
+       * - the `payout_commission` field in [`Pools`] is updated
        **/
       PoolCommissionSet: AugmentedEvent<ApiType, [pid: u64, commission: u32], { pid: u64, commission: u32 }>;
       /**
-       * A pool is created under an owner
+       * A stake pool is created by `owner`
        * 
        * Affected states:
-       * - a new entry in [`StakePools`] with the pid
+       * - a new entry in [`Pools`] with the pid
        **/
-      PoolCreated: AugmentedEvent<ApiType, [owner: AccountId32, pid: u64], { owner: AccountId32, pid: u64 }>;
+      PoolCreated: AugmentedEvent<ApiType, [owner: AccountId32, pid: u64, cid: u32], { owner: AccountId32, pid: u64, cid: u32 }>;
       /**
        * The pool received a slash event from one of its workers (currently disabled)
        * 
@@ -709,39 +767,21 @@ declare module '@polkadot/api-base/types/events' {
        **/
       PoolSlashed: AugmentedEvent<ApiType, [pid: u64, amount: u128], { pid: u64, amount: u128 }>;
       /**
-       * A pool contribution whitelist is added
-       * - lazy operated when the first staker is added to the whitelist
-       **/
-      PoolWhitelistCreated: AugmentedEvent<ApiType, [pid: u64], { pid: u64 }>;
-      /**
-       * The pool contribution whitelist is deleted
-       * - lazy operated when the last staker is removed from the whitelist
-       **/
-      PoolWhitelistDeleted: AugmentedEvent<ApiType, [pid: u64], { pid: u64 }>;
-      /**
-       * A staker is added to the pool contribution whitelist
-       **/
-      PoolWhitelistStakerAdded: AugmentedEvent<ApiType, [pid: u64, staker: AccountId32], { pid: u64, staker: AccountId32 }>;
-      /**
-       * A staker is removed from the pool contribution whitelist
-       **/
-      PoolWhitelistStakerRemoved: AugmentedEvent<ApiType, [pid: u64, staker: AccountId32], { pid: u64, staker: AccountId32 }>;
-      /**
        * A worker is added to the pool
        * 
        * Affected states:
-       * - the `worker` is added to the vector `workers` in [`StakePools`]
+       * - the `worker` is added to the vector `workers` in [`Pools`]
        * - the worker in the [`WorkerAssignments`] is pointed to `pid`
-       * - the worker-miner binding is updated in `mining` pallet ([`WorkerBindings`](mining::pallet::WorkerBindings),
-       * [`MinerBindings`](mining::pallet::MinerBindings))
+       * - the worker-session binding is updated in `computation` pallet ([`WorkerBindings`](computation::pallet::WorkerBindings),
+       * [`SessionBindings`](computation::pallet::SessionBindings))
        **/
-      PoolWorkerAdded: AugmentedEvent<ApiType, [pid: u64, worker: SpCoreSr25519Public, miner: AccountId32], { pid: u64, worker: SpCoreSr25519Public, miner: AccountId32 }>;
+      PoolWorkerAdded: AugmentedEvent<ApiType, [pid: u64, worker: SpCoreSr25519Public, session: AccountId32], { pid: u64, worker: SpCoreSr25519Public, session: AccountId32 }>;
       /**
        * A worker is removed from a pool.
        * 
        * Affected states:
        * - the worker item in [`WorkerAssignments`] is removed
-       * - the worker is removed from the [`StakePools`] item
+       * - the worker is removed from the [`Pools`] item
        **/
       PoolWorkerRemoved: AugmentedEvent<ApiType, [pid: u64, worker: SpCoreSr25519Public], { pid: u64, worker: SpCoreSr25519Public }>;
       /**
@@ -767,35 +807,15 @@ declare module '@polkadot/api-base/types/events' {
        **/
       RewardReceived: AugmentedEvent<ApiType, [pid: u64, toOwner: u128, toStakers: u128], { pid: u64, toOwner: u128, toStakers: u128 }>;
       /**
-       * Pending rewards were withdrawn by a user
-       * 
-       * The reward and slash accumulator is resolved, and the reward is sent to the user
-       * account.
-       * 
-       * Affected states:
-       * - the stake related fields in [`StakePools`]
-       * - the user staking account at [`PoolStakers`]
-       **/
-      RewardsWithdrawn: AugmentedEvent<ApiType, [pid: u64, user: AccountId32, amount: u128], { pid: u64, user: AccountId32, amount: u128 }>;
-      /**
        * Some slash is actually settled to a contributor (currently disabled)
        **/
       SlashSettled: AugmentedEvent<ApiType, [pid: u64, user: AccountId32, amount: u128], { pid: u64, user: AccountId32, amount: u128 }>;
       /**
-       * Similar to event `ewardsWithdrawn` but only affected states:
-       * - the user staking account at [`PoolStakers`]
-       **/
-      StakerRewardsWithdrawn: AugmentedEvent<ApiType, [pid: u64, user: AccountId32, amount: u128], { pid: u64, user: AccountId32, amount: u128 }>;
-      /**
        * Some stake was withdrawn from a pool
        * 
-       * The lock in [`Balances`](pallet_balances::pallet::Pallet) is updated to release the
-       * locked stake.
-       * 
        * Affected states:
-       * - the stake related fields in [`StakePools`]
-       * - the user staking account at [`PoolStakers`]
-       * - the locking ledger of the contributor at [`StakeLedger`]
+       * - the stake related fields in [`Pools`]
+       * - the user asset account
        **/
       Withdrawal: AugmentedEvent<ApiType, [pid: u64, user: AccountId32, amount: u128, shares: u128], { pid: u64, user: AccountId32, amount: u128, shares: u128 }>;
       /**
@@ -803,13 +823,62 @@ declare module '@polkadot/api-base/types/events' {
        * 
        * Affected states:
        * - a new item is inserted to or an old item is being replaced by the new item in the
-       * withdraw queue in [`StakePools`]
+       * withdraw queue in [`Pools`]
        **/
       WithdrawalQueued: AugmentedEvent<ApiType, [pid: u64, user: AccountId32, shares: u128], { pid: u64, user: AccountId32, shares: u128 }>;
       /**
        * A worker is reclaimed from the pool
        **/
-      WorkerReclaimed: AugmentedEvent<ApiType, [pid: u64, worker: SpCoreSr25519Public, originalStake: u128], { pid: u64, worker: SpCoreSr25519Public, originalStake: u128 }>;
+      WorkerReclaimed: AugmentedEvent<ApiType, [pid: u64, worker: SpCoreSr25519Public], { pid: u64, worker: SpCoreSr25519Public }>;
+      /**
+       * The amount of stakes for a worker to start computing
+       **/
+      WorkingStarted: AugmentedEvent<ApiType, [pid: u64, worker: SpCoreSr25519Public, amount: u128], { pid: u64, worker: SpCoreSr25519Public, amount: u128 }>;
+    };
+    phalaVault: {
+      /**
+       * Someone contributed to a vault
+       * 
+       * Affected states:
+       * - the stake related fields in [`Pools`]
+       * - the user P-PHA balance reduced
+       * - the user recive ad share NFT once contribution succeeded
+       * - when there was any request in the withdraw queue, the action may trigger withdrawals
+       * ([`Withdrawal`](#variant.Withdrawal) event)
+       **/
+      Contribution: AugmentedEvent<ApiType, [pid: u64, user: AccountId32, amount: u128, shares: u128], { pid: u64, user: AccountId32, amount: u128, shares: u128 }>;
+      /**
+       * Owner shares is claimed by pool owner
+       * Affected states:
+       * - the shares related fields in [`Pools`]
+       * - the nft related storages in rmrk and pallet unique
+       **/
+      OwnerSharesClaimed: AugmentedEvent<ApiType, [pid: u64, user: AccountId32, shares: u128], { pid: u64, user: AccountId32, shares: u128 }>;
+      /**
+       * Additional owner shares are mint into the pool
+       * 
+       * Affected states:
+       * - the shares related fields in [`Pools`]
+       * - last_share_price_checkpoint in [`Pools`]
+       **/
+      OwnerSharesGained: AugmentedEvent<ApiType, [pid: u64, shares: u128], { pid: u64, shares: u128 }>;
+      /**
+       * A vault is created by `owner`
+       * 
+       * Affected states:
+       * - a new entry in [`Pools`] with the pid
+       **/
+      PoolCreated: AugmentedEvent<ApiType, [owner: AccountId32, pid: u64, cid: u32, poolAccountId: AccountId32], { owner: AccountId32, pid: u64, cid: u32, poolAccountId: AccountId32 }>;
+      /**
+       * The commission of a vault is updated
+       * 
+       * The commission ratio is represented by an integer. The real value is
+       * `commission / 1_000_000u32`.
+       * 
+       * Affected states:
+       * - the `commission` field in [`Pools`] is updated
+       **/
+      VaultCommissionSet: AugmentedEvent<ApiType, [pid: u64, commission: u32], { pid: u64, commission: u32 }>;
     };
     phragmenElection: {
       /**
@@ -990,7 +1059,7 @@ declare module '@polkadot/api-base/types/events' {
       /**
        * A proxy was added.
        **/
-      ProxyAdded: AugmentedEvent<ApiType, [delegator: AccountId32, delegatee: AccountId32, proxyType: KhalaParachainRuntimeProxyType, delay: u32], { delegator: AccountId32, delegatee: AccountId32, proxyType: KhalaParachainRuntimeProxyType, delay: u32 }>;
+      ProxyAdded: AugmentedEvent<ApiType, [delegator: AccountId32, delegatee: AccountId32, proxyType: ThalaParachainRuntimeProxyType, delay: u32], { delegator: AccountId32, delegatee: AccountId32, proxyType: ThalaParachainRuntimeProxyType, delay: u32 }>;
       /**
        * A proxy was executed correctly, with the given.
        **/
@@ -998,12 +1067,12 @@ declare module '@polkadot/api-base/types/events' {
       /**
        * A proxy was removed.
        **/
-      ProxyRemoved: AugmentedEvent<ApiType, [delegator: AccountId32, delegatee: AccountId32, proxyType: KhalaParachainRuntimeProxyType, delay: u32], { delegator: AccountId32, delegatee: AccountId32, proxyType: KhalaParachainRuntimeProxyType, delay: u32 }>;
+      ProxyRemoved: AugmentedEvent<ApiType, [delegator: AccountId32, delegatee: AccountId32, proxyType: ThalaParachainRuntimeProxyType, delay: u32], { delegator: AccountId32, delegatee: AccountId32, proxyType: ThalaParachainRuntimeProxyType, delay: u32 }>;
       /**
        * A pure account has been created by new proxy with given
        * disambiguation index and proxy type.
        **/
-      PureCreated: AugmentedEvent<ApiType, [pure: AccountId32, who: AccountId32, proxyType: KhalaParachainRuntimeProxyType, disambiguationIndex: u16], { pure: AccountId32, who: AccountId32, proxyType: KhalaParachainRuntimeProxyType, disambiguationIndex: u16 }>;
+      PureCreated: AugmentedEvent<ApiType, [pure: AccountId32, who: AccountId32, proxyType: ThalaParachainRuntimeProxyType, disambiguationIndex: u16], { pure: AccountId32, who: AccountId32, proxyType: ThalaParachainRuntimeProxyType, disambiguationIndex: u16 }>;
     };
     pwIncubation: {
       /**
@@ -1201,6 +1270,20 @@ declare module '@polkadot/api-base/types/events' {
        * block number as the type might suggest.
        **/
       NewSession: AugmentedEvent<ApiType, [sessionIndex: u32], { sessionIndex: u32 }>;
+    };
+    sudo: {
+      /**
+       * The \[sudoer\] just switched identity; the old key is supplied if one existed.
+       **/
+      KeyChanged: AugmentedEvent<ApiType, [oldSudoer: Option<AccountId32>], { oldSudoer: Option<AccountId32> }>;
+      /**
+       * A sudo just took place. \[result\]
+       **/
+      Sudid: AugmentedEvent<ApiType, [sudoResult: Result<Null, SpRuntimeDispatchError>], { sudoResult: Result<Null, SpRuntimeDispatchError> }>;
+      /**
+       * A sudo just took place. \[result\]
+       **/
+      SudoAsDone: AugmentedEvent<ApiType, [sudoResult: Result<Null, SpRuntimeDispatchError>], { sudoResult: Result<Null, SpRuntimeDispatchError> }>;
     };
     system: {
       /**
