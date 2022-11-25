@@ -117,7 +117,7 @@ declare module '@polkadot/api-base/types/calls' {
        **/
       validateTransaction: AugmentedCall<ApiType, (source: TransactionSource | 'InBlock' | 'Local' | 'External' | number | Uint8Array, tx: Extrinsic | IExtrinsic | string | Uint8Array, blockHash: BlockHash | string | Uint8Array) => Observable<TransactionValidity>>;
     };
-    /** 0x37c8bb1350a9a2a8/1 */
+    /** 0x37c8bb1350a9a2a8/2 */
     transactionPaymentApi: {
       /**
        * The transaction fee details

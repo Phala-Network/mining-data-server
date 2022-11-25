@@ -8,8 +8,8 @@ import '@polkadot/api-base/types/events';
 import type { ApiTypes, AugmentedEvent } from '@polkadot/api-base/types';
 import type { Bytes, Null, Option, Result, U256, U8aFixed, Vec, bool, u128, u16, u32, u64, u8 } from '@polkadot/types-codec';
 import type { ITuple } from '@polkadot/types-codec/types';
-import type { AccountId32, H256, Weight } from '@polkadot/types/interfaces/runtime';
-import type { FrameSupportDispatchDispatchInfo, FrameSupportScheduleLookupError, FrameSupportTokensMiscBalanceStatus, PalletDemocracyVoteAccountVote, PalletDemocracyVoteThreshold, PalletMultisigTimepoint, PalletPhalaWorldCareerType, PalletPhalaWorldNftSaleType, PalletPhalaWorldRaceType, PalletPhalaWorldRarityType, PalletPhalaWorldShellParts, PhalaTypesAttestationProvider, PhalaTypesMessagingPRuntimeManagementEvent, RmrkTraitsNftAccountIdOrCollectionNftTuple, SpCoreSr25519Public, SpRuntimeDispatchError, ThalaParachainRuntimeProxyType, XcmV1MultiAsset, XcmV1MultiLocation, XcmV2Response, XcmV2TraitsError, XcmV2TraitsOutcome, XcmV2Xcm, XcmVersionedMultiAssets, XcmVersionedMultiLocation } from '@polkadot/types/lookup';
+import type { AccountId32, H256 } from '@polkadot/types/interfaces/runtime';
+import type { FrameSupportDispatchDispatchInfo, FrameSupportTokensMiscBalanceStatus, PalletDemocracyVoteAccountVote, PalletDemocracyVoteThreshold, PalletMultisigTimepoint, PalletPhalaWorldCareerType, PalletPhalaWorldNftSaleType, PalletPhalaWorldRaceType, PalletPhalaWorldRarityType, PalletPhalaWorldShellParts, PhalaTypesAttestationProvider, PhalaTypesMessagingPRuntimeManagementEvent, RmrkTraitsNftAccountIdOrCollectionNftTuple, SpCoreSr25519Public, SpRuntimeDispatchError, SpWeightsWeightV2Weight, ThalaParachainRuntimeProxyType, XcmV1MultiAsset, XcmV1MultiLocation, XcmV2Response, XcmV2TraitsError, XcmV2TraitsOutcome, XcmV2Xcm, XcmVersionedMultiAssets, XcmVersionedMultiLocation } from '@polkadot/types/lookup';
 
 export type __AugmentedEvent<ApiType extends ApiTypes> = AugmentedEvent<ApiType>;
 
@@ -333,10 +333,6 @@ declare module '@polkadot/api-base/types/events' {
        **/
       Delegated: AugmentedEvent<ApiType, [who: AccountId32, target: AccountId32], { who: AccountId32, target: AccountId32 }>;
       /**
-       * A proposal has been enacted.
-       **/
-      Executed: AugmentedEvent<ApiType, [refIndex: u32, result: Result<Null, SpRuntimeDispatchError>], { refIndex: u32, result: Result<Null, SpRuntimeDispatchError> }>;
-      /**
        * An external proposal has been tabled.
        **/
       ExternalTabled: AugmentedEvent<ApiType, []>;
@@ -348,26 +344,6 @@ declare module '@polkadot/api-base/types/events' {
        * A proposal has been approved by referendum.
        **/
       Passed: AugmentedEvent<ApiType, [refIndex: u32], { refIndex: u32 }>;
-      /**
-       * A proposal could not be executed because its preimage was invalid.
-       **/
-      PreimageInvalid: AugmentedEvent<ApiType, [proposalHash: H256, refIndex: u32], { proposalHash: H256, refIndex: u32 }>;
-      /**
-       * A proposal could not be executed because its preimage was missing.
-       **/
-      PreimageMissing: AugmentedEvent<ApiType, [proposalHash: H256, refIndex: u32], { proposalHash: H256, refIndex: u32 }>;
-      /**
-       * A proposal's preimage was noted, and the deposit taken.
-       **/
-      PreimageNoted: AugmentedEvent<ApiType, [proposalHash: H256, who: AccountId32, deposit: u128], { proposalHash: H256, who: AccountId32, deposit: u128 }>;
-      /**
-       * A registered preimage was removed and the deposit collected by the reaper.
-       **/
-      PreimageReaped: AugmentedEvent<ApiType, [proposalHash: H256, provider: AccountId32, deposit: u128, reaper: AccountId32], { proposalHash: H256, provider: AccountId32, deposit: u128, reaper: AccountId32 }>;
-      /**
-       * A proposal preimage was removed and used (the deposit was returned).
-       **/
-      PreimageUsed: AugmentedEvent<ApiType, [proposalHash: H256, provider: AccountId32, deposit: u128], { proposalHash: H256, provider: AccountId32, deposit: u128 }>;
       /**
        * A proposal got canceled.
        **/
@@ -387,7 +363,7 @@ declare module '@polkadot/api-base/types/events' {
       /**
        * A public proposal has been tabled for referendum vote.
        **/
-      Tabled: AugmentedEvent<ApiType, [proposalIndex: u32, deposit: u128, depositors: Vec<AccountId32>], { proposalIndex: u32, deposit: u128, depositors: Vec<AccountId32> }>;
+      Tabled: AugmentedEvent<ApiType, [proposalIndex: u32, deposit: u128], { proposalIndex: u32, deposit: u128 }>;
       /**
        * An account has cancelled a previous delegation operation.
        **/
@@ -413,11 +389,11 @@ declare module '@polkadot/api-base/types/events' {
       /**
        * Downward message is overweight and was placed in the overweight queue.
        **/
-      OverweightEnqueued: AugmentedEvent<ApiType, [messageId: U8aFixed, overweightIndex: u64, requiredWeight: Weight], { messageId: U8aFixed, overweightIndex: u64, requiredWeight: Weight }>;
+      OverweightEnqueued: AugmentedEvent<ApiType, [messageId: U8aFixed, overweightIndex: u64, requiredWeight: SpWeightsWeightV2Weight], { messageId: U8aFixed, overweightIndex: u64, requiredWeight: SpWeightsWeightV2Weight }>;
       /**
        * Downward message from the overweight queue was executed.
        **/
-      OverweightServiced: AugmentedEvent<ApiType, [overweightIndex: u64, weightUsed: Weight], { overweightIndex: u64, weightUsed: Weight }>;
+      OverweightServiced: AugmentedEvent<ApiType, [overweightIndex: u64, weightUsed: SpWeightsWeightV2Weight], { overweightIndex: u64, weightUsed: SpWeightsWeightV2Weight }>;
       /**
        * Downward message is unsupported version of XCM.
        **/
@@ -425,7 +401,7 @@ declare module '@polkadot/api-base/types/events' {
       /**
        * The weight limit for handling downward messages was reached.
        **/
-      WeightExhausted: AugmentedEvent<ApiType, [messageId: U8aFixed, remainingWeight: Weight, requiredWeight: Weight], { messageId: U8aFixed, remainingWeight: Weight, requiredWeight: Weight }>;
+      WeightExhausted: AugmentedEvent<ApiType, [messageId: U8aFixed, remainingWeight: SpWeightsWeightV2Weight, requiredWeight: SpWeightsWeightV2Weight], { messageId: U8aFixed, remainingWeight: SpWeightsWeightV2Weight, requiredWeight: SpWeightsWeightV2Weight }>;
     };
     identity: {
       /**
@@ -510,7 +486,7 @@ declare module '@polkadot/api-base/types/events' {
       /**
        * Downward messages were processed using the given weight.
        **/
-      DownwardMessagesProcessed: AugmentedEvent<ApiType, [weightUsed: Weight, dmqHead: H256], { weightUsed: Weight, dmqHead: H256 }>;
+      DownwardMessagesProcessed: AugmentedEvent<ApiType, [weightUsed: SpWeightsWeightV2Weight, dmqHead: H256], { weightUsed: SpWeightsWeightV2Weight, dmqHead: H256 }>;
       /**
        * Some downward messages have been received and will be processed.
        **/
@@ -533,6 +509,10 @@ declare module '@polkadot/api-base/types/events' {
       ValidationFunctionStored: AugmentedEvent<ApiType, []>;
     };
     phalaBasePool: {
+      /**
+       * A Nft is created to contain pool shares
+       **/
+      NftCreated: AugmentedEvent<ApiType, [cid: u32, nftId: u32, owner: AccountId32, shares: u128], { cid: u32, nftId: u32, owner: AccountId32, shares: u128 }>;
       /**
        * A pool contribution whitelist is added
        * 
@@ -571,7 +551,7 @@ declare module '@polkadot/api-base/types/events' {
        * - a new item is inserted to or an old item is being replaced by the new item in the
        * withdraw queue in [`Pools`]
        **/
-      WithdrawalQueued: AugmentedEvent<ApiType, [pid: u64, user: AccountId32, shares: u128], { pid: u64, user: AccountId32, shares: u128 }>;
+      WithdrawalQueued: AugmentedEvent<ApiType, [pid: u64, user: AccountId32, shares: u128, nftId: u32, asVault: Option<u64>], { pid: u64, user: AccountId32, shares: u128, nftId: u32, asVault: Option<u64> }>;
     };
     phalaComputation: {
       /**
@@ -684,22 +664,11 @@ declare module '@polkadot/api-base/types/events' {
       ContractPubkeyAvailable: AugmentedEvent<ApiType, [contract: H256, cluster: H256, pubkey: SpCoreSr25519Public], { contract: H256, cluster: H256, pubkey: SpCoreSr25519Public }>;
       Instantiated: AugmentedEvent<ApiType, [contract: H256, cluster: H256, deployer: H256], { contract: H256, cluster: H256, deployer: H256 }>;
       Instantiating: AugmentedEvent<ApiType, [contract: H256, cluster: H256, deployer: AccountId32], { contract: H256, cluster: H256, deployer: AccountId32 }>;
+      Transfered: AugmentedEvent<ApiType, [cluster: H256, account: H256, amount: u128], { cluster: H256, account: H256, amount: u128 }>;
     };
     phalaFatTokenomic: {
       ContractDepositChanged: AugmentedEvent<ApiType, [contract: H256, deposit: u128], { contract: H256, deposit: u128 }>;
       UserStakeChanged: AugmentedEvent<ApiType, [account: AccountId32, contract: H256, stake: u128], { account: AccountId32, contract: H256, stake: u128 }>;
-    };
-    phalaPawnshop: {
-      /**
-       * Some dust stake is removed
-       * 
-       * Triggered when the remaining stake of a user is too small after withdrawal or slash.
-       * 
-       * Affected states:
-       * - the balance of the locking ledger of the contributor at [`StakeLedger`] is set to 0
-       * - the user's dust stake is moved to treasury
-       **/
-      DustRemoved: AugmentedEvent<ApiType, [user: AccountId32, amount: u128], { user: AccountId32, amount: u128 }>;
     };
     phalaRegistry: {
       /**
@@ -722,12 +691,12 @@ declare module '@polkadot/api-base/types/events' {
        * 
        * Affected states:
        * - the stake related fields in [`Pools`]
-       * - the user P-PHA balance reduced
+       * - the user W-PHA balance reduced
        * - the user recive ad share NFT once contribution succeeded
        * - when there was any request in the withdraw queue, the action may trigger withdrawals
        * ([`Withdrawal`](#variant.Withdrawal) event)
        **/
-      Contribution: AugmentedEvent<ApiType, [pid: u64, user: AccountId32, amount: u128, shares: u128], { pid: u64, user: AccountId32, amount: u128, shares: u128 }>;
+      Contribution: AugmentedEvent<ApiType, [pid: u64, user: AccountId32, amount: u128, shares: u128, asVault: Option<u64>], { pid: u64, user: AccountId32, amount: u128, shares: u128, asVault: Option<u64> }>;
       /**
        * Owner rewards were withdrawn by pool owner
        * 
@@ -759,7 +728,7 @@ declare module '@polkadot/api-base/types/events' {
        * Affected states:
        * - a new entry in [`Pools`] with the pid
        **/
-      PoolCreated: AugmentedEvent<ApiType, [owner: AccountId32, pid: u64, cid: u32], { owner: AccountId32, pid: u64, cid: u32 }>;
+      PoolCreated: AugmentedEvent<ApiType, [owner: AccountId32, pid: u64, cid: u32, poolAccountId: AccountId32], { owner: AccountId32, pid: u64, cid: u32, poolAccountId: AccountId32 }>;
       /**
        * The pool received a slash event from one of its workers (currently disabled)
        * 
@@ -811,22 +780,6 @@ declare module '@polkadot/api-base/types/events' {
        **/
       SlashSettled: AugmentedEvent<ApiType, [pid: u64, user: AccountId32, amount: u128], { pid: u64, user: AccountId32, amount: u128 }>;
       /**
-       * Some stake was withdrawn from a pool
-       * 
-       * Affected states:
-       * - the stake related fields in [`Pools`]
-       * - the user asset account
-       **/
-      Withdrawal: AugmentedEvent<ApiType, [pid: u64, user: AccountId32, amount: u128, shares: u128], { pid: u64, user: AccountId32, amount: u128, shares: u128 }>;
-      /**
-       * A withdrawal request is inserted to a queue
-       * 
-       * Affected states:
-       * - a new item is inserted to or an old item is being replaced by the new item in the
-       * withdraw queue in [`Pools`]
-       **/
-      WithdrawalQueued: AugmentedEvent<ApiType, [pid: u64, user: AccountId32, shares: u128], { pid: u64, user: AccountId32, shares: u128 }>;
-      /**
        * A worker is reclaimed from the pool
        **/
       WorkerReclaimed: AugmentedEvent<ApiType, [pid: u64, worker: SpCoreSr25519Public], { pid: u64, worker: SpCoreSr25519Public }>;
@@ -841,7 +794,7 @@ declare module '@polkadot/api-base/types/events' {
        * 
        * Affected states:
        * - the stake related fields in [`Pools`]
-       * - the user P-PHA balance reduced
+       * - the user W-PHA balance reduced
        * - the user recive ad share NFT once contribution succeeded
        * - when there was any request in the withdraw queue, the action may trigger withdrawals
        * ([`Withdrawal`](#variant.Withdrawal) event)
@@ -861,7 +814,7 @@ declare module '@polkadot/api-base/types/events' {
        * - the shares related fields in [`Pools`]
        * - last_share_price_checkpoint in [`Pools`]
        **/
-      OwnerSharesGained: AugmentedEvent<ApiType, [pid: u64, shares: u128], { pid: u64, shares: u128 }>;
+      OwnerSharesGained: AugmentedEvent<ApiType, [pid: u64, shares: u128, checkoutPrice: u128], { pid: u64, shares: u128, checkoutPrice: u128 }>;
       /**
        * A vault is created by `owner`
        * 
@@ -879,6 +832,21 @@ declare module '@polkadot/api-base/types/events' {
        * - the `commission` field in [`Pools`] is updated
        **/
       VaultCommissionSet: AugmentedEvent<ApiType, [pid: u64, commission: u32], { pid: u64, commission: u32 }>;
+    };
+    phalaWrappedBalances: {
+      /**
+       * Some dust stake is removed
+       * 
+       * Triggered when the remaining stake of a user is too small after withdrawal or slash.
+       * 
+       * Affected states:
+       * - the balance of the locking ledger of the contributor at [`StakeLedger`] is set to 0
+       * - the user's dust stake is moved to treasury
+       **/
+      DustRemoved: AugmentedEvent<ApiType, [user: AccountId32, amount: u128], { user: AccountId32, amount: u128 }>;
+      Pawned: AugmentedEvent<ApiType, [user: AccountId32, amount: u128], { user: AccountId32, amount: u128 }>;
+      Redeemed: AugmentedEvent<ApiType, [user: AccountId32, amount: u128], { user: AccountId32, amount: u128 }>;
+      Voted: AugmentedEvent<ApiType, [user: AccountId32, voteId: u32, ayeAmount: u128, nayAmount: u128], { user: AccountId32, voteId: u32, ayeAmount: u128, nayAmount: u128 }>;
     };
     phragmenElection: {
       /**
@@ -920,6 +888,12 @@ declare module '@polkadot/api-base/types/events' {
       SeatHolderSlashed: AugmentedEvent<ApiType, [seatHolder: AccountId32, amount: u128], { seatHolder: AccountId32, amount: u128 }>;
     };
     polkadotXcm: {
+      /**
+       * Some assets have been claimed from an asset trap
+       * 
+       * \[ hash, origin, assets \]
+       **/
+      AssetsClaimed: AugmentedEvent<ApiType, [H256, XcmV1MultiLocation, XcmVersionedMultiAssets]>;
       /**
        * Some assets have been placed in an asset trap.
        * 
@@ -981,7 +955,7 @@ declare module '@polkadot/api-base/types/events' {
        * 
        * \[ id, pallet index, call index, actual weight, max budgeted weight \]
        **/
-      NotifyOverweight: AugmentedEvent<ApiType, [u64, u8, u8, Weight, Weight]>;
+      NotifyOverweight: AugmentedEvent<ApiType, [u64, u8, u8, SpWeightsWeightV2Weight, SpWeightsWeightV2Weight]>;
       /**
        * A given location which had a version change subscription was dropped owing to an error
        * migrating the location to our new XCM format.
@@ -1197,7 +1171,7 @@ declare module '@polkadot/api-base/types/events' {
       CollectionLocked: AugmentedEvent<ApiType, [issuer: AccountId32, collectionId: u32], { issuer: AccountId32, collectionId: u32 }>;
       IssuerChanged: AugmentedEvent<ApiType, [oldIssuer: AccountId32, newIssuer: AccountId32, collectionId: u32], { oldIssuer: AccountId32, newIssuer: AccountId32, collectionId: u32 }>;
       NFTAccepted: AugmentedEvent<ApiType, [sender: AccountId32, recipient: RmrkTraitsNftAccountIdOrCollectionNftTuple, collectionId: u32, nftId: u32], { sender: AccountId32, recipient: RmrkTraitsNftAccountIdOrCollectionNftTuple, collectionId: u32, nftId: u32 }>;
-      NFTBurned: AugmentedEvent<ApiType, [owner: AccountId32, nftId: u32, collectionId: u32], { owner: AccountId32, nftId: u32, collectionId: u32 }>;
+      NFTBurned: AugmentedEvent<ApiType, [owner: AccountId32, collectionId: u32, nftId: u32], { owner: AccountId32, collectionId: u32, nftId: u32 }>;
       NftMinted: AugmentedEvent<ApiType, [owner: RmrkTraitsNftAccountIdOrCollectionNftTuple, collectionId: u32, nftId: u32], { owner: RmrkTraitsNftAccountIdOrCollectionNftTuple, collectionId: u32, nftId: u32 }>;
       NFTRejected: AugmentedEvent<ApiType, [sender: AccountId32, collectionId: u32, nftId: u32], { sender: AccountId32, collectionId: u32, nftId: u32 }>;
       NFTSent: AugmentedEvent<ApiType, [sender: AccountId32, recipient: RmrkTraitsNftAccountIdOrCollectionNftTuple, collectionId: u32, nftId: u32, approvalRequired: bool], { sender: AccountId32, recipient: RmrkTraitsNftAccountIdOrCollectionNftTuple, collectionId: u32, nftId: u32, approvalRequired: bool }>;
@@ -1250,7 +1224,7 @@ declare module '@polkadot/api-base/types/events' {
       /**
        * The call for the provided hash was not found so the task has been aborted.
        **/
-      CallLookupFailed: AugmentedEvent<ApiType, [task: ITuple<[u32, u32]>, id: Option<Bytes>, error: FrameSupportScheduleLookupError], { task: ITuple<[u32, u32]>, id: Option<Bytes>, error: FrameSupportScheduleLookupError }>;
+      CallUnavailable: AugmentedEvent<ApiType, [task: ITuple<[u32, u32]>, id: Option<U8aFixed>], { task: ITuple<[u32, u32]>, id: Option<U8aFixed> }>;
       /**
        * Canceled some task.
        **/
@@ -1258,7 +1232,15 @@ declare module '@polkadot/api-base/types/events' {
       /**
        * Dispatched some task.
        **/
-      Dispatched: AugmentedEvent<ApiType, [task: ITuple<[u32, u32]>, id: Option<Bytes>, result: Result<Null, SpRuntimeDispatchError>], { task: ITuple<[u32, u32]>, id: Option<Bytes>, result: Result<Null, SpRuntimeDispatchError> }>;
+      Dispatched: AugmentedEvent<ApiType, [task: ITuple<[u32, u32]>, id: Option<U8aFixed>, result: Result<Null, SpRuntimeDispatchError>], { task: ITuple<[u32, u32]>, id: Option<U8aFixed>, result: Result<Null, SpRuntimeDispatchError> }>;
+      /**
+       * The given task was unable to be renewed since the agenda is full at that block.
+       **/
+      PeriodicFailed: AugmentedEvent<ApiType, [task: ITuple<[u32, u32]>, id: Option<U8aFixed>], { task: ITuple<[u32, u32]>, id: Option<U8aFixed> }>;
+      /**
+       * The given task can never be executed since it is overweight.
+       **/
+      PermanentlyOverweight: AugmentedEvent<ApiType, [task: ITuple<[u32, u32]>, id: Option<U8aFixed>], { task: ITuple<[u32, u32]>, id: Option<U8aFixed> }>;
       /**
        * Scheduled some task.
        **/
@@ -1600,19 +1582,19 @@ declare module '@polkadot/api-base/types/events' {
       /**
        * Some XCM failed.
        **/
-      Fail: AugmentedEvent<ApiType, [messageHash: Option<H256>, error: XcmV2TraitsError, weight: Weight], { messageHash: Option<H256>, error: XcmV2TraitsError, weight: Weight }>;
+      Fail: AugmentedEvent<ApiType, [messageHash: Option<H256>, error: XcmV2TraitsError, weight: SpWeightsWeightV2Weight], { messageHash: Option<H256>, error: XcmV2TraitsError, weight: SpWeightsWeightV2Weight }>;
       /**
        * An XCM exceeded the individual message weight budget.
        **/
-      OverweightEnqueued: AugmentedEvent<ApiType, [sender: u32, sentAt: u32, index: u64, required: Weight], { sender: u32, sentAt: u32, index: u64, required: Weight }>;
+      OverweightEnqueued: AugmentedEvent<ApiType, [sender: u32, sentAt: u32, index: u64, required: SpWeightsWeightV2Weight], { sender: u32, sentAt: u32, index: u64, required: SpWeightsWeightV2Weight }>;
       /**
        * An XCM from the overweight queue was executed with the given actual weight used.
        **/
-      OverweightServiced: AugmentedEvent<ApiType, [index: u64, used: Weight], { index: u64, used: Weight }>;
+      OverweightServiced: AugmentedEvent<ApiType, [index: u64, used: SpWeightsWeightV2Weight], { index: u64, used: SpWeightsWeightV2Weight }>;
       /**
        * Some XCM was executed ok.
        **/
-      Success: AugmentedEvent<ApiType, [messageHash: Option<H256>, weight: Weight], { messageHash: Option<H256>, weight: Weight }>;
+      Success: AugmentedEvent<ApiType, [messageHash: Option<H256>, weight: SpWeightsWeightV2Weight], { messageHash: Option<H256>, weight: SpWeightsWeightV2Weight }>;
       /**
        * An upward message was sent to the relay chain.
        **/

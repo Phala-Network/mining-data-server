@@ -2,7 +2,7 @@ import fs from 'fs'
 import {w3cwebsocket as WebSocket} from 'websocket'
 
 const main = (): void => {
-  const endpoint = 'ws://localhost:49944'
+  const endpoint = 'wss://pc-test-3.phala.network/khala/ws'
   const ws = new WebSocket(endpoint)
   ws.onopen = (): void => {
     ws.send(

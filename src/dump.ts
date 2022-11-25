@@ -1,11 +1,22 @@
 import {ApiPromise, WsProvider} from '@polkadot/api'
 import {ApiDecoration} from '@polkadot/api/types'
 import {PhalaPalletsComputeBasePoolPalletBasePool} from '@polkadot/types/lookup'
+import {BN} from '@polkadot/util'
 import assert from 'assert'
 import fs from 'fs/promises'
 
-const BLOCK_NUMBER = 7000
+const BLOCK_NUMBER = 21000
 const ASSET_ID = 1
+
+const multiQueryBalance = async (
+  api: ApiDecoration<'promise'>,
+  accountIds: string[]
+) => {
+  const res = await api.query.assets.account.multi(
+    accountIds.map((accountId) => [ASSET_ID, accountId])
+  )
+  return res.map((x) => x.unwrapOr({balance: 0}).balance.toString())
+}
 
 const getIdentities = async (api: ApiDecoration<'promise'>) => {
   const identityEntries = await api.query.identity.identityOf.entries()
@@ -13,33 +24,33 @@ const getIdentities = async (api: ApiDecoration<'promise'>) => {
     const judgements = value.unwrap().judgements
     return {
       id: key.args[0].toString(),
-      identity: value.unwrap().info.display.asRaw.toString() as string | null,
+      identity: value.unwrap().info.display.asRaw.toUtf8() as string | null,
       judgement: judgements.length ? judgements[0][1].type : null,
-      superId: null as string | null,
-      subIdentity: null as string | null,
+      // superId: null as string | null,
+      // subIdentity: null as string | null,
     }
   })
-  const identityMap = new Map(identities.map((i) => [i.id, i]))
-  const superEntries = await api.query.identity.superOf.entries()
-  for (const [key, value] of superEntries) {
-    const id = key.args[0].toString()
-    const unwrapped = value.unwrap()
-    const superId = unwrapped[0].toString()
-    const subIdentity = unwrapped[1].asRaw.toString()
-    const identity = identityMap.get(id)
-    if (identity) {
-      identity.superId = superId
-      identity.subIdentity = subIdentity
-    } else {
-      identities.push({
-        id,
-        identity: null,
-        judgement: null,
-        superId,
-        subIdentity,
-      })
-    }
-  }
+  // const identityMap = new Map(identities.map((i) => [i.id, i]))
+  // const superEntries = await api.query.identity.superOf.entries()
+  // for (const [key, value] of superEntries) {
+  //   const id = key.args[0].toString()
+  //   const unwrapped = value.unwrap()
+  //   const superId = unwrapped[0].toString()
+  //   const subIdentity = unwrapped[1].asRaw.toString()
+  //   const identity = identityMap.get(id)
+  //   if (identity) {
+  //     identity.superId = superId
+  //     identity.subIdentity = subIdentity
+  //   } else {
+  //     identities.push({
+  //       id,
+  //       identity: null,
+  //       judgement: null,
+  //       superId,
+  //       subIdentity,
+  //     })
+  //   }
+  // }
 
   return identities
 }
@@ -55,13 +66,21 @@ const getBasePools = async (api: ApiDecoration<'promise'>) => {
     const unwrapped = value.unwrap()
     if (unwrapped.isStakePool) {
       const s = unwrapped.asStakePool
+      const ownerRewardAccount = s.ownerRewardAccount.toString()
       commission = s.payoutCommission.unwrapOr(0).toString()
       basePool = s.basepool
       const workers = s.workers.map((pubkey) => pubkey.toString())
-      const capacity = s.cap.unwrapOrDefault().toString()
+      let capacity = null
+      try {
+        capacity = s.cap.unwrap().toString()
+      } catch (e) {
+        // noop
+      }
       stakePool = {
         capacity,
         workers,
+        ownerRewardAccount,
+        ownerReward: '0',
       }
     } else {
       const v = unwrapped.asVault
@@ -87,6 +106,11 @@ const getBasePools = async (api: ApiDecoration<'promise'>) => {
       vault,
       stakePool,
       whitelists: [] as string[],
+      withdrawQueue: basePool.withdrawQueue.map((x) => ({
+        user: x.user.toString(),
+        startTime: x.startTime.toNumber(),
+        nftId: x.nftId.toNumber(),
+      })),
     }
   })
   const basePoolMap = new Map(basePools.map((p) => [p.pid, p]))
@@ -97,15 +121,27 @@ const getBasePools = async (api: ApiDecoration<'promise'>) => {
     assert(pool)
     pool.whitelists = value.unwrap().map((account) => account.toString())
   }
-  const basePoolAccountIds = basePools.map((p) => p.poolAccountId)
-  const basePoolBalanceEntries = await api.query.assets.account.multi(
-    basePoolAccountIds.map((accountId) => [ASSET_ID, accountId])
+  const ownerRewardAccountIdEntries: [string, string][] = basePools
+    .filter((p) => p.stakePool)
+    .map((p) => {
+      assert(p.stakePool)
+      return [p.pid, p.stakePool.ownerRewardAccount]
+    })
+  const ownerRewards = await multiQueryBalance(
+    api,
+    ownerRewardAccountIdEntries.map((x) => x[1])
   )
+  for (let i = 0; i < ownerRewardAccountIdEntries.length; i++) {
+    const pool = basePoolMap.get(ownerRewardAccountIdEntries[i][0])
+    assert(pool?.stakePool)
+    pool.stakePool.ownerReward = ownerRewards[i]
+  }
+
+  const basePoolAccountIds = basePools.map((p) => p.poolAccountId)
+  const basePoolBalances = await multiQueryBalance(api, basePoolAccountIds)
   for (let i = 0; i < basePoolAccountIds.length; i++) {
     const pool = basePools[i]
-    pool.freeValue = basePoolBalanceEntries[i]
-      .unwrapOr({balance: 0})
-      .balance.toString()
+    pool.freeValue = basePoolBalances[i]
   }
 
   return basePools
@@ -114,8 +150,17 @@ const getBasePools = async (api: ApiDecoration<'promise'>) => {
 const getWorkers = async (api: ApiDecoration<'promise'>) => {
   const workerEntries = await api.query.phalaRegistry.workers.entries()
   const workers = workerEntries.map(([key, value]) => {
+    const worker = value.unwrap()
+    let initialScore = null
+    try {
+      initialScore = worker.initialScore.unwrap().toNumber()
+    } catch (err) {
+      // noop
+    }
     return {
       id: key.args[0].toString(),
+      confidenceLevel: worker.confidenceLevel.toNumber(),
+      initialScore,
     }
   })
 
@@ -158,18 +203,72 @@ const getSessions = async (api: ApiDecoration<'promise'>) => {
   return sessions
 }
 
+const getDelegationNfts = async (
+  api: ApiPromise,
+  apiDecoration: ApiDecoration<'promise'>,
+  cids: number[]
+) => {
+  const nftEntries = (
+    await Promise.all(
+      cids.map((cid) => apiDecoration.query.rmrkCore.nfts.entries(cid))
+    )
+  ).flat()
+
+  const nfts = nftEntries.map(([key, value]) => {
+    const cid = key.args[0].toNumber()
+    const nftId = key.args[1].toNumber()
+    return {
+      cid,
+      nftId,
+      owner: value.unwrap().owner.asAccountId.toString(),
+      shares: '0',
+    }
+  })
+
+  const nftProperties = await apiDecoration.query.rmrkCore.properties.multi(
+    nfts.map(({cid, nftId}) => [cid, nftId, 'stake-info'])
+  )
+  const shares = nftProperties.map((x) => {
+    const stakeInfo = api.createType('NftAttr', x.unwrap()) as unknown as {
+      shares: BN
+    }
+    return stakeInfo.shares.toString()
+  })
+
+  for (let i = 0; i < nfts.length; i++) {
+    nfts[i].shares = shares[i]
+  }
+
+  return nfts
+}
+
 const main = async () => {
-  const endpoint = process.env.ENDPOINT || 'ws://localhost:49944'
+  const endpoint =
+    process.env.ENDPOINT || 'wss://pc-test-3.phala.network/khala/ws'
   const provider = new WsProvider(endpoint, 1000)
-  const api = await ApiPromise.create({provider})
+  const api = await ApiPromise.create({
+    provider,
+    types: {
+      NftAttr: {
+        shares: 'Balance',
+      },
+    },
+  })
   const blockHash = await api.rpc.chain.getBlockHash(BLOCK_NUMBER)
   const apiDecoration = await api.at(blockHash)
+  const basePools = await getBasePools(apiDecoration)
 
   const json = {
-    basePools: await getBasePools(apiDecoration),
+    timestamp: (await apiDecoration.query.timestamp.now()).toNumber(),
+    basePools,
     workers: await getWorkers(apiDecoration),
     sessions: await getSessions(apiDecoration),
     identities: await getIdentities(apiDecoration),
+    delegationNfts: await getDelegationNfts(
+      api,
+      apiDecoration,
+      basePools.map((x) => x.cid)
+    ),
   }
 
   await fs.writeFile(`./dist/dump_${BLOCK_NUMBER}.json`, JSON.stringify(json))

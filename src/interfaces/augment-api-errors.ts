@@ -427,17 +427,9 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       AlreadyVetoed: AugmentedError<ApiType>;
       /**
-       * Preimage already noted
-       **/
-      DuplicatePreimage: AugmentedError<ApiType>;
-      /**
        * Proposal already made
        **/
       DuplicateProposal: AugmentedError<ApiType>;
-      /**
-       * Imminent
-       **/
-      Imminent: AugmentedError<ApiType>;
       /**
        * The instant referendum origin is currently disallowed.
        **/
@@ -475,10 +467,6 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       NotDelegating: AugmentedError<ApiType>;
       /**
-       * Not imminent
-       **/
-      NotImminent: AugmentedError<ApiType>;
-      /**
        * Next external proposal not simple majority
        **/
       NotSimpleMajority: AugmentedError<ApiType>;
@@ -486,14 +474,6 @@ declare module '@polkadot/api-base/types/errors' {
        * The given account did not vote on the referendum.
        **/
       NotVoter: AugmentedError<ApiType>;
-      /**
-       * Invalid preimage
-       **/
-      PreimageInvalid: AugmentedError<ApiType>;
-      /**
-       * Preimage not found
-       **/
-      PreimageMissing: AugmentedError<ApiType>;
       /**
        * Proposal still blacklisted
        **/
@@ -507,13 +487,9 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       ReferendumInvalid: AugmentedError<ApiType>;
       /**
-       * Too early
+       * Maximum number of items reached.
        **/
-      TooEarly: AugmentedError<ApiType>;
-      /**
-       * Maximum number of proposals reached.
-       **/
-      TooManyProposals: AugmentedError<ApiType>;
+      TooMany: AugmentedError<ApiType>;
       /**
        * Value too low
        **/
@@ -777,6 +753,10 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       NotInContributeWhitelist: AugmentedError<ApiType>;
       /**
+       * Migration root not authorized
+       **/
+      NotMigrationRoot: AugmentedError<ApiType>;
+      /**
        * The pool hasn't have a whitelist created
        **/
       NoWhitelistCreated: AugmentedError<ApiType>;
@@ -852,6 +832,10 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       InternalErrorCannotStartWithExistingStake: AugmentedError<ApiType>;
       /**
+       * Migration root not authorized
+       **/
+      NotMigrationRoot: AugmentedError<ApiType>;
+      /**
        * Not permitted because the session is not bound with a worker.
        **/
       SessionNotBound: AugmentedError<ApiType>;
@@ -885,6 +869,7 @@ declare module '@polkadot/api-base/types/errors' {
       ClusterNotFound: AugmentedError<ApiType>;
       ClusterPermissionDenied: AugmentedError<ApiType>;
       CodeNotFound: AugmentedError<ApiType>;
+      ContractNotFound: AugmentedError<ApiType>;
       DuplicatedContract: AugmentedError<ApiType>;
       DuplicatedDeployment: AugmentedError<ApiType>;
       InvalidSender: AugmentedError<ApiType>;
@@ -900,32 +885,6 @@ declare module '@polkadot/api-base/types/errors' {
       BadDestination: AugmentedError<ApiType>;
       BadSender: AugmentedError<ApiType>;
       BadSequence: AugmentedError<ApiType>;
-    };
-    phalaPawnshop: {
-      /**
-       * The Iteration exceed the max limitaion
-       **/
-      IterationsIsNotVaild: AugmentedError<ApiType>;
-      /**
-       * Trying to redeem more than the available balance
-       **/
-      RedeemAmountExceedsAvaliableStake: AugmentedError<ApiType>;
-      /**
-       * The vote is not currently on going
-       **/
-      ReferendumInvalid: AugmentedError<ApiType>;
-      /**
-       * The vote is now on going and the P-PHA used in voting can not be unlocked
-       **/
-      ReferendumOngoing: AugmentedError<ApiType>;
-      /**
-       * user's `FinanceAccount` does not exist in storage: `StakerAccounts`
-       **/
-      StakerAccountNotFound: AugmentedError<ApiType>;
-      /**
-       * Trying to vote more than the available balance
-       **/
-      VoteAmountLargerThanTotalStakes: AugmentedError<ApiType>;
     };
     phalaRegistry: {
       BadIASReport: AugmentedError<ApiType>;
@@ -955,6 +914,10 @@ declare module '@polkadot/api-base/types/errors' {
       MasterKeyUninitialized: AugmentedError<ApiType>;
       NoneAttestationDisabled: AugmentedError<ApiType>;
       NotImplemented: AugmentedError<ApiType>;
+      /**
+       * Migration root not authorized
+       **/
+      NotMigrationRoot: AugmentedError<ApiType>;
       OutdatedIASReport: AugmentedError<ApiType>;
       PRuntimeAlreadyExists: AugmentedError<ApiType>;
       PRuntimeNotFound: AugmentedError<ApiType>;
@@ -1120,6 +1083,32 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       VaultBankrupt: AugmentedError<ApiType>;
     };
+    phalaWrappedBalances: {
+      /**
+       * The Iteration exceed the max limitaion
+       **/
+      IterationsIsNotVaild: AugmentedError<ApiType>;
+      /**
+       * Trying to unwrap more than the available balance
+       **/
+      RedeemAmountExceedsAvaliableStake: AugmentedError<ApiType>;
+      /**
+       * The vote is not currently on going
+       **/
+      ReferendumInvalid: AugmentedError<ApiType>;
+      /**
+       * The vote is now on going and the W-PHA used in voting can not be unlocked
+       **/
+      ReferendumOngoing: AugmentedError<ApiType>;
+      /**
+       * user's `FinanceAccount` does not exist in storage: `StakerAccounts`
+       **/
+      StakerAccountNotFound: AugmentedError<ApiType>;
+      /**
+       * Trying to vote more than the available balance
+       **/
+      VoteAmountLargerThanTotalStakes: AugmentedError<ApiType>;
+    };
     phragmenElection: {
       /**
        * Duplicated candidate submission.
@@ -1271,7 +1260,7 @@ declare module '@polkadot/api-base/types/errors' {
       /**
        * Preimage is too large to store on-chain.
        **/
-      TooLarge: AugmentedError<ApiType>;
+      TooBig: AugmentedError<ApiType>;
     };
     proxy: {
       /**
@@ -1340,6 +1329,7 @@ declare module '@polkadot/api-base/types/errors' {
       InvalidStatusType: AugmentedError<ApiType>;
       KeyTooLong: AugmentedError<ApiType>;
       MustOwnSpiritToPurchase: AugmentedError<ApiType>;
+      NoAvailableCollectionId: AugmentedError<ApiType>;
       NoAvailableNftId: AugmentedError<ApiType>;
       NoAvailablePreorderId: AugmentedError<ApiType>;
       NoAvailableRaceGivewayLeft: AugmentedError<ApiType>;
@@ -1381,6 +1371,7 @@ declare module '@polkadot/api-base/types/errors' {
       CannotRejectNonOwnedNft: AugmentedError<ApiType>;
       CannotRejectNonPendingNft: AugmentedError<ApiType>;
       CannotSendEquippedItem: AugmentedError<ApiType>;
+      CannotSendNft: AugmentedError<ApiType>;
       CannotSendToDescendentOrSelf: AugmentedError<ApiType>;
       CollectionFullOrLocked: AugmentedError<ApiType>;
       CollectionNotEmpty: AugmentedError<ApiType>;
@@ -1413,6 +1404,9 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       StorageOverflow: AugmentedError<ApiType>;
       TooLong: AugmentedError<ApiType>;
+      /**
+       * The recursion limit has been reached.
+       **/
       TooManyRecursions: AugmentedError<ApiType>;
     };
     rmrkEquip: {
@@ -1435,8 +1429,11 @@ declare module '@polkadot/api-base/types/errors' {
       PermissionError: AugmentedError<ApiType>;
       SlotAlreadyEquipped: AugmentedError<ApiType>;
       SlotNotEquipped: AugmentedError<ApiType>;
+      TooManyEquippables: AugmentedError<ApiType>;
       TooManyProperties: AugmentedError<ApiType>;
       UnequipperMustOwnEitherItemOrEquipper: AugmentedError<ApiType>;
+      UnexpectedTryFromIntError: AugmentedError<ApiType>;
+      UnexpectedVecConversionError: AugmentedError<ApiType>;
       UnknownError: AugmentedError<ApiType>;
     };
     rmrkMarket: {
@@ -1506,6 +1503,10 @@ declare module '@polkadot/api-base/types/errors' {
        * Failed to schedule a call
        **/
       FailedToSchedule: AugmentedError<ApiType>;
+      /**
+       * Attempt to use a non-named function on a named task.
+       **/
+      Named: AugmentedError<ApiType>;
       /**
        * Cannot find the scheduled call.
        **/

@@ -13,7 +13,7 @@
     "generate:meta": "ts-node --skip-project node_modules/.bin/polkadot-types-from-chain --package . --endpoint src/metadata.json --output ./src/interfaces --strict"
   },
   "devDependencies": {
-    "@polkadot/typegen": "^9.8.2",
+    "@polkadot/typegen": "^9.9.1",
     "@tsconfig/node16": "^1.0.3",
     "@types/humps": "^2.0.2",
     "@types/lodash": "^4.14.188",
@@ -26,10 +26,10 @@
   "dependencies": {
     "@fastify/autoload": "^5.4.1",
     "@phala/typedefs": "^0.2.32",
-    "@polkadot/api": "^9.8.2",
-    "@polkadot/types": "^9.8.2",
-    "@polkadot/util": "^10.1.12",
-    "@polkadot/util-crypto": "^10.1.12",
+    "@polkadot/api": "^9.9.1",
+    "@polkadot/types": "^9.9.1",
+    "@polkadot/util": "^10.1.13",
+    "@polkadot/util-crypto": "^10.1.13",
     "fastify": "^4.9.2",
     "humps": "^2.0.1",
     "lodash": "^4.17.21"
