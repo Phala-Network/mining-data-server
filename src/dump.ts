@@ -5,7 +5,7 @@ import {BN} from '@polkadot/util'
 import assert from 'assert'
 import fs from 'fs/promises'
 
-const BLOCK_NUMBER = 21000
+const BLOCK_NUMBER = 102000
 const ASSET_ID = 1
 
 const multiQueryBalance = async (
@@ -87,7 +87,8 @@ const getBasePools = async (api: ApiDecoration<'promise'>) => {
       basePool = v.basepool
       commission = v.commission.unwrapOr(0).toString()
       const lastSharePriceCheckpoint = v.lastSharePriceCheckpoint.toString()
-      vault = {lastSharePriceCheckpoint}
+      const ownerShares = v.ownerShares.toString()
+      vault = {lastSharePriceCheckpoint, ownerShares}
     }
     const owner = basePool.owner.toString()
     const cid = basePool.cid.toNumber()
@@ -180,7 +181,7 @@ const getSessions = async (api: ApiDecoration<'promise'>) => {
       pInit: benchmark.pInit.toNumber(),
       pInstant: benchmark.pInstant.toNumber(),
       totalReward: unwrapped.stats.totalReward.toString(),
-      coolingDownStartTime: unwrapped.coolDownStart.toString(),
+      coolingDownStartTime: unwrapped.coolDownStart.toNumber(),
       stake: '0',
       worker: null as string | null,
     }
