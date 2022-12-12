@@ -266,7 +266,7 @@ declare module '@polkadot/api-base/types/consts' {
       /**
        * The maximum amount of signatories allowed in the multisig.
        **/
-      maxSignatories: u16 & AugmentedConst<ApiType>;
+      maxSignatories: u32 & AugmentedConst<ApiType>;
     };
     phalaRegistry: {
       /**
@@ -302,7 +302,7 @@ declare module '@polkadot/api-base/types/consts' {
       minContribution: u128 & AugmentedConst<ApiType>;
     };
     phalaVault: {
-      initialCheckPoint: u128 & AugmentedConst<ApiType>;
+      initialPriceCheckPoint: u128 & AugmentedConst<ApiType>;
     };
     phalaWrappedBalances: {
       /**

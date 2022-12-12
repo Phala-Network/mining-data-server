@@ -128,7 +128,7 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       ExistingVestingSchedule: AugmentedError<ApiType>;
       /**
-       * Balance too low to send value
+       * Balance too low to send value.
        **/
       InsufficientBalance: AugmentedError<ApiType>;
       /**
@@ -552,6 +552,10 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       JudgementGiven: AugmentedError<ApiType>;
       /**
+       * Error that occurs when there is an issue paying for judgement.
+       **/
+      JudgementPaymentFailed: AugmentedError<ApiType>;
+      /**
        * No identity found.
        **/
       NoIdentity: AugmentedError<ApiType>;
@@ -721,6 +725,10 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       AttrLocked: AugmentedError<ApiType>;
       /**
+       * Burn nft failed
+       **/
+      BurnNftFailed: AugmentedError<ApiType>;
+      /**
        * Too long for pool description length
        **/
       ExceedMaxDescriptionLen: AugmentedError<ApiType>;
@@ -864,23 +872,6 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       WorkerNotRegistered: AugmentedError<ApiType>;
     };
-    phalaFatContracts: {
-      ClusterNotDeployed: AugmentedError<ApiType>;
-      ClusterNotFound: AugmentedError<ApiType>;
-      ClusterPermissionDenied: AugmentedError<ApiType>;
-      CodeNotFound: AugmentedError<ApiType>;
-      ContractNotFound: AugmentedError<ApiType>;
-      DuplicatedContract: AugmentedError<ApiType>;
-      DuplicatedDeployment: AugmentedError<ApiType>;
-      InvalidSender: AugmentedError<ApiType>;
-      NoPinkSystemCode: AugmentedError<ApiType>;
-      NoWorkerSpecified: AugmentedError<ApiType>;
-      PayloadTooLarge: AugmentedError<ApiType>;
-      WorkerNotFound: AugmentedError<ApiType>;
-    };
-    phalaFatTokenomic: {
-      InvalidAmountOfStake: AugmentedError<ApiType>;
-    };
     phalaMq: {
       BadDestination: AugmentedError<ApiType>;
       BadSender: AugmentedError<ApiType>;
@@ -894,6 +885,7 @@ declare module '@polkadot/api-base/types/errors' {
       GenesisBlockHashNotFound: AugmentedError<ApiType>;
       GenesisBlockHashRejected: AugmentedError<ApiType>;
       InvalidBenchReport: AugmentedError<ApiType>;
+      InvalidConsensusVersion: AugmentedError<ApiType>;
       InvalidEndpointSigningTime: AugmentedError<ApiType>;
       InvalidGatekeeper: AugmentedError<ApiType>;
       InvalidIASSigningCert: AugmentedError<ApiType>;
@@ -919,6 +911,7 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       NotMigrationRoot: AugmentedError<ApiType>;
       OutdatedIASReport: AugmentedError<ApiType>;
+      ParachainIdMismatch: AugmentedError<ApiType>;
       PRuntimeAlreadyExists: AugmentedError<ApiType>;
       PRuntimeNotFound: AugmentedError<ApiType>;
       PRuntimeRejected: AugmentedError<ApiType>;
@@ -1069,7 +1062,7 @@ declare module '@polkadot/api-base/types/errors' {
       /**
        * The withdrawal amount is too small or too large
        **/
-      InvaildWithdrawSharesAmount: AugmentedError<ApiType>;
+      NoEnoughShareToClaim: AugmentedError<ApiType>;
       /**
        * The vault have no owner shares to claim
        **/
@@ -1089,10 +1082,6 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       IterationsIsNotVaild: AugmentedError<ApiType>;
       /**
-       * Trying to unwrap more than the available balance
-       **/
-      RedeemAmountExceedsAvaliableStake: AugmentedError<ApiType>;
-      /**
        * The vote is not currently on going
        **/
       ReferendumInvalid: AugmentedError<ApiType>;
@@ -1104,6 +1093,10 @@ declare module '@polkadot/api-base/types/errors' {
        * user's `FinanceAccount` does not exist in storage: `StakerAccounts`
        **/
       StakerAccountNotFound: AugmentedError<ApiType>;
+      /**
+       * Trying to unwrap more than the available balance
+       **/
+      UnwrapAmountExceedsAvaliableStake: AugmentedError<ApiType>;
       /**
        * Trying to vote more than the available balance
        **/
@@ -1310,6 +1303,7 @@ declare module '@polkadot/api-base/types/errors' {
       GenerationNotDetected: AugmentedError<ApiType>;
       HatchingInProgress: AugmentedError<ApiType>;
       MissingShellPartMetadata: AugmentedError<ApiType>;
+      NoFoodLeftToFeedOriginOfShell: AugmentedError<ApiType>;
       NoPermission: AugmentedError<ApiType>;
       NotOwner: AugmentedError<ApiType>;
       RaceNotDetected: AugmentedError<ApiType>;
@@ -1354,6 +1348,7 @@ declare module '@polkadot/api-base/types/errors' {
       RareOriginOfShellPurchaseNotAvailable: AugmentedError<ApiType>;
       RefundClaimNotDetected: AugmentedError<ApiType>;
       RequireOverlordAccount: AugmentedError<ApiType>;
+      SignerNotSet: AugmentedError<ApiType>;
       SpiritAlreadyClaimed: AugmentedError<ApiType>;
       SpiritClaimNotAvailable: AugmentedError<ApiType>;
       SpiritCollectionIdAlreadySet: AugmentedError<ApiType>;
@@ -1371,12 +1366,13 @@ declare module '@polkadot/api-base/types/errors' {
       CannotRejectNonOwnedNft: AugmentedError<ApiType>;
       CannotRejectNonPendingNft: AugmentedError<ApiType>;
       CannotSendEquippedItem: AugmentedError<ApiType>;
-      CannotSendNft: AugmentedError<ApiType>;
       CannotSendToDescendentOrSelf: AugmentedError<ApiType>;
       CollectionFullOrLocked: AugmentedError<ApiType>;
       CollectionNotEmpty: AugmentedError<ApiType>;
       CollectionUnknown: AugmentedError<ApiType>;
       EmptyResource: AugmentedError<ApiType>;
+      FailedTransferHooksPostTransfer: AugmentedError<ApiType>;
+      FailedTransferHooksPreCheck: AugmentedError<ApiType>;
       MetadataNotSet: AugmentedError<ApiType>;
       NftAlreadyExists: AugmentedError<ApiType>;
       NftIsLocked: AugmentedError<ApiType>;

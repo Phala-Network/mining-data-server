@@ -9,7 +9,7 @@ import type { ApiTypes, AugmentedEvent } from '@polkadot/api-base/types';
 import type { Bytes, Null, Option, Result, U256, U8aFixed, Vec, bool, u128, u16, u32, u64, u8 } from '@polkadot/types-codec';
 import type { ITuple } from '@polkadot/types-codec/types';
 import type { AccountId32, H256 } from '@polkadot/types/interfaces/runtime';
-import type { FrameSupportDispatchDispatchInfo, FrameSupportTokensMiscBalanceStatus, PalletDemocracyVoteAccountVote, PalletDemocracyVoteThreshold, PalletMultisigTimepoint, PalletPhalaWorldCareerType, PalletPhalaWorldNftSaleType, PalletPhalaWorldRaceType, PalletPhalaWorldRarityType, PalletPhalaWorldShellParts, PhalaTypesAttestationProvider, PhalaTypesMessagingPRuntimeManagementEvent, RmrkTraitsNftAccountIdOrCollectionNftTuple, SpCoreSr25519Public, SpRuntimeDispatchError, SpWeightsWeightV2Weight, ThalaParachainRuntimeProxyType, XcmV1MultiAsset, XcmV1MultiLocation, XcmV2Response, XcmV2TraitsError, XcmV2TraitsOutcome, XcmV2Xcm, XcmVersionedMultiAssets, XcmVersionedMultiLocation } from '@polkadot/types/lookup';
+import type { FrameSupportDispatchDispatchInfo, FrameSupportTokensMiscBalanceStatus, KhalaParachainRuntimeProxyType, PalletDemocracyVoteAccountVote, PalletDemocracyVoteThreshold, PalletMultisigTimepoint, PalletPhalaWorldCareerType, PalletPhalaWorldNftSaleType, PalletPhalaWorldRaceType, PalletPhalaWorldRarityType, PalletPhalaWorldShellParts, PhalaTypesAttestationProvider, RmrkTraitsNftAccountIdOrCollectionNftTuple, SpCoreSr25519Public, SpRuntimeDispatchError, SpWeightsWeightV2Weight, XcmV1MultiAsset, XcmV1MultiLocation, XcmV2Response, XcmV2TraitsError, XcmV2TraitsOutcome, XcmV2Xcm, XcmVersionedMultiAssets, XcmVersionedMultiLocation } from '@polkadot/types/lookup';
 
 export type __AugmentedEvent<ApiType extends ApiTypes> = AugmentedEvent<ApiType>;
 
@@ -512,7 +512,7 @@ declare module '@polkadot/api-base/types/events' {
       /**
        * A Nft is created to contain pool shares
        **/
-      NftCreated: AugmentedEvent<ApiType, [cid: u32, nftId: u32, owner: AccountId32, shares: u128], { cid: u32, nftId: u32, owner: AccountId32, shares: u128 }>;
+      NftCreated: AugmentedEvent<ApiType, [pid: u64, cid: u32, nftId: u32, owner: AccountId32, shares: u128], { pid: u64, cid: u32, nftId: u32, owner: AccountId32, shares: u128 }>;
       /**
        * A pool contribution whitelist is added
        * 
@@ -655,21 +655,6 @@ declare module '@polkadot/api-base/types/events' {
        **/
       WorkerStopped: AugmentedEvent<ApiType, [session: AccountId32], { session: AccountId32 }>;
     };
-    phalaFatContracts: {
-      ClusterCreated: AugmentedEvent<ApiType, [cluster: H256, systemContract: H256], { cluster: H256, systemContract: H256 }>;
-      ClusterDeployed: AugmentedEvent<ApiType, [cluster: H256, pubkey: SpCoreSr25519Public, worker: SpCoreSr25519Public], { cluster: H256, pubkey: SpCoreSr25519Public, worker: SpCoreSr25519Public }>;
-      ClusterDeploymentFailed: AugmentedEvent<ApiType, [cluster: H256, worker: SpCoreSr25519Public], { cluster: H256, worker: SpCoreSr25519Public }>;
-      ClusterDestroyed: AugmentedEvent<ApiType, [cluster: H256], { cluster: H256 }>;
-      ClusterPubkeyAvailable: AugmentedEvent<ApiType, [cluster: H256, pubkey: SpCoreSr25519Public], { cluster: H256, pubkey: SpCoreSr25519Public }>;
-      ContractPubkeyAvailable: AugmentedEvent<ApiType, [contract: H256, cluster: H256, pubkey: SpCoreSr25519Public], { contract: H256, cluster: H256, pubkey: SpCoreSr25519Public }>;
-      Instantiated: AugmentedEvent<ApiType, [contract: H256, cluster: H256, deployer: H256], { contract: H256, cluster: H256, deployer: H256 }>;
-      Instantiating: AugmentedEvent<ApiType, [contract: H256, cluster: H256, deployer: AccountId32], { contract: H256, cluster: H256, deployer: AccountId32 }>;
-      Transfered: AugmentedEvent<ApiType, [cluster: H256, account: H256, amount: u128], { cluster: H256, account: H256, amount: u128 }>;
-    };
-    phalaFatTokenomic: {
-      ContractDepositChanged: AugmentedEvent<ApiType, [contract: H256, deposit: u128], { contract: H256, deposit: u128 }>;
-      UserStakeChanged: AugmentedEvent<ApiType, [account: AccountId32, contract: H256, stake: u128], { account: AccountId32, contract: H256, stake: u128 }>;
-    };
     phalaRegistry: {
       /**
        * A new Gatekeeper is enabled on the blockchain
@@ -679,7 +664,8 @@ declare module '@polkadot/api-base/types/events' {
       InitialScoreSet: AugmentedEvent<ApiType, [pubkey: SpCoreSr25519Public, initScore: u32], { pubkey: SpCoreSr25519Public, initScore: u32 }>;
       MasterKeyRotated: AugmentedEvent<ApiType, [rotationId: u64, masterPubkey: SpCoreSr25519Public], { rotationId: u64, masterPubkey: SpCoreSr25519Public }>;
       MasterKeyRotationFailed: AugmentedEvent<ApiType, [rotationLock: Option<u64>, gatekeeperRotationId: u64], { rotationLock: Option<u64>, gatekeeperRotationId: u64 }>;
-      PRuntimeManagement: AugmentedEvent<ApiType, [PhalaTypesMessagingPRuntimeManagementEvent]>;
+      MinimumPRuntimeVersionChangedTo: AugmentedEvent<ApiType, [u32, u32, u32]>;
+      PRuntimeConsensusVersionChangedTo: AugmentedEvent<ApiType, [u32]>;
       WorkerAdded: AugmentedEvent<ApiType, [pubkey: SpCoreSr25519Public, attestationProvider: Option<PhalaTypesAttestationProvider>, confidenceLevel: u8], { pubkey: SpCoreSr25519Public, attestationProvider: Option<PhalaTypesAttestationProvider>, confidenceLevel: u8 }>;
       WorkerUpdated: AugmentedEvent<ApiType, [pubkey: SpCoreSr25519Public, attestationProvider: Option<PhalaTypesAttestationProvider>, confidenceLevel: u8], { pubkey: SpCoreSr25519Public, attestationProvider: Option<PhalaTypesAttestationProvider>, confidenceLevel: u8 }>;
     };
@@ -844,9 +830,9 @@ declare module '@polkadot/api-base/types/events' {
        * - the user's dust stake is moved to treasury
        **/
       DustRemoved: AugmentedEvent<ApiType, [user: AccountId32, amount: u128], { user: AccountId32, amount: u128 }>;
-      Pawned: AugmentedEvent<ApiType, [user: AccountId32, amount: u128], { user: AccountId32, amount: u128 }>;
-      Redeemed: AugmentedEvent<ApiType, [user: AccountId32, amount: u128], { user: AccountId32, amount: u128 }>;
+      Unwrapped: AugmentedEvent<ApiType, [user: AccountId32, amount: u128], { user: AccountId32, amount: u128 }>;
       Voted: AugmentedEvent<ApiType, [user: AccountId32, voteId: u32, ayeAmount: u128, nayAmount: u128], { user: AccountId32, voteId: u32, ayeAmount: u128, nayAmount: u128 }>;
+      Wrapped: AugmentedEvent<ApiType, [user: AccountId32, amount: u128], { user: AccountId32, amount: u128 }>;
     };
     phragmenElection: {
       /**
@@ -1033,7 +1019,7 @@ declare module '@polkadot/api-base/types/events' {
       /**
        * A proxy was added.
        **/
-      ProxyAdded: AugmentedEvent<ApiType, [delegator: AccountId32, delegatee: AccountId32, proxyType: ThalaParachainRuntimeProxyType, delay: u32], { delegator: AccountId32, delegatee: AccountId32, proxyType: ThalaParachainRuntimeProxyType, delay: u32 }>;
+      ProxyAdded: AugmentedEvent<ApiType, [delegator: AccountId32, delegatee: AccountId32, proxyType: KhalaParachainRuntimeProxyType, delay: u32], { delegator: AccountId32, delegatee: AccountId32, proxyType: KhalaParachainRuntimeProxyType, delay: u32 }>;
       /**
        * A proxy was executed correctly, with the given.
        **/
@@ -1041,12 +1027,12 @@ declare module '@polkadot/api-base/types/events' {
       /**
        * A proxy was removed.
        **/
-      ProxyRemoved: AugmentedEvent<ApiType, [delegator: AccountId32, delegatee: AccountId32, proxyType: ThalaParachainRuntimeProxyType, delay: u32], { delegator: AccountId32, delegatee: AccountId32, proxyType: ThalaParachainRuntimeProxyType, delay: u32 }>;
+      ProxyRemoved: AugmentedEvent<ApiType, [delegator: AccountId32, delegatee: AccountId32, proxyType: KhalaParachainRuntimeProxyType, delay: u32], { delegator: AccountId32, delegatee: AccountId32, proxyType: KhalaParachainRuntimeProxyType, delay: u32 }>;
       /**
        * A pure account has been created by new proxy with given
        * disambiguation index and proxy type.
        **/
-      PureCreated: AugmentedEvent<ApiType, [pure: AccountId32, who: AccountId32, proxyType: ThalaParachainRuntimeProxyType, disambiguationIndex: u16], { pure: AccountId32, who: AccountId32, proxyType: ThalaParachainRuntimeProxyType, disambiguationIndex: u16 }>;
+      PureCreated: AugmentedEvent<ApiType, [pure: AccountId32, who: AccountId32, proxyType: KhalaParachainRuntimeProxyType, disambiguationIndex: u16], { pure: AccountId32, who: AccountId32, proxyType: KhalaParachainRuntimeProxyType, disambiguationIndex: u16 }>;
     };
     pwIncubation: {
       /**
@@ -1149,6 +1135,10 @@ declare module '@polkadot/api-base/types/events' {
        **/
       PurchaseRareOriginOfShellsStatusChanged: AugmentedEvent<ApiType, [status: bool], { status: bool }>;
       /**
+       * Signer changed to new account
+       **/
+      SignerChanged: AugmentedEvent<ApiType, [oldSigner: Option<AccountId32>, newSigner: AccountId32], { oldSigner: Option<AccountId32>, newSigner: AccountId32 }>;
+      /**
        * Spirit has been claimed
        **/
       SpiritClaimed: AugmentedEvent<ApiType, [owner: AccountId32, collectionId: u32, nftId: u32], { owner: AccountId32, collectionId: u32, nftId: u32 }>;
@@ -1182,6 +1172,7 @@ declare module '@polkadot/api-base/types/events' {
       ResourceAdded: AugmentedEvent<ApiType, [nftId: u32, resourceId: u32, collectionId: u32], { nftId: u32, resourceId: u32, collectionId: u32 }>;
       ResourceRemoval: AugmentedEvent<ApiType, [nftId: u32, resourceId: u32, collectionId: u32], { nftId: u32, resourceId: u32, collectionId: u32 }>;
       ResourceRemovalAccepted: AugmentedEvent<ApiType, [nftId: u32, resourceId: u32, collectionId: u32], { nftId: u32, resourceId: u32, collectionId: u32 }>;
+      ResourceReplaced: AugmentedEvent<ApiType, [nftId: u32, resourceId: u32, collectionId: u32], { nftId: u32, resourceId: u32, collectionId: u32 }>;
     };
     rmrkEquip: {
       BaseCreated: AugmentedEvent<ApiType, [issuer: AccountId32, baseId: u32], { issuer: AccountId32, baseId: u32 }>;

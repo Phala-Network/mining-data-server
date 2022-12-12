@@ -1,12 +1,13 @@
 import {ApiPromise, WsProvider} from '@polkadot/api'
 import {ApiDecoration} from '@polkadot/api/types'
 import {PhalaPalletsComputeBasePoolPalletBasePool} from '@polkadot/types/lookup'
-import {BN} from '@polkadot/util'
+import {BN, hexToNumber} from '@polkadot/util'
 import assert from 'assert'
 import fs from 'fs/promises'
 
-const BLOCK_NUMBER = 102000
-const ASSET_ID = 1
+const ENDPOINT = 'wss://pc-test-4.phala.network/khala/ws'
+const BLOCK_NUMBER = 3035
+const ASSET_ID = 15
 
 const multiQueryBalance = async (
   api: ApiDecoration<'promise'>,
@@ -21,10 +22,15 @@ const multiQueryBalance = async (
 const getIdentities = async (api: ApiDecoration<'promise'>) => {
   const identityEntries = await api.query.identity.identityOf.entries()
   const identities = identityEntries.map(([key, value]) => {
-    const judgements = value.unwrap().judgements
+    const unwrapped = value.unwrap()
+    const judgements = unwrapped.judgements
+    let identity: string | null = null
+    if (unwrapped.info.display.isRaw) {
+      identity = unwrapped.info.display.asRaw.toUtf8()
+    }
     return {
       id: key.args[0].toString(),
-      identity: value.unwrap().info.display.asRaw.toUtf8() as string | null,
+      identity,
       judgement: judgements.length ? judgements[0][1].type : null,
       // superId: null as string | null,
       // subIdentity: null as string | null,
@@ -204,17 +210,19 @@ const getSessions = async (api: ApiDecoration<'promise'>) => {
   return sessions
 }
 
-const getDelegationNfts = async (
+const getNfts = async (
   api: ApiPromise,
   apiDecoration: ApiDecoration<'promise'>,
-  cids: number[]
+  basePoolCids: number[]
 ) => {
+  const collectionEntries =
+    await apiDecoration.query.rmrkCore.collections.entries()
+  const cids = collectionEntries.map(([key, value]) => key.args[0].toNumber())
   const nftEntries = (
     await Promise.all(
       cids.map((cid) => apiDecoration.query.rmrkCore.nfts.entries(cid))
     )
   ).flat()
-
   const nfts = nftEntries.map(([key, value]) => {
     const cid = key.args[0].toNumber()
     const nftId = key.args[1].toNumber()
@@ -222,30 +230,34 @@ const getDelegationNfts = async (
       cid,
       nftId,
       owner: value.unwrap().owner.asAccountId.toString(),
-      shares: '0',
+      shares: undefined as undefined | string,
+      createTime: undefined as undefined | number,
     }
   })
-
-  const nftProperties = await apiDecoration.query.rmrkCore.properties.multi(
-    nfts.map(({cid, nftId}) => [cid, nftId, 'stake-info'])
+  const delegationNfts = nfts.filter((x) => basePoolCids.includes(x.cid))
+  const nftStakeInfo = await apiDecoration.query.rmrkCore.properties.multi(
+    delegationNfts.map(({cid, nftId}) => [cid, nftId, 'stake-info'])
   )
-  const shares = nftProperties.map((x) => {
+  const nftCreateTime = await apiDecoration.query.rmrkCore.properties.multi(
+    delegationNfts.map(({cid, nftId}) => [cid, nftId, 'createtime'])
+  )
+  const nftShares = nftStakeInfo.map((x) => {
     const stakeInfo = api.createType('NftAttr', x.unwrap()) as unknown as {
       shares: BN
     }
     return stakeInfo.shares.toString()
   })
 
-  for (let i = 0; i < nfts.length; i++) {
-    nfts[i].shares = shares[i]
+  for (let i = 0; i < delegationNfts.length; i++) {
+    delegationNfts[i].shares = nftShares[i]
+    delegationNfts[i].createTime = hexToNumber(
+      nftCreateTime[i].unwrap().toHex()
+    )
   }
-
-  return nfts
 }
 
 const main = async () => {
-  const endpoint =
-    process.env.ENDPOINT || 'wss://pc-test-3.phala.network/khala/ws'
+  const endpoint = process.env.ENDPOINT || ENDPOINT
   const provider = new WsProvider(endpoint, 1000)
   const api = await ApiPromise.create({
     provider,
@@ -265,14 +277,17 @@ const main = async () => {
     workers: await getWorkers(apiDecoration),
     sessions: await getSessions(apiDecoration),
     identities: await getIdentities(apiDecoration),
-    delegationNfts: await getDelegationNfts(
+    nfts: await getNfts(
       api,
       apiDecoration,
       basePools.map((x) => x.cid)
     ),
   }
 
-  await fs.writeFile(`./dist/dump_${BLOCK_NUMBER}.json`, JSON.stringify(json))
+  await fs.writeFile(
+    `./dist/pc4/dump_${BLOCK_NUMBER}.json`,
+    JSON.stringify(json)
+  )
 
   process.exit()
 }
