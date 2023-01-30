@@ -519,6 +519,7 @@ declare module '@polkadot/api-base/types/storage' {
        * The Next available collectionid to be created
        **/
       collectionIndex: AugmentedQuery<ApiType, () => Observable<u32>, []>;
+      lockIterateStartPos: AugmentedQuery<ApiType, () => Observable<Option<ITuple<[u32, u32]>>>, []>;
       /**
        * Mapping from the next self-increased nft ids to collections
        **/
@@ -753,6 +754,7 @@ declare module '@polkadot/api-base/types/storage' {
       workerAssignments: AugmentedQuery<ApiType, (arg: SpCoreSr25519Public | string | Uint8Array) => Observable<Option<u64>>, [SpCoreSr25519Public]>;
     };
     phalaStakePoolv2: {
+      legacyRewards: AugmentedQuery<ApiType, (arg: ITuple<[AccountId32, u64]> | [AccountId32 | string | Uint8Array, u64 | AnyNumber | Uint8Array]) => Observable<Option<u128>>, [ITuple<[AccountId32, u64]>]>;
       stakepoolIterateStartPos: AugmentedQuery<ApiType, () => Observable<Option<u64>>, []>;
       /**
        * (Deprecated)

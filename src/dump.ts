@@ -1,13 +1,13 @@
 import {ApiPromise, WsProvider} from '@polkadot/api'
 import {ApiDecoration} from '@polkadot/api/types'
 import {PhalaPalletsComputeBasePoolPalletBasePool} from '@polkadot/types/lookup'
-import {BN, hexToNumber} from '@polkadot/util'
+import {BN} from '@polkadot/util'
 import assert from 'assert'
 import fs from 'fs/promises'
 
-const ENDPOINT = 'wss://pc-test-4.phala.network/khala/ws'
-const BLOCK_NUMBER = 3035
-const ASSET_ID = 15
+const ENDPOINT = 'wss://priv-api.phala.network/khala/ws'
+const BLOCK_NUMBER = 3010000
+const ASSET_ID = 10000
 
 const multiQueryBalance = async (
   api: ApiDecoration<'promise'>,
@@ -250,10 +250,10 @@ const getNfts = async (
 
   for (let i = 0; i < delegationNfts.length; i++) {
     delegationNfts[i].shares = nftShares[i]
-    delegationNfts[i].createTime = hexToNumber(
-      nftCreateTime[i].unwrap().toHex()
-    )
+    delegationNfts[i].createTime =
+      (nftCreateTime[i].unwrap().toPrimitive() as number) * 1000
   }
+  return nfts
 }
 
 const main = async () => {
@@ -285,7 +285,7 @@ const main = async () => {
   }
 
   await fs.writeFile(
-    `./dist/pc4/dump_${BLOCK_NUMBER}.json`,
+    `./dist/khala/dump_${BLOCK_NUMBER}.json`,
     JSON.stringify(json)
   )
 
